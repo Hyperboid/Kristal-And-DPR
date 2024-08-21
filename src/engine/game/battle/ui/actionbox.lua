@@ -53,6 +53,13 @@ function ActionBox:createButtons()
 
     local btn_types = {"fight", "act", "magic", "item", "spare", "defend"}
 
+	if self.battler.chara:hasSkills() then
+		btn_types = {"fight", "skill", "item", "spare", "defend"}
+	else
+		if not self.battler.chara:hasAct() then Utils.removeFromTable(btn_types, "act") end
+		if not self.battler.chara:hasSpells() then Utils.removeFromTable(btn_types, "magic") end
+	end
+
     if not self.battler.chara:hasAct() then Utils.removeFromTable(btn_types, "act") end
     if not self.battler.chara:hasSpells() then Utils.removeFromTable(btn_types, "magic") end
 

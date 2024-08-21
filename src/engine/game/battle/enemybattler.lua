@@ -422,7 +422,6 @@ function EnemyBattler:addMercy(amount)
                 local src = Assets.playSound("mercyadd", 0.8)
                 src:setPitch(pitch)
             end
-
             self:statusMessage("mercy", amount)
         end
     end

@@ -22,6 +22,7 @@ end
 function MainMenuTitle:registerEvents()
     self:registerEvent("enter", self.onEnter)
     self:registerEvent("keypressed", self.onKeyPressed)
+    self:registerEvent("update", self.update)
     self:registerEvent("draw", self.draw)
 end
 
@@ -115,6 +116,10 @@ function MainMenuTitle:onKeyPressed(key, is_repeat)
 
     self.menu.heart_target_x = 196
     self.menu.heart_target_y = 238 + (self.selected_option - 1) * 32
+end
+
+function MainMenuTitle:update()
+    self.splash_timer = self.splash_timer + DT
 end
 
 function MainMenuTitle:draw()
