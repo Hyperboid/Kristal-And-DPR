@@ -16,6 +16,8 @@ function Inventory:init()
     self.storage_enabled = true
 
     self:clear()
+	
+    self.storage_for_type["badge"] = "badges"
 end
 
 --- Completely empties the inventory and removes all its storages
