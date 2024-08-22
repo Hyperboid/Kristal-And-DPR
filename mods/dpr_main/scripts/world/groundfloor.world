@@ -1,5 +1,47 @@
 {
     "maps": [
+        {
+            "fileName": "maps/main_hub.tmx",
+            "height": 1080,
+            "width": 920,
+            "x": 0,
+            "y": 0
+        },
+        {
+            "fileName": "maps/hub_fuseroom.tmx",
+            "height": 440,
+            "width": 680,
+            "x": -760,
+            "y": 800
+        },
+        {
+            "fileName": "maps/hub_marketplace.tmx",
+            "height": 520,
+            "width": 680,
+            "x": -760,
+            "y": 280
+        },
+        {
+            "fileName": "maps/spamgolor_meeting.tmx",
+            "height": 480,
+            "width": 920,
+            "x": 1000,
+            "y": 800
+        },
+        {
+            "fileName": "maps/hub_tutorialmasters.tmx",
+            "height": 480,
+            "width": 560,
+            "x": 1000,
+            "y": 280
+        },
+        {
+            "fileName": "maps/hub_prefountain.tmx",
+            "height": 520,
+            "width": 640,
+            "x": 1000,
+            "y": -240
+        }
     ],
     "onlyShowAdjacentMaps": false,
     "type": "world"
