@@ -9,17 +9,17 @@
         },
         {
             "fileName": "maps/hub_fuseroom.tmx",
-            "height": 440,
-            "width": 680,
-            "x": -760,
+            "height": 480,
+            "width": 960,
+            "x": -1040,
             "y": 800
         },
         {
             "fileName": "maps/hub_marketplace.tmx",
-            "height": 520,
-            "width": 680,
-            "x": -760,
-            "y": 280
+            "height": 640,
+            "width": 720,
+            "x": -800,
+            "y": 240
         },
         {
             "fileName": "maps/spamgolor_meeting.tmx",
@@ -31,16 +31,16 @@
         {
             "fileName": "maps/hub_tutorialmasters.tmx",
             "height": 480,
-            "width": 560,
+            "width": 640,
             "x": 1000,
-            "y": 280
+            "y": 360
         },
         {
             "fileName": "maps/hub_prefountain.tmx",
-            "height": 520,
-            "width": 640,
+            "height": 960,
+            "width": 800,
             "x": 1000,
-            "y": -240
+            "y": -600
         }
     ],
     "onlyShowAdjacentMaps": false,
