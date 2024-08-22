@@ -1,0 +1,380 @@
+return {
+  version = "1.9",
+  luaversion = "5.1",
+  tiledversion = "1.9.0",
+  class = "",
+  orientation = "orthogonal",
+  renderorder = "right-down",
+  width = 17,
+  height = 13,
+  tilewidth = 40,
+  tileheight = 40,
+  nextlayerid = 6,
+  nextobjectid = 21,
+  properties = {},
+  tilesets = {
+    {
+      name = "main_area",
+      firstgid = 1,
+      filename = "../tilesets/main_area.tsx",
+      exportfilename = "../tilesets/main_area.lua"
+    }
+  },
+  layers = {
+    {
+      type = "tilelayer",
+      x = 0,
+      y = 0,
+      width = 17,
+      height = 13,
+      id = 1,
+      name = "Tile Layer 1",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      encoding = "lua",
+      data = {
+        0, 0, 0, 134, 66, 67, 67, 67, 67, 68, 131, 0, 0, 0, 0, 0, 0,
+        0, 0, 146, 147, 79, 80, 80, 80, 80, 81, 144, 145, 0, 0, 0, 0, 0,
+        0, 0, 159, 160, 92, 93, 93, 93, 93, 94, 157, 158, 0, 0, 0, 0, 0,
+        0, 134, 172, 6, 2, 2, 2, 2, 2, 2, 7, 171, 131, 0, 0, 0, 0,
+        146, 147, 6, 15, 15, 15, 15, 15, 15, 15, 15, 7, 144, 145, 0, 0, 0,
+        159, 160, 14, 15, 15, 15, 15, 15, 15, 15, 15, 16, 157, 158, 67, 67, 67,
+        172, 6, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 7, 171, 80, 80, 80,
+        6, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 7, 93, 93, 93,
+        14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 2, 2, 2,
+        14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 28, 28, 28,
+        19, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 20, 0, 0, 0,
+        0, 19, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 20, 0, 0, 0, 0,
+        0, 0, 19, 28, 28, 28, 28, 28, 28, 28, 28, 20, 0, 0, 0, 0, 0
+      }
+    },
+    {
+      type = "tilelayer",
+      x = 0,
+      y = 0,
+      width = 17,
+      height = 13,
+      id = 2,
+      name = "Tile Layer 2",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      encoding = "lua",
+      data = {
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 173, 0, 0, 0, 0, 0, 0, 170, 0, 0, 0, 0, 0, 0,
+        0, 0, 185, 0, 0, 0, 0, 0, 0, 0, 0, 184, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 173, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 170, 0, 0, 0, 0,
+        185, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+      }
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 3,
+      name = "collision",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      objects = {
+        {
+          id = 1,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 560,
+          y = 400,
+          width = 120,
+          height = 40,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 560,
+          y = 280,
+          width = 120,
+          height = 40,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 3,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 480,
+          y = 200,
+          width = 40,
+          height = 40,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 4,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 160,
+          y = 80,
+          width = 240,
+          height = 40,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 5,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 40,
+          y = 200,
+          width = 40,
+          height = 40,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 6,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = -40,
+          y = 320,
+          width = 40,
+          height = 80,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 8,
+          name = "",
+          class = "",
+          shape = "polygon",
+          x = 560,
+          y = 320,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          polygon = {
+            { x = 0, y = 0 },
+            { x = -80, y = -80 },
+            { x = 0, y = -80 }
+          },
+          properties = {}
+        },
+        {
+          id = 11,
+          name = "",
+          class = "",
+          shape = "polygon",
+          x = 0,
+          y = 320,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          polygon = {
+            { x = 0, y = 0 },
+            { x = 80, y = -80 },
+            { x = 0, y = -80 }
+          },
+          properties = {}
+        },
+        {
+          id = 12,
+          name = "",
+          class = "",
+          shape = "polygon",
+          x = 80,
+          y = 200,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          polygon = {
+            { x = 0, y = 0 },
+            { x = 80, y = -80 },
+            { x = 0, y = -80 }
+          },
+          properties = {}
+        },
+        {
+          id = 13,
+          name = "",
+          class = "",
+          shape = "polygon",
+          x = 400,
+          y = 120,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          polygon = {
+            { x = 0, y = 0 },
+            { x = 80, y = 0 },
+            { x = 80, y = 80 }
+          },
+          properties = {}
+        },
+        {
+          id = 17,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 120,
+          y = 520,
+          width = 320,
+          height = 40,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 18,
+          name = "",
+          class = "",
+          shape = "polygon",
+          x = 440,
+          y = 520,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          polygon = {
+            { x = 0, y = 0 },
+            { x = 120, y = -120 },
+            { x = 120, y = 0 }
+          },
+          properties = {}
+        },
+        {
+          id = 19,
+          name = "",
+          class = "",
+          shape = "polygon",
+          x = 120,
+          y = 520,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          polygon = {
+            { x = 0, y = 0 },
+            { x = -120, y = -120 },
+            { x = -120, y = 0 }
+          },
+          properties = {}
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 4,
+      name = "objects",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      objects = {
+        {
+          id = 14,
+          name = "transition",
+          class = "",
+          shape = "rectangle",
+          x = 680,
+          y = 320,
+          width = 40,
+          height = 80,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["map"] = "main_hub",
+            ["marker"] = "west2"
+          }
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 5,
+      name = "markers",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      objects = {
+        {
+          id = 15,
+          name = "entry",
+          class = "",
+          shape = "point",
+          x = 640,
+          y = 360,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 16,
+          name = "spawn",
+          class = "",
+          shape = "point",
+          x = 280,
+          y = 360,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
+      }
+    }
+  }
+}
