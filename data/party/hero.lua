@@ -86,7 +86,7 @@ function character:drawPowerStat(index, x, y, menu)
         love.graphics.print("Karma:", x, y)
         love.graphics.print(self:getFlag("karma"), x+130, y)
         return true
-    elseif index == 3 then -- Placeholder
+    elseif index == 3 then
         local icon = Assets.getTexture("ui/menu/icon/fire")
         Draw.draw(icon, x-26, y+6, 0, 2, 2)
         love.graphics.print("Guts:", x, y)
