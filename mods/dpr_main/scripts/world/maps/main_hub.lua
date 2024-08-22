@@ -34,21 +34,7 @@ return {
       parallaxx = 1,
       parallaxy = 1,
       properties = {},
-      objects = {
-        {
-          id = 61,
-          name = "magicglass",
-          class = "",
-          shape = "rectangle",
-          x = 0,
-          y = 200,
-          width = 200,
-          height = 80,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        }
-      }
+      objects = {}
     },
     {
       type = "tilelayer",
