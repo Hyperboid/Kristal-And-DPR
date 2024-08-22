@@ -11,7 +11,7 @@ return {
   columns = 13,
   image = "../../../assets/sprites/tilesets/main_area.png",
   imagewidth = 520,
-  imageheight = 600,
+  imageheight = 640,
   objectalignment = "unspecified",
   tilerendersize = "tile",
   fillmode = "stretch",
@@ -26,6 +26,6 @@ return {
   },
   properties = {},
   wangsets = {},
-  tilecount = 195,
+  tilecount = 208,
   tiles = {}
 }
