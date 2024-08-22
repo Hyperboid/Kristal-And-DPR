@@ -10,7 +10,7 @@ return {
   tilewidth = 40,
   tileheight = 40,
   nextlayerid = 9,
-  nextobjectid = 62,
+  nextobjectid = 63,
   properties = {},
   tilesets = {
     {
@@ -640,7 +640,10 @@ return {
           height = 40,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["cutscene"] = "hub.wall",
+            ["once"] = true
+          }
         },
         {
           id = 48,
@@ -667,6 +670,23 @@ return {
           rotation = 0,
           visible = true,
           properties = {}
+        },
+        {
+          id = 62,
+          name = "npc",
+          class = "",
+          shape = "point",
+          x = 460,
+          y = 560,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["actor"] = "wall",
+            ["flagcheck"] = "wall_hit",
+            ["text1"] = "* I Am the Wall Guardian.[wait:5]\n* This Wall is Off Limits for you\nno-good wall slammers."
+          }
         }
       }
     },

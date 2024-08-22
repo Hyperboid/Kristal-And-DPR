@@ -10,7 +10,7 @@ return {
   tilewidth = 40,
   tileheight = 40,
   nextlayerid = 5,
-  nextobjectid = 13,
+  nextobjectid = 15,
   properties = {},
   tilesets = {
     {
@@ -188,6 +188,22 @@ return {
           properties = {
             ["map"] = "main_hub",
             ["marker"] = "east2"
+          }
+        },
+        {
+          id = 14,
+          name = "npc",
+          class = "",
+          shape = "point",
+          x = 560,
+          y = 280,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["actor"] = "dog",
+            ["cutscene"] = "hub.nokia_dog"
           }
         }
       }
