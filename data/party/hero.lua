@@ -5,8 +5,8 @@ function character:init()
 
     self.name = "Hero"
 
-    self:setActor("kris") -- Placeholder
-    self:setLightActor("kris_lw") -- Placeholder
+    self:setActor("hero")
+    self:setLightActor("hero_lw")
     self:setDarkTransitionActor("kris_dark_transition") -- Placeholder
 
     self.love = 1
