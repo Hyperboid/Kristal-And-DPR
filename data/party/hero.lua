@@ -98,6 +98,17 @@ function character:drawPowerStat(index, x, y, menu)
     end
 end
 
+function character:getTitle()
+    local karma = self:getFlag("karma")
+    if karma <= -100 then
+        return "LV"..self.level.." Protagonist\nGets stronger\nat all costs."
+    elseif karma >= 100 then
+        return "LV"..self.level.." Protagonist\nSpares their foes\nusing many ACTs."
+    else
+        return "LV"..self.level.." Protagonist\nLeads in battle\nusing many ACTs."
+    end
+end
+
 function character:addKarma(ammount)
     local newkarma = self:getFlag("karma") + ammount
     if newkarma > 100 then newkarma = 100 end

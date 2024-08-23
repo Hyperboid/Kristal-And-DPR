@@ -21,7 +21,7 @@ function actor:init()
     self.color = {0, 1, 1}
 
     -- Path to this actor's sprites (defaults to "")
-    self.path = "party/hero/light"
+    self.path = "party/hero/dark"
     -- This actor's default sprite or animation, relative to the path (defaults to "")
     self.default = "walk"
 
