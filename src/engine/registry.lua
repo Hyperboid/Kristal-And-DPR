@@ -65,6 +65,7 @@ Registry.paths = {
     ["shops"]            = "shops",
     ["borders"]          = "borders",
     ["minigames"]        = "minigames",
+    ["combos"]           = "battle/combos",
 }
 
 ---@param preload boolean?
@@ -103,6 +104,7 @@ function Registry.initialize(preload)
         Registry.initShops()
         Registry.initBorders()
         Registry.initMinigames()
+        Registry.initCombos()
 
         Kristal.callEvent(KRISTAL_EVENT.onRegistered)
     end
@@ -502,6 +504,14 @@ function Registry.createMinigame(id, ...)
         return self.minigames[id](...)
     else
         error("Attempt to create non existent minigame \"" .. tostring(id) .. "\"")
+    end
+end
+
+function Registry.createCombo(id, ...)
+    if self.combos[id] then
+        return self.combos[id](...)
+    else
+        error("Attempt to create nonexistent combo \"" .. tostring(id) .. "\"")
     end
 end
 
@@ -948,6 +958,16 @@ function Registry.initMinigames()
     end
 
     Kristal.callEvent(KRISTAL_EVENT.onRegisterMinigames)
+end
+
+function Registry.initCombos()
+    self.combos = {}
+
+    for _,path,combo in self.iterScripts(Registry.paths["combos"]) do
+        assert(combo ~= nil, '"battle/combos/' .. path .. '.lua" does not return value')
+        combo.id = combo.id or path
+        self.combos[combo.id] = combo
+    end
 end
 
 ---@param base_path string
