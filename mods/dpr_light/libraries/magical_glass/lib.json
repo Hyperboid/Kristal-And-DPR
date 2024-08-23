@@ -24,9 +24,9 @@
         "lightBattleDefendDefault": true,
 
         "lightBattleTextShake": true,
-        "lightBattleMercyMessages": false,
+        "lightBattleMercyMessages": true,
 
-        "lightBattleListItemMenu": false,
+        "lightBattleListItemMenu": true,
 
         "lightMenuHideCell": true,
 
@@ -44,7 +44,7 @@
         // "has_spell": only displays magic if that member has a spell
         // "has_magic: only displays magic if that member's MG is greater than 0
         // false: never display magic
-        "lightStatMenuMagicDisplay": false,
+        "lightStatMenuMagicDisplay": "has_magic",
 
         // false: the previous ruling only affects the currently selected party member
         // true: the previous ruling affects the whole party

@@ -140,7 +140,7 @@ function LightBattle:createPartyBattlers()
         self:addChild(battler)
         table.insert(self.party, battler)
     else
-        for i = 1, math.min(3, #Game.party) do
+        for i = 1, math.min(4, #Game.party) do
             local battler = LightPartyBattler(Game.party[i])
             self:addChild(battler)
             table.insert(self.party, battler)

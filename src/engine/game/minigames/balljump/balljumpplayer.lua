@@ -17,6 +17,8 @@ function BallJumpPlayer:init()
 
     self.iframes = 0
     self.stomp_combo = 0
+	
+	self.shell = nil
 end
 
 function BallJumpPlayer:handleJump()
@@ -44,6 +46,10 @@ function BallJumpPlayer:update()
     end
     if Game.state == "WIN" or Game.state == "DEAD" then
         self.sprite.alpha = 1
+		if self.shell then
+			self.shell:remove()
+			self.shell = nil
+		end
     end
     self.iframes = self.iframes - DT
 end

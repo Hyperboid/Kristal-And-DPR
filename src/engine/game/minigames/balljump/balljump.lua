@@ -57,6 +57,8 @@ function BallJump:init()
     self.coins = 3
     self.coins_gotten = {false, false, false}
     self.all_coins = false
+	
+	self.shells_to_throw = false
 end
 
 function BallJump:postInit()
@@ -143,8 +145,15 @@ function BallJump:draw()
             if Input.active_gamepad then
                 love.graphics.print("Press        to jump", 6, 448)
                 love.graphics.draw(Input.getTexture("confirm"), 87, 452, 0, 2, 2)
+				if self.shells_to_throw then
+					love.graphics.print("Press        in air to throw held shell", 6, 416)
+					love.graphics.draw(Input.getTexture("confirm"), 87, 420, 0, 2, 2)
+				end
             else
                 love.graphics.print("Press " .. Input.getText("confirm") .. " to jump", 6, 448)
+				if self.shells_to_throw then
+					love.graphics.print("Press " .. Input.getText("confirm") .. " in air to throw held shell", 6, 416)
+				end
             end
             love.graphics.setColor(1,1,1,1)
         end

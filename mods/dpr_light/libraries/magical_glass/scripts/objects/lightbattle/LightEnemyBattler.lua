@@ -44,7 +44,7 @@ function LightEnemyBattler:init(actor)
     self.large_vapor = false
 
     -- Whether this enemy runs away instead of turning to dust.
-    self.run_on_defeat = true
+    self.run_on_defeat = false
     -- Whether this enemy can be frozen.
     self.can_freeze = true
 
