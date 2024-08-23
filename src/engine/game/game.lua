@@ -60,6 +60,7 @@ function Game:clear()
     self.stage = nil
     self.world = nil
     self.battle = nil
+    self.minigame = nil
     self.shop = nil
     self.gameover = nil
     self.legend = nil
@@ -198,6 +199,8 @@ function Game:getActiveMusic()
         return self.world.music
     elseif self.state == "BATTLE" then
         return self.battle.music
+	elseif self.state == "MINIGAME" then
+        return self.minigame.music
     elseif self.state == "SHOP" then
         return self.shop.music
     elseif self.state == "GAMEOVER" then
@@ -703,6 +706,31 @@ function Game:enterShop(shop, options)
     self.shop:onEnter()
 end
 
+function Game:startMinigame(game)
+    if Game.minigame then
+        error("Attempt to enter minigame while already being in one")
+    end
+
+    Game.state = "MINIGAME"
+
+    Game.minigame = Registry.createMinigame(game)
+
+    Game.minigame:postInit()
+
+    Game.stage:addChild(Game.minigame)
+end
+
+function Game:setPresenceState(details)
+    self.rpc_state = details
+
+    -- talk about some half-baked support :bangbang:
+    local presence = Kristal.getPresence()
+    if presence then
+        presence.state = Kristal.callEvent("getPresenceState")
+        Kristal.setPresence(presence)
+    end
+end
+
 --- Sets the value of the flag named `flag` to `value`
 ---@param flag  string
 ---@param value any
@@ -1081,6 +1109,10 @@ function Game:onKeyPressed(key, is_repeat)
     elseif self.state == "OVERWORLD" then
         if self.world then
             self.world:onKeyPressed(key)
+        end
+	elseif self.state == "MINIGAME" then
+        if self.minigame then
+            self.minigame:onKeyPressed(key)
         end
     elseif self.state == "SHOP" then
         if self.shop then

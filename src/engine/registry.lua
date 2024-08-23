@@ -31,6 +31,7 @@
 ---@field controllers table<string, Event|Object>
 ---@field shops table<string, Shop>
 ---@field borders table<string, Border>
+---@field minigames table<string, MinigameHandler>
 ---
 local Registry = {}
 local self = Registry
@@ -63,6 +64,7 @@ Registry.paths = {
     ["controllers"]      = "world/controllers",
     ["shops"]            = "shops",
     ["borders"]          = "borders",
+    ["minigames"]        = "minigames",
 }
 
 ---@param preload boolean?
@@ -100,6 +102,7 @@ function Registry.initialize(preload)
         Registry.initControllers()
         Registry.initShops()
         Registry.initBorders()
+        Registry.initMinigames()
 
         Kristal.callEvent(KRISTAL_EVENT.onRegistered)
     end
@@ -485,6 +488,23 @@ function Registry.createBorder(id, ...)
     end
 end
 
+---@param id string
+---@return Minigame|nil
+function Registry.getMinigame(id)
+    return self.minigames[id]
+end
+
+---@param id string
+---@param ... any
+---@return Minigame
+function Registry.createMinigame(id, ...)
+    if self.minigames[id] then
+        return self.minigames[id](...)
+    else
+        error("Attempt to create non existent minigame \"" .. tostring(id) .. "\"")
+    end
+end
+
 -- Register Functions --
 
 ---@param id string
@@ -629,6 +649,11 @@ end
 ---@param border Border
 function Registry.registerBorder(id, border)
     self.borders[id] = border
+end
+
+---@param class Minigame
+function Registry.registerMinigame(id, class)
+    self.minigames[id] = class
 end
 
 -- Internal Functions --
@@ -911,6 +936,18 @@ function Registry.initBorders()
     end
 
     Kristal.callEvent(KRISTAL_EVENT.onRegisterBorders)
+end
+
+function Registry.initMinigames()
+    self.minigames = {}
+
+    for _,path,minigame in self.iterScripts(Registry.paths["minigames"]) do
+        assert(minigame ~= nil, '"minigames/'..path..'.lua" does not return value')
+        minigame.id = minigame.id or path
+        self.registerMinigame(minigame.id, minigame)
+    end
+
+    Kristal.callEvent(KRISTAL_EVENT.onRegisterMinigames)
 end
 
 ---@param base_path string

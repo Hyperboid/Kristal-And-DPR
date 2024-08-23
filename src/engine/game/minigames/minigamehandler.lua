@@ -23,7 +23,7 @@ end
 function MinigameHandler:changeWindowTitle()
     love.window.setIcon(Kristal.icon)
     love.window.setTitle(string.format("%s - %s", Mod.info.name, self.name))
-    Mod:setPresenceState(string.format("In a minigame: %s", self.name))
+    Game:setPresenceState(string.format("In a minigame: %s", self.name))
 end
 
 function MinigameHandler:update()
@@ -54,8 +54,8 @@ function MinigameHandler:preEndCleanup()
         Game.world.music:resume()
         self.resume_world_music = false
     end
-    Mod:funnytitle()
-    Mod:setPresenceState(nil)
+    -- Mod:funnytitle()
+    Game:setPresenceState(nil)
 end
 
 function MinigameHandler:endMinigame()
