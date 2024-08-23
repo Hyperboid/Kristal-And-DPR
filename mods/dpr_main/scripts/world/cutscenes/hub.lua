@@ -110,4 +110,8 @@ return {
 		Game.world.music:resume()
 		dog:resetSprite()
     end,
+
+    malius = function(cutscene, event)
+        Game.world:openMenu(FuseMenu())
+    end,
 }

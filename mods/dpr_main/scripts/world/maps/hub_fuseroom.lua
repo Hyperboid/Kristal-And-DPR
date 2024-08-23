@@ -10,7 +10,7 @@ return {
   tilewidth = 40,
   tileheight = 40,
   nextlayerid = 6,
-  nextobjectid = 9,
+  nextobjectid = 10,
   properties = {},
   tilesets = {
     {
@@ -162,6 +162,22 @@ return {
           properties = {
             ["map"] = "main_hub",
             ["marker"] = "west1"
+          }
+        },
+        {
+          id = 9,
+          name = "npc",
+          class = "",
+          shape = "point",
+          x = 320,
+          y = 340,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["actor"] = "malius",
+            ["cutscene"] = "hub.malius"
           }
         }
       }
