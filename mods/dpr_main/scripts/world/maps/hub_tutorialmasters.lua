@@ -9,8 +9,8 @@ return {
   height = 12,
   tilewidth = 40,
   tileheight = 40,
-  nextlayerid = 5,
-  nextobjectid = 15,
+  nextlayerid = 8,
+  nextobjectid = 16,
   properties = {},
   tilesets = {
     {
@@ -18,6 +18,12 @@ return {
       firstgid = 1,
       filename = "../tilesets/main_area.tsx",
       exportfilename = "../tilesets/main_area.lua"
+    },
+    {
+      name = "hub_objects",
+      firstgid = 209,
+      filename = "../tilesets/hub_objects.tsx",
+      exportfilename = "../tilesets/hub_objects.lua"
     }
   },
   layers = {
@@ -51,6 +57,36 @@ return {
         0, 0, 0, 27, 28, 28, 28, 28, 28, 28, 28, 28, 29, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+      }
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 7,
+      name = "objects_bg",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      objects = {
+        {
+          id = 15,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 240,
+          y = 182,
+          width = 154,
+          height = 122,
+          rotation = 0,
+          gid = 209,
+          visible = true,
+          properties = {}
+        }
       }
     },
     {
@@ -196,7 +232,7 @@ return {
           class = "",
           shape = "point",
           x = 560,
-          y = 280,
+          y = 292,
           width = 0,
           height = 0,
           rotation = 0,
