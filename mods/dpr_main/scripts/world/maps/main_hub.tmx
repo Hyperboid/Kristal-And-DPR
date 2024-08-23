@@ -170,7 +170,7 @@
   <object id="34" name="interactable" x="440" y="480" width="40" height="40">
    <properties>
     <property name="cutscene" value="hub.wall"/>
-    <property name="once" type="bool" value="true"/>
+    <property name="once" type="bool" value="false"/>
    </properties>
   </object>
   <object id="48" name="savepoint" x="440" y="600" width="40" height="40"/>

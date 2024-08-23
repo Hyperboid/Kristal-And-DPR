@@ -642,7 +642,7 @@ return {
           visible = true,
           properties = {
             ["cutscene"] = "hub.wall",
-            ["once"] = true
+            ["once"] = false
           }
         },
         {
