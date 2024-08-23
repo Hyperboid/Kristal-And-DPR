@@ -10,7 +10,7 @@ return {
   tilewidth = 40,
   tileheight = 40,
   nextlayerid = 8,
-  nextobjectid = 16,
+  nextobjectid = 17,
   properties = {},
   tilesets = {
     {
@@ -240,6 +240,21 @@ return {
           properties = {
             ["actor"] = "dog",
             ["cutscene"] = "hub.nokia_dog"
+          }
+        },
+        {
+          id = 16,
+          name = "interactable",
+          class = "",
+          shape = "rectangle",
+          x = 247,
+          y = 120,
+          width = 140,
+          height = 40,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["cutscene"] = "hub.fun_fax"
           }
         }
       }
