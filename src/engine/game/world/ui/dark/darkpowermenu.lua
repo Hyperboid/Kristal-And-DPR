@@ -119,6 +119,36 @@ function DarkPowerMenu:update()
             self.ui_cancel_small:play()
 
             self.party.focused = true
+            self.scroll_y = 1
+
+            self:updateDescription()
+            return
+        end
+        local spells = self:getSpells()
+        local old_selected = self.selected_spell
+        if Input.pressed("up", true) then
+            self.selected_spell = self.selected_spell - 1
+        end
+        if Input.pressed("down", true) then
+            self.selected_spell = self.selected_spell + 1
+        end
+        self.selected_spell = Utils.clamp(self.selected_spell, 1, #spells)
+        if self.selected_spell ~= old_selected then
+            local spell_limit = self:getSpellLimit()
+            local min_scroll = math.max(1, self.selected_spell - (spell_limit - 1))
+            local max_scroll = math.min(math.max(1, #spells - (spell_limit - 1)), self.selected_spell)
+            self.scroll_y = Utils.clamp(self.scroll_y, min_scroll, max_scroll)
+
+            self.ui_move:stop()
+            self.ui_move:play()
+            self:updateDescription()
+        end
+	elseif self.state == "COMBOS" then
+        if Input.pressed("cancel") then
+            self.state = "CHOOSETAB"
+
+            self.ui_cancel_small:stop()
+            self.ui_cancel_small:play()
 
             self.scroll_y = 1
 
