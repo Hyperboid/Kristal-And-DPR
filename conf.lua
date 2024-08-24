@@ -16,7 +16,7 @@ function love.conf(t)
     -- TODO: hmm
     t.version = "11.0"
 
-    t.window.title = "Dark Place Rebirth"
+    t.window.title = "Dark Place: REBIRTH"
     t.window.icon = "icon.png"
     t.window.width = 640
     t.window.height = 480
