@@ -186,6 +186,7 @@ DarkConfigMenu = require("src.engine.game.world.ui.dark.darkconfigmenu")
 DarkMenuPartySelect = require("src.engine.game.world.ui.dark.darkmenupartyselect")
 DarkStorageMenu = require("src.engine.game.world.ui.dark.darkstoragemenu")
 DarkBadgeMenu = require("src.engine.game.world.ui.dark.darkbadgemenu")
+DarkPartyMenu = require("src.engine.game.world.ui.dark.darkpartymenu")
 
 LightMenu = require("src.engine.game.world.ui.light.lightmenu")
 LightItemMenu = require("src.engine.game.world.ui.light.lightitemmenu")
