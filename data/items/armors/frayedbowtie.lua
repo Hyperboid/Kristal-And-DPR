@@ -52,6 +52,7 @@ function item:init()
         susie = "Look. I have standards.",
         ralsei = "It's still wearable!",
         noelle = "(Reminds me of Asgore...)",
+        dess = "now i can go toe to toe with that BITCH catty",
     }
 end
 

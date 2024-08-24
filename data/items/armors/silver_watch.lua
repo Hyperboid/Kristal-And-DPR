@@ -43,13 +43,16 @@ function item:init()
     self.bonus_icon = "ui/menu/icon/up"
 
     -- Equippable characters (default true for armors, false for weapons)
-    self.can_equip = {}
+    self.can_equip = {
+        dess = false
+    }
 
     -- Character reactions
     self.reactions = {
         susie = "It's clobbering time.",
         ralsei = "I'm late, I'm late!",
         noelle = "(Th-this was mine...)",
+        dess = "aint no WAY you stole from my sister bro"
     }
 end
 

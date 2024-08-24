@@ -49,6 +49,7 @@ function item:init()
         brenda = false,
         mario = false,
         noel = false,
+        dess = false,
 	}
 
     -- Character reactions
@@ -63,9 +64,10 @@ function item:init()
         brenda = "This uh... isn't mine.",
 		jamm = "Thank you, Ania. I won't forget this.",
 		mario = {
-				mario = "Blech! That tastes like shit!",
-				jamm = "Did you try to eat it!?"
-			}
+			mario = "Blech! That tastes like shit!",
+			jamm = "Did you try to eat it!?"
+		},
+        dess = "ew im alergic to flowers AND love"
     }
 end
 

@@ -49,6 +49,7 @@ function item:init()
         susie = "Money, that's what I need.",
         ralsei = "Two pairs of glasses?",
         noelle = "(Seems... familiar?)",
+        dess = "wow this seems familiar for no reason in particular",
     }
 end
 

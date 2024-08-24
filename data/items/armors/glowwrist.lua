@@ -48,6 +48,7 @@ function item:init()
         susie = "Whoops, it's tangled.",
         ralsei = "Let me just untangle this...",
         noelle = "It's like holiday lights...",
+        dess = "merry crimmins",
     }
 end
 

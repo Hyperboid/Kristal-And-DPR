@@ -48,6 +48,7 @@ function item:init()
         susie = "... better than nothing.",
         ralsei = "It's sticky, huh, Kris...",
         noelle = "It's like a name-tag!",
+        dess = "Yummy glue",
     }
 end
 

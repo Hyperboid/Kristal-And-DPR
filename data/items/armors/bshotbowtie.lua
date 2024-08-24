@@ -49,6 +49,7 @@ function item:init()
         susie = "Ugh, I look like a nerd.",
         ralsei = "Can I have suspenders?",
         noelle = "... do I put it in my hair?",
+        dess = "holy shit is that a spamtong reference????",
     }
 end
 

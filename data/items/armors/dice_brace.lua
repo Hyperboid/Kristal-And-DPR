@@ -48,6 +48,7 @@ function item:init()
         susie = "... okay.",
         ralsei = "It says \"Friendship!\"",
         noelle = "Hey, y-you jumbled it...",
+        dess = "alr how do you spell a swear",
     }
 end
 

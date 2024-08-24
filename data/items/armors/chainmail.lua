@@ -48,6 +48,7 @@ function item:init()
         susie = "Damn, guess I'm cursed.",
         ralsei = "A letter?... For me...?",
         noelle = "Armor? (It's cool...)",
+        dess = "ermmm this has GOT to be bait",
     }
 end
 

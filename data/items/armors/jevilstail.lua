@@ -50,6 +50,7 @@ function item:init()
         susie = "Figured I'd grow one someday.",
         ralsei = "I'm a good devil, OK?",
         noelle = "... (I like it...)",
+        dess = "im gonna go commit a felony now",
     }
 end
 
