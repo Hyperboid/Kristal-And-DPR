@@ -50,6 +50,7 @@ function item:init()
         noelle = "... from the family entertainment center?",
         dess = "ermmm possible chuck-e-cheese reference?",
         jamm = "This brings back memories.",
+        noel = "Is this from a resturant?",
     }
 end
 

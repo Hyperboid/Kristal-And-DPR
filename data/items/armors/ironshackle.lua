@@ -51,6 +51,7 @@ function item:init()
         noelle = "I'm the ghost of holidays past!",
         dess = "holy shit terraria reference?????",
         jamm = "Relatable.",
+        noel = "Am I being detained?",
     }
 end
 

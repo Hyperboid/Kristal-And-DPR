@@ -54,6 +54,7 @@ function item:init()
         noelle = "J-Jeez, they're kind of hot...", -- Not in THAT way you pervert >:[
         dess = "wouldn't it be funny if i conquered the universe with these?",
         brenda = "Thankfully the crown isn't included."
+        noel = "Cool anime shit.",
     }
 end
 

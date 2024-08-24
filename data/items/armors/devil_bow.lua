@@ -45,7 +45,9 @@ function item:init()
     self.can_equip = {}
 
     -- Character reactions
-    self.reactions = {}
+    self.reactions = {
+        noel = "Oh, fucking thanks I *really* needed a debuff.",
+    }
 end
 
 return item

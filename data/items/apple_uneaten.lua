@@ -52,9 +52,10 @@ function item:init()
         susie = "An apple a day keeps the doctor away.",
         ralsei = "It's really sweet!",
         noelle = "It's really crunchy!",
-		dess = "sweet",
+	dess = "sweet",
         brenda = "I love apples!",
-		jamm = "A doctor a day keeps the apple away. Wait..."
+	jamm = "A doctor a day keeps the apple away. Wait...",
+	noel = "Nom!",
     }
 end
 

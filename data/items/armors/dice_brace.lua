@@ -50,6 +50,7 @@ function item:init()
         noelle = "Hey, y-you jumbled it...",
         dess = "alr how do you spell a swear",
         jamm = "Spells \"Memory...\"",
+        noel = "\"Dear Lunet?\"",
     }
 end
 

@@ -43,7 +43,8 @@ function item:init()
     -- Equippable characters (default true for armors, false for weapons)
     self.can_equip = {
         kris = true,
-        YOU = true
+        YOU = true,
+        noel = true
     }
 
     -- Character reactions
@@ -52,7 +53,8 @@ function item:init()
         ralsei = "I can't handle the anticipation!",
         noelle = "... ... ...",
         brenda = "This was NOT worth it.",
-		jamm = "What? I'm not a patient guy."
+	jamm = "What? I'm not a patient guy.",
+        noel = "#worth it",
     }
 	
 end

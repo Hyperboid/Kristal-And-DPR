@@ -60,9 +60,10 @@ function item:init()
         susie = "Heck yeah!!",
         ralsei = "It's... sweet!",
         noelle = "I've never been a fan. Sorry!",
-		dess = "YEAH WOO AMERICA BABY YEAH",
+	dess = "YEAH WOO AMERICA BABY YEAH",
         brenda = "Eh, pumpkin's better.",
-		jamm = "I'm lovin' it!"
+	jamm = "I'm lovin' it!",
+	noel = "I wish I had a grandma.",
     }
 end
 

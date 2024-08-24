@@ -44,8 +44,10 @@ function item:init()
 
     -- Equippable characters (default true for armors, false for weapons)
     self.can_equip = {
-		jamm = false,
-	}
+	jamm = false,
+        noel = false,
+    }
+
 
     -- Character reactions
     self.reactions = {
@@ -54,6 +56,7 @@ function item:init()
         noelle = "... (I like it...)",
         dess = "im gonna go commit a felony now",
         jamm = "It won't fit...!",
+        noel = "I am not a circus.",
     }
 end
 

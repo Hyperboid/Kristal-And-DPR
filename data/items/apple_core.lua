@@ -30,7 +30,8 @@ function item:init()
         YOU = 10,
         dess = 15,
         brenda = 5,
-		jamm = 0
+	jamm = 0,
+        noel = 128,
     }
 
     -- Default shop price (sell price is halved)
@@ -61,9 +62,10 @@ function item:init()
         susie = "Better than nothing...",
         ralsei = "This tastes... not good...",
         noelle = "Wh-why did you make me eat this?!",
-		dess = "yeah this is still good",
+	dess = "yeah this is still good",
         brenda = "...Ew.",
-		jamm = "Yeah... No way am I eating that..."
+	jamm = "Yeah... No way am I eating that...",
+	noel = "Don't waste food.",
     }
 end
 

@@ -52,9 +52,10 @@ function item:init()
         susie = "Damn, I feel energized!",
         ralsei = "Tastes sweet!",
         noelle = "Wow, it's very fizzy.",
-		dess = "big soda fan",
+	dess = "big soda fan",
         brenda = "*burp* Oh, excuse me.",
-		jamm = "Gotta save some for Marcy. She'd love this."
+	jamm = "Gotta save some for Marcy. She'd love this.",
+        noel = "What flavor is this?",
     }
 end
 

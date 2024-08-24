@@ -55,6 +55,7 @@ function item:init()
         noelle = "... feels familiar.",
         dess = "ew i hate pink things",
         jamm = "How adorable!",
+        noel = "More tension?",
     }
 end
 

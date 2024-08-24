@@ -52,6 +52,7 @@ function item:init()
         ralsei = "I made this.",
         noelle = "B-Brainfreeze! ... kidding!",
         jamm = "Tastes... Dignified.",
+        noel = "Why is it fluctuating?",
     }
 end
 

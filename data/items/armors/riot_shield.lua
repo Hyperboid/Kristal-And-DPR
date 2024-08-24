@@ -50,9 +50,9 @@ function item:init()
         susie = "What's black and blue and red all over?",
         ralsei = "Knock knock!",
         noelle = "Wh- uh... airline food?",
-		dess = "69 lmao",
+	dess = "69 lmao",
         brenda = "Sus Among U-",
-		jamm = "Well, I'm on my way to the White House. Don't wait up.",
+	jamm = "Well, I'm on my way to the White House. Don't wait up.",
         noel = "An oversized mug would be better.",
     }
 end

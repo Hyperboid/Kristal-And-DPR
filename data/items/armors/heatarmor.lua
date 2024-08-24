@@ -48,6 +48,7 @@ function item:init()
 		jamm = "Toasty...",
 		mario = {
 				mario = "But I can just use a fire flower.",
+                                noel = "do it bitch.",
 				jamm = "Eh."
 			},
         noel = "A heated blanket would do a better job.",

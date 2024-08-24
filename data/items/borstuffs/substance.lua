@@ -44,7 +44,9 @@ function item:init()
     self.bonus_icon = nil
 
     -- Equippable characters (default true for armors, false for weapons)
-    self.can_equip = {}
+    self.can_equip = {
+        noel = false,
+    }
 
     -- Character reactions (key = party member id)
     self.reactions = {
@@ -56,8 +58,9 @@ function item:init()
         bor = "What? You want more o' that?",
         dess = "AYYYYY LETST GET FUCJKKED BABY!!!! WOSAAAAAAAAHSDFHGSDJFHK",
         berdly = "I-W-What?! I'm sorry, my friend. But even a GAMER has STANDARS.",
-		jamm = "A friend with herb is a true friend.",
-		mario = "Mario's got to piss."
+	jamm = "A friend with herb is a true friend.",
+	mario = "Mario's got to piss.",
+        noel = "No.",
     }
 end
 

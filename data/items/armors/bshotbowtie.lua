@@ -51,6 +51,7 @@ function item:init()
         noelle = "... do I put it in my hair?",
         dess = "holy shit is that a spamtong reference????",
         jamm = "So, how do I look?",
+        noel = "What brand is this?",
     }
 end
 

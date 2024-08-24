@@ -26,9 +26,10 @@ function item:init()
         ["susie"] = 80,
         ["ralsei"] = -50,
         ["noelle"] = nil,
-		["dess"] = 90,
+	["dess"] = 90,
         ["brenda"] = nil,
-		["jamm"] = -50
+	["jamm"] = -50,
+        ["noel"] = -100,
 	}
 
     -- Default shop price (sell price is halved)
@@ -51,9 +52,10 @@ function item:init()
         susie = "Cough! Cough! It's tasty?!",
         ralsei = "Cough! Cough! How is this edible?!",
         noelle = "Isn't this poisonous!?",
-		dess = "yummy",
+	dess = "yummy",
         brenda = "No.",
-		jamm = "Not the first time I drank oil. Ow, though..."
+	jamm = "Not the first time I drank oil. Ow, though...",
+	noel = "[color:red]kill me...",
 	}
 end
 

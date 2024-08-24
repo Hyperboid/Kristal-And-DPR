@@ -52,9 +52,10 @@ function item:init()
         susie = "Who knew vegetables could taste so good!",
         ralsei = "I feel great!",
         noelle = "Wow, did that fully heal?",
-		dess = "One, Two, Ooaatmeaaal",
+	dess = "One, Two, Ooaatmeaaal",
         brenda = "Wow, that tasted good!",
-		jamm = "Overheal. I like it!"
+	jamm = "Overheal. I like it!",
+	noel = "Woah.",
     }
 end
 

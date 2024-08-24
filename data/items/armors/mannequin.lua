@@ -50,6 +50,7 @@ function item:init()
         noelle = "(Why did they spend $300 on this!?)",
         dess = "300 buckarinos down the drain...",
         jamm = "How are we even carrying this?",
+        noel = "You fucking idiot.",
     }
 end
 

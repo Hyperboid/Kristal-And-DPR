@@ -53,6 +53,7 @@ function item:init()
         noelle = "... feels familiar.",
         dess = "ew i hate cute things",
         jamm = "How adorable!",
+        noel = "Just like my eyes.",
     }
 end
 

@@ -40,6 +40,7 @@ function item:init()
         noelle = "Feels like something Catti would wear...",
         dess = "i am goth now",
         brenda = "Black isn't really my style.",
+        noel = "Uwa~ True Emo~",
     }
 end
 

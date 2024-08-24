@@ -29,7 +29,8 @@ function item:init()
         ["YOU"] = 30,
         ["dess"] = 25,
         ["brenda"] = 30,
-		["jamm"] = nil,
+	["jamm"] = nil,
+        ["noel"] = 300,
 	}
 
     -- Default shop price (sell price is halved)
@@ -51,9 +52,10 @@ function item:init()
         susie = "The sauce tastes like blood!",
         ralsei = "Isn't this just plastic?",
         noelle = "Not the best, but it's fine.",
-		dess = "ew fnaf",
+	dess = "ew fnaf",
         brenda = "WAS THAT THE BITE OF 87?!",
-		jamm = "Hold on. There are mushrooms."
+	jamm = "Hold on. There are mushrooms.",
+	noel = "So, THIS is a PIZZA!",
 	}
 end
 

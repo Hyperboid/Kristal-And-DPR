@@ -49,9 +49,9 @@ function item:init()
         susie = "This is way too small.",
         ralsei = "It's... really dirty",
         noelle = "Smells like cats...",
-		dess = "Yo is that a kirby reference??????",
+	dess = "Yo is that a kirby reference??????",
         brenda = "I look good in this!",
-		jamm = "Oops, put it on backwards! Let me just... There we go!",
+        jamm = "Oops, put it on backwards! Let me just... There we go!",
         noel = "Smells like cats!!! :D",
     }
 end

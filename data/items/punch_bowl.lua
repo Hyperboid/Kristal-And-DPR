@@ -30,9 +30,10 @@ function item:init()
         ["susie"] = 50,
         ["ralsei"] = 100,
         ["noelle"] = 80,
-		["dess"] = 20,
+	["dess"] = 20,
         ["brenda"] = 40,
-		["jamm"] = 0
+	["jamm"] = 0,
+        ["noel"] = 999999999999999999999999999999, --fucking send him
 	}
 
     -- Default shop price (sell price is halved)
@@ -65,7 +66,8 @@ function item:init()
         noelle = 'Why is it called "punch?"',
 		dess = "I don't trust it",
         brenda = "Never really been a fan.",
-		jamm = "Alright. I punched it. What next?"
+		jamm = "Alright. I punched it. What next?",
+        noel = "I AM WHO IS ALL YET NONE!!!",
     }
 end
 

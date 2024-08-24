@@ -61,7 +61,8 @@ function item:init()
         susie = "Hell yeah.",
         ralsei = "This tastes like green...?",
         noelle = "How does Berdly drink these?",
-		jamm = "*cough* My throat... *cough*"
+	jamm = "*cough* My throat... *cough*",
+	noel = "Not real blood. D:",
     }
 	
 	self.dark_item = "gamerblood"

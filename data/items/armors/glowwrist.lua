@@ -50,6 +50,7 @@ function item:init()
         noelle = "It's like holiday lights...",
         dess = "merry crimmins",
         jamm = "I think Marcy would like this...",
+        noel = "Guess I'm a tree now.",
     }
 end
 

@@ -56,6 +56,7 @@ function item:init()
         noelle = "... nostalgic, huh.",
         dess = "ew i hate cute AND pink things",
         jamm = "Woah! Pop idle much???",
+        noel = "Two bracelets?",
     }
 end
 
