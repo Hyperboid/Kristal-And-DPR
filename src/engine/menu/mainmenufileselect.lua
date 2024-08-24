@@ -58,7 +58,7 @@ function MainMenuFileSelect:onEnter(old_state)
         for k = 0, 1 do
             local data = Kristal.loadData("file_" .. file, self.mod.id)
             local button = FileButton(self, file, data, 28 + SCREEN_WIDTH/2 * (k), 110 + 160 * (i), 264, 112)
-            
+
             if i == 1 then
                 button.selected = true
             end
@@ -229,25 +229,25 @@ function MainMenuFileSelect:onKeyPressed(key, is_repeat)
             end
         end
     elseif self.state == "SELECT" then
-        if Input.is("up", key) then 
+        if Input.is("up", key) then
             if self.selected_global == 1 or self.selected_global == 2 then
             else
                 self.selected_global = self.selected_global - 2
             end
         end
-        if Input.is("down", key) then 
+        if Input.is("down", key) then
             if self.selected_global == 5 or self.selected_global == 6 then
             else
                 self.selected_global = self.selected_global + 2
             end
         end
-        if Input.is("left", key) then 
+        if Input.is("left", key) then
             if self.selected_global == 1 or self.selected_global == 3 or self.selected_global == 5 then
             else
                 self.selected_global = self.selected_global - 1
             end
         end
-        if Input.is("right", key) then 
+        if Input.is("right", key) then
             if self.selected_global == 2 or self.selected_global == 4 or self.selected_global == 6 then
             else
                 self.selected_global = self.selected_global + 1
@@ -387,33 +387,31 @@ function MainMenuFileSelect:onKeyPressed(key, is_repeat)
             self:updateSelected()
         end
 
-        if Input.is("up", key) then 
+        if Input.is("up", key) then
             if self.selected_global == 1 or self.selected_global == 2 then
             else
                 self.selected_global = self.selected_global - 2
             end
         end
-        if Input.is("down", key) then 
+        if Input.is("down", key) then
             if self.selected_global == 5 or self.selected_global == 6 then
             else
                 self.selected_global = self.selected_global + 2
             end
         end
-        if Input.is("left", key) then 
+        if Input.is("left", key) then
             if self.selected_global == 1 or self.selected_global == 3 or self.selected_global == 5 then
             else
                 self.selected_global = self.selected_global - 1
             end
         end
-        if Input.is("right", key) then 
+        if Input.is("right", key) then
             if self.selected_global == 2 or self.selected_global == 4 or self.selected_global == 6 then
             else
                 self.selected_global = self.selected_global + 1
             end
         end
-    
-        self.selected_global = Utils.clamp(self.selected_global, 1, 6)
-    
+
         self.selected_global = Utils.clamp(self.selected_global, 1, 6)
     elseif self.state == "ERASE" then
         if Input.is("cancel", key) then
@@ -482,9 +480,8 @@ function MainMenuFileSelect:onKeyPressed(key, is_repeat)
                 self.selected_global = self.selected_global + 1
             end
         end
-    
+
         self.selected_global = Utils.clamp(self.selected_global, 1, 6)
-    
     end
 
     return true
@@ -512,7 +509,7 @@ function MainMenuFileSelect:draw()
     Draw.printShadow(self:getTitle(), title_x, 27)
 
     local function setColor(x, y)
-        if self.selected_x == x and self.selected_y == y or self.state == "ERASE" and self.selected_y == 3   or self.state == "COPY" and self.selected_y == 3 then
+        if self.selected_x == x and self.selected_y == y or self.state == "ERASE" and self.selected_y == 3 or self.state == "COPY" and self.selected_y == 3 then
             Draw.setColor(1, 1, 1)
         else
             Draw.setColor(0.6, 0.6, 0.7)
