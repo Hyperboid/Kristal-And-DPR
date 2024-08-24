@@ -292,6 +292,8 @@ function Game:save(x, y)
 
     Kristal.callEvent(KRISTAL_EVENT.save, data)
 
+    self:globalSave(data)
+
     return data
 end
 
@@ -301,7 +303,11 @@ end
 function Game:load(data, index, fade)
     self.is_new_file = data == nil
 
-    data = data or {}
+    if Game:getGlobalFile(index) then
+        data = Game:globalLoad(index)
+    else
+        data = data or {}
+    end
 
     self:clear()
 
@@ -1174,6 +1180,48 @@ function Game:loadNoel()
         return JSON.decode(love.filesystem.read(n_save))
     end
     return nil
+end
+
+function Game:globalSave(data, mod, map, marker, facing)
+    data.mod_id = mod or Mod.info.id
+    data.room_id = map or data.room_id
+    data.spawn_marker = marker or data.spawn_marker
+    data.spawn_facing = facing or data.spawn_facing
+    
+    love.filesystem.createDirectory("saves/global")
+    love.filesystem.write("saves/global/file_" .. Game.save_id .. ".json", JSON.encode(data))
+
+    return data
+end
+
+function Game:globalLoad(id)
+    local path = "saves/global/file_" .. id .. ".json"
+    local data = JSON.decode(love.filesystem.read(path))
+    return data
+end
+
+--- Credits to Skarph for this code
+--- Swaps into a mod
+--- If an 'after' callback is not provided, enters the mod, including dark transition if enabled.
+---@param mod_id     string   The id of the mod to load
+---@param save_id?   number   The id of the save to load the mod from. (1-4)
+---@param save_name? string   The name to use for the save file.
+---@param after?     function The function to call after assets have been loaded.
+function Game:hotSwapIntoMod(mod_id, save_id, save_name, after)
+    assert(Kristal.Mods.data[mod_id], "No mod \""..tostring(mod_id).."\"")
+    Gamestate.switch({})
+    Kristal.clearModState()
+    Kristal.loadAssets("","mods","", function()
+        Kristal.loadMod(mod_id, save_id, save_name, after)
+    end)
+end
+
+function Game:getGlobalFile(id)
+    local path = "saves/global/file_" .. id .. ".json"
+    if love.filesystem.getInfo(path) then
+        return true
+    end
+    return false
 end
 
 return Game
