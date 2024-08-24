@@ -341,4 +341,115 @@ function DarkPowerMenu:drawSpells()
     end
 end
 
+function DarkPowerMenu:getExp()
+    return self.leveling_use_global_values
+        and Game:getFlag("library_experience")
+        or self.party:getSelected():getExp()
+end
+
+function DarkPowerMenu:getNextLv()
+    return self.leveling_use_global_values
+        and Kristal.callEvent("getGlobalNextLv")
+        or self.party:getSelected():getNextLv()
+end
+
+function DarkPowerMenu:getLOVE()
+    return self.leveling_use_global_values
+        and Game:getFlag("library_love")
+        or self.party:getSelected():getLOVE()
+end
+
+function DarkPowerMenu:drawExperience()
+    Draw.setColor(1, 1, 1, 1)
+    love.graphics.print( "LOVE:",   242-6,  122)
+    love.graphics.print(  "EXP:",   242-6,  156)
+    love.graphics.print( "NEXT:",   242-6,  190)
+    love.graphics.print("KILLS:",   242-6,  224)
+
+    love.graphics.print(               self:getLOVE(),  	242+64, 122)
+    love.graphics.print(                self:getExp(),  	242+49, 156)
+    love.graphics.print(             self:getNextLv(),  	242+62, 190)
+    love.graphics.print(Game:getFlag("library_kills", 0),  	242+76, 224)
+end
+
+function DarkPowerMenu:drawCombos()
+    local combos = self:getCombos()
+
+    local tp_x, tp_y
+    local name_x, name_y
+
+    if #combos <= 6 then
+        tp_x, tp_y = 258, 118
+        name_x, name_y = 328, 118
+    else
+        tp_x, tp_y = 242, 118
+        name_x, name_y = 302, 118
+    end
+
+    Draw.setColor(1, 1, 1)
+    Draw.draw(self.tp_sprite, tp_x, tp_y - 5)
+
+    local spell_limit = self:getSpellLimit()
+
+    for i = self.scroll_y, math.min(#combos, self.scroll_y + (spell_limit - 1)) do
+        local spell = combos[i]
+        local offset = i - self.scroll_y
+
+        Draw.setColor(0.5, 0.5, 0.5)
+        love.graphics.print(tostring(spell:getTPCost(self.party:getSelected())).."%", tp_x, tp_y + (offset * 25))
+        love.graphics.print(spell:getName(), name_x, name_y + (offset * 25))
+    end
+
+    -- Draw scroll arrows if needed
+    if #combos > spell_limit then
+        Draw.setColor(1, 1, 1)
+
+        -- Move the arrows up and down only if we're in the spell selection state
+        local sine_off = 0
+        if self.state == "COMBOS" then
+            sine_off = math.sin((Kristal.getTime()*30)/12) * 3
+        end
+
+        if self.scroll_y > 1 then
+            -- up arrow
+            Draw.draw(self.arrow_sprite, 469, (name_y + 25 - 3) - sine_off, 0, 1, -1)
+        end
+        if self.scroll_y + spell_limit <= #combos then
+            -- down arrow
+            Draw.draw(self.arrow_sprite, 469, (name_y + (25 * spell_limit) - 12) + sine_off)
+        end
+    end
+
+    if self.state == "COMBOS" then
+        Draw.setColor(Game:getSoulColor())
+        Draw.draw(self.heart_sprite, tp_x - 20, tp_y + 10 + ((self.selected_spell - self.scroll_y) * 25))
+
+        -- Draw scrollbar if needed (unless the spell limit is 2, in which case the scrollbar is too small)
+        if spell_limit > 2 and #combos > spell_limit then
+            local scrollbar_height = (spell_limit - 2) * 25
+            Draw.setColor(0.25, 0.25, 0.25)
+            love.graphics.rectangle("fill", 473, name_y + 30, 6, scrollbar_height)
+            local percent = (self.scroll_y - 1) / (#combos - spell_limit)
+            Draw.setColor(1, 1, 1)
+            love.graphics.rectangle("fill", 473, name_y + 30 + math.floor(percent * (scrollbar_height-6)), 6, 6)
+        end
+    end
+end
+
+function DarkPowerMenu:canCast(spell)
+    if not Game:getFlag("tension_storage") then return false end
+    if Game:getTension() < spell:getTPCost(self.party:getSelected()) then return false end
+
+    return spell:hasWorldUsage(self.party:getSelected())
+end
+
+function DarkPowerMenu:getCombos()
+    local combos = {}
+    local party = self.party:getSelected()
+    for _,combo in ipairs(party:getCombos()) do
+        table.insert(combos, combo)
+    end
+    return combos
+end
+
 return DarkPowerMenu
