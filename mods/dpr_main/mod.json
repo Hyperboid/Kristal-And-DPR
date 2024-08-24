@@ -17,7 +17,7 @@
     "chapter": 2,
 
     // The map that you start in when first starting the mod.
-    "map": "main_hub",
+    "map": "cliffside_start",
 
     // The party. The first character is the player.
     "party": ["hero"],

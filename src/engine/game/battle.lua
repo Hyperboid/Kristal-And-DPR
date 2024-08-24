@@ -617,6 +617,12 @@ function Battle:onStateChange(old,new)
             --scr_levelup()
         end
 
+        if self.killed then
+            for i,v in ipairs(self.party) do
+                v.chara:addExp(self.xp)
+            end
+        end
+
         win_text = self.encounter:getVictoryText(win_text, self.money, self.xp) or win_text
 
         if self.encounter.no_end_message then
