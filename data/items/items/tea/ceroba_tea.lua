@@ -19,34 +19,10 @@ function item:init()
     self.shop = ""
     -- Menu description
     self.description = "It's own-flavored tea.\nThe flavor just says \"Ceroba.\""
-    -- Amount healed (HealItem variable)
-    self.heal_amount = 50
-    -- Amount this item heals for specific characters
+    -- Amount that this item heals the owner
+    self.heal_amount = 0
     -- Party member this tea is from
-    local tea_self = "ceroba"
-
-    self.heal_amounts = {
-        ["YOU"] = Game:getPartyMember("YOU"):getOpinion(Game:getPartyMember(tea_self)),
-        ["kris"] = Game:getPartyMember("kris"):getOpinion(Game:getPartyMember(tea_self)),
-        ["susie"] = Game:getPartyMember("susie"):getOpinion(Game:getPartyMember(tea_self)),
-        ["noelle"] = Game:getPartyMember("noelle"):getOpinion(Game:getPartyMember(tea_self)),
-        ["dess"] = Game:getPartyMember("dess"):getOpinion(Game:getPartyMember(tea_self)),
-        ["brenda"] = Game:getPartyMember("brenda"):getOpinion(Game:getPartyMember(tea_self)),
-        ["dumbie"] = Game:getPartyMember("dumbie"):getOpinion(Game:getPartyMember(tea_self)),
-        ["ostarwalker"] = Game:getPartyMember("ostarwalker"):getOpinion(Game:getPartyMember(tea_self)),
-        ["berdly"] = Game:getPartyMember("berdly"):getOpinion(Game:getPartyMember(tea_self)),
-        ["bor"] = Game:getPartyMember("bor"):getOpinion(Game:getPartyMember(tea_self)),
-        ["robo_susie"] = Game:getPartyMember("robo_susie"):getOpinion(Game:getPartyMember(tea_self)),
-        ["noyno"] = Game:getPartyMember("noyno"):getOpinion(Game:getPartyMember(tea_self)),
-        ["iphone"] = Game:getPartyMember("iphone"):getOpinion(Game:getPartyMember(tea_self)),
-        ["frisk2"] = Game:getPartyMember("frisk2"):getOpinion(Game:getPartyMember(tea_self)),
-        ["alseri"] = Game:getPartyMember("alseri"):getOpinion(Game:getPartyMember(tea_self)),
-        ["jamm"] = Game:getPartyMember("jamm"):getOpinion(Game:getPartyMember(tea_self)),
-        ["mario"] = Game:getPartyMember("mario"):getOpinion(Game:getPartyMember(tea_self)),
-        ["pauling"] = Game:getPartyMember("pauling"):getOpinion(Game:getPartyMember(tea_self)),
-        ["whale"] = Game:getPartyMember("whale"):getOpinion(Game:getPartyMember(tea_self)),
-        ["ceroba"] = 0,
-    }
+    self.tea_self = "ceroba"
 
     -- Default shop price (sell price is halved)
     self.price = 10
@@ -75,6 +51,14 @@ function item:init()
     self.reactions = {
         ceroba = "There's nothing...",
     }
+end
+
+function item:getHealAmount(id)
+    if id ~= self.tea_self then
+        local user = Game:getPartyMember(id)
+        return user:getOpinion(self.tea_self)
+    end
+    return self.heal_amount
 end
 
 function item:getBattleHealAmount(id)
