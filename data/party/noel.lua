@@ -116,18 +116,7 @@ function character:init()
 
     local save = Game:loadNoel()
     if save then
-        if save.Equipped.weapon then
-            self:setWeapon(save.Equipped.weapon.id)
-        else
-            print("Error: noel's weapon = null\nResolving....")
-            self:setWeapon("old_umbrella")
-        end
-        if save.Equipped.armor[1] then
-            self:setArmor(1, save.Equipped.armor[1][1])
-        end
-        if save.Equipped.armor[2] then
-            self:setArmor(2, save.Equipped.armor[2][1])
-        end
+            self:loadEquipment(save.Equipped)
         self.health = save.Health
         self.lw_health = save.Health
     else

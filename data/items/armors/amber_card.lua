@@ -52,7 +52,7 @@ function item:init()
         jamm = "It won't fall off like this, right?",
         brenda = "It stained my clothes!",
         mario = "Tastes like glue!",
-        noel = "Basic bastard...",
+        noel = "Seam sells these ... right?",
     }
 end
 
