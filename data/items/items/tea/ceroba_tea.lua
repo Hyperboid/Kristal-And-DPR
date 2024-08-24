@@ -1,4 +1,4 @@
-local item, super = Class(HealItem, "ceroba_tea")
+local item, super = Class(TeaItem, "ceroba_tea")
 
 function item:init()
     super.init(self)
@@ -51,19 +51,6 @@ function item:init()
     self.reactions = {
         ceroba = "There's nothing...",
     }
-end
-
-function item:getHealAmount(id)
-    if id ~= self.tea_self then
-        local user = Game:getPartyMember(id)
-        return user:getOpinion(self.tea_self)
-    end
-    return self.heal_amount
-end
-
-function item:getBattleHealAmount(id)
-    -- Dont heal less than 40HP in battles
-    return math.max(40, super.getBattleHealAmount(self, id))
 end
 
 return item

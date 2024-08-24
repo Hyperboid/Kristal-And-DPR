@@ -1,4 +1,4 @@
-local item, super = Class(HealItem, "YOU_tea")
+local item, super = Class(TeaItem, "YOU_tea")
 
 function item:init()
     super.init(self)
@@ -22,7 +22,7 @@ function item:init()
     -- Amount that this item heals the owner
     self.heal_amount = 10
     -- Party member this tea is from
-    local tea_self = "YOU"
+    self.tea_self = "YOU"
 
     -- Default shop price (sell price is halved)
     self.price = 10
@@ -50,19 +50,6 @@ function item:init()
     -- Character reactions (key = party member id)
     self.reactions = {
     }
-end
-
-function item:getHealAmount(id)
-    if id ~= self.tea_self then
-        local user = Game:getPartyMember(id)
-        return user:getOpinion(self.tea_self)
-    end
-    return self.heal_amount
-end
-
-function item:getBattleHealAmount(id)
-    -- Dont heal less than 40HP in battles
-    return math.max(40, super.getBattleHealAmount(self, id))
 end
 
 return item
