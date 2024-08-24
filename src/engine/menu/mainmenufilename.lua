@@ -63,9 +63,4 @@ function MainMenuFileName:onLeave(new_state)
     self.menu.heart.visible = true
 end
 
-function MainMenuFileName:draw()
-    local mod_name = string.upper(self.menu.selected_mod.name or self.menu.selected_mod.id)
-    Draw.printShadow(mod_name, 16, 8)
-end
-
 return MainMenuFileName
