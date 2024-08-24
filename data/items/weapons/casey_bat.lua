@@ -58,6 +58,13 @@ function item:init()
     }
 end
 
+function item:getReaction(user_id, reactor_id)
+    if user_id == "jamm" and reactor_id == user_id and Game:getFlag("marcy_joined") then
+		return "We'll get you a better one, Marcy."
+	end
+	return super.getReaction(self, user_id, reactor_id)
+end
+
 --function item:convertToLightEquip(chara)
 --    return "light/pencil"
 --end
