@@ -48,7 +48,8 @@ function item:init()
         susie = "This guy's... familiar?",
         ralsei = "Chu! Healing power UP!",
         noelle = "... from the family entertainment center?",
-        dess = "ermmm possible chuck-e-cheese reference?"
+        dess = "ermmm possible chuck-e-cheese reference?",
+        jamm = "This brings back memories.",
     }
 end
 

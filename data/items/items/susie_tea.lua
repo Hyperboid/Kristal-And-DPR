@@ -64,7 +64,8 @@ function item:init()
             ralsei = "It's grape juice!",
             susie = "Huh, really?"
         },
-        noelle = "(Wonder if they sell this in gallons?)"
+        noelle = "(Wonder if they sell this in gallons?)",
+        jamm = "Tastes like... Wine???",
     }
 end
 

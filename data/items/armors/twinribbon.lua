@@ -45,7 +45,8 @@ function item:init()
     -- Equippable characters (default true for armors, false for weapons)
     self.can_equip = {
         susie = false,
-        dess = false
+        dess = false,
+		jamm = false,
     }
 
     -- Character reactions
@@ -53,8 +54,16 @@ function item:init()
         susie = "... it gets worse and worse.",
         ralsei = "Try around my horns!",
         noelle = "... nostalgic, huh.",
-        dess = "ew i hate cute AND pink things"
+        dess = "ew i hate cute AND pink things",
+        jamm = "Woah! Pop idle much???",
     }
+end
+
+function item:getReaction(user_id, reactor_id)
+    if user_id == "jamm" and reactor_id == user_id and Game:getFlag("marcy_joined") then
+		return "Sorry, Marcy. It won't stay."
+	end
+	return super.getReaction(self, user_id, reactor_id)
 end
 
 return item

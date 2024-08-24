@@ -49,7 +49,8 @@ function item:init()
         susie = "Get a load of THIS!",
         ralsei = "Looking SHARP!",
         noelle = "(It's tearing my sleeves...)",
-        dess = "ermmm unused item much?"
+        dess = "ermmm unused item much?",
+        jamm = "Seems like a torture device.",
     }
 end
 

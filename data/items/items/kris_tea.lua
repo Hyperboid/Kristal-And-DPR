@@ -67,7 +67,8 @@ function item:init()
             ralsei = "Tastes like blueberries!",
             susie = "Huh? Really?"
         },
-        noelle = "Tastes like cinnamon! (What is this aftertaste...?)"
+        noelle = "Tastes like cinnamon! (What is this aftertaste...?)",
+        jamm = "It's... Alright.",
     }
 end
 

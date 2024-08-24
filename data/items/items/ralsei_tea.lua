@@ -64,7 +64,8 @@ function item:init()
             ralsei = "D-don't drink so fast!!"
         },
         ralsei = "Um... isn't this water?",
-        noelle = "There's nothing in here!"
+        noelle = "There's nothing in here!",
+        jamm = "Tastes like... I don't know...",
     }
 end
 

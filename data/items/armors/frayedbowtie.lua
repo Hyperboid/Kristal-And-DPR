@@ -53,6 +53,7 @@ function item:init()
         ralsei = "It's still wearable!",
         noelle = "(Reminds me of Asgore...)",
         dess = "now i can go toe to toe with that BITCH catty",
+        jamm = "Ehh... Okay...?",
     }
 end
 

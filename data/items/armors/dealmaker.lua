@@ -50,6 +50,7 @@ function item:init()
         ralsei = "Two pairs of glasses?",
         noelle = "(Seems... familiar?)",
         dess = "wow this seems familiar for no reason in particular",
+        jamm = "Not really a glasses guy, but...",
     }
 end
 
