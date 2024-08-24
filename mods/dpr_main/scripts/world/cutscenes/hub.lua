@@ -205,21 +205,16 @@ return {
         Assets.playSound("ui_select")
         cutscene:wait(0.1)
 
-        local random_theme = Music(Utils.pick{
-            "deltarune/castletown_empty", "deltarune/field_of_hopes", "deltarune/lancer", "battle",
-            "deltarune/forest", "deltarune/THE_HOLY", "deltarune/town", "deltarune/castletown",
-            "deltarune/berdly_theme", "deltarune/cybercity", "deltarune/cybercity_alt", "deltarune/queen_car_radio",
-            "deltarune/dogcheck", "castle_funk", "greenroom", "keygen_credits",
-            "results", "baci_perugina2", "spamton_battle_eb", "battleut",
-            "battle2ut", "dance_of_dog", "sigh_of_dog", "options_fall",
-            "options_summer", "options_winter", "mus_star", "dogcheck_anniversary",
-            "Hugs_for_Ralsei", "Lullaby_for_Lancer", "spamgolor", "spamgolor_battle",
-            "spamgolor_shop", "spamgolor_neo", "exception", "warphub",
-            "checkpoint", "gildedgrove", "ruins_beta", "cursedcathedral_cover",
-            "tickroom", "gimmieyourwalletmiss", "batterup", "threestrikesyoureout",
-            "beasts", "room_003", "battle_repainted", "morpho_boss",
-            "mirati_bk70cover", "mari_neo",
-        }, 0.8, 1)
+        local music_assets = Assets.data.music
+
+        local track_names = {}
+
+        for track_name, _ in pairs(music_assets) do
+            table.insert(track_names, track_name)
+        end
+
+        local random_theme = Music(Utils.pick(track_names), 0.8, 1)
+
         cutscene:wait(0.4)
         fun_fax:setSprite("watching")
         cutscene:wait(2)
@@ -274,7 +269,10 @@ return {
             {"* What's canon...", "* Well it's a weapon..."},
             {"* Don't forget to take a break...", "* Lack of sleep is bad, y'know..."},
             {"* It's raining somewhere else...", "* So take out your umbrella..."},
-            {"* [color:grey]GREY[color:reset]...", "* [color:grey]AREA[color:reset]..."}
+            {"* [color:grey]GREY[color:reset]...", "* [color:grey]AREA[color:reset]..."},
+            {"* We are reborn...", "* Despite never being born..."},
+            {"* Have you seen my friend...", "* His name is [color:yellow]Wocter Ding Dings[color:reset]..."},
+            {"* Don't mess with reality...", "* This is a [color:red]threat[color:reset]..."}
         }
 
         cutscene:text("[speed:0.5]" .. Utils.pick(dialogue_pairs)[1])

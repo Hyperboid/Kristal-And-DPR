@@ -70,6 +70,36 @@ function MainMenuFileSelect:onEnter(old_state)
     end
 
     self.bottom_row_heart = {SCREEN_WIDTH/2 - 100, SCREEN_WIDTH/2 + 118}
+
+
+
+    --[[ Might come back to this in the future since noel is tecnically a save file
+    --self.noel = Sprite("face/noel/hey_jeku")
+    self.noel = Sprite("party/noel/battle/temp_idle_1")
+    self.noel.visible = true
+    self.noel:setOrigin(0.5, 0.5)
+    self.noel:setScale(2, 2)
+    self.noel.x, self.noel.y = 50, 300
+    self.noel.layer = 50
+    self.container:addChild(self.noel)
+    self.noel:addFX(OutlineFX())
+    self.noel:getFX(OutlineFX):setColor(1, 1, 1)
+
+    self.noel2 = Sprite("party/noel/battle/temp_idle_2")
+    self.noel2.visible = true
+    self.noel2:setOrigin(0.5, 0.5)
+    self.noel2:setScale(2, 2)
+    self.noel2.x, self.noel2.y = 50, 300
+    self.noel2.layer = 50
+    self.container:addChild(self.noel2)
+
+    --for the update function
+    --dont forget this sad diamond man you dumbass
+    local angle = Utils.angle(self.noel.x + 4, self.noel.y - 18, self.menu.heart.x, self.menu.heart.y)
+    --print(angle)
+    self.noel2.y = angle*4 + self.noel.y
+    self.noel2.x = self.noel.x 
+    ]]
 end
 
 function MainMenuFileSelect:onLeave(new_state)
@@ -474,7 +504,7 @@ function MainMenuFileSelect:update()
 
     self:updateSelected()
 
-    self.menu.heart_target_x, self.menu.heart_target_y = self:getHeartPos()    
+    self.menu.heart_target_x, self.menu.heart_target_y = self:getHeartPos()   
 end
 
 function MainMenuFileSelect:draw()

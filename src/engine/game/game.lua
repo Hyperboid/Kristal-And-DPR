@@ -1152,4 +1152,28 @@ function Game:draw()
     love.graphics.pop()
 end
 
+--stuff for Noel the Noel-body
+
+local save_dir = "saves"
+local n_save = "saves/null.char"
+
+function Game:saveNoel(new_data)
+    local data = self:loadNoel() or {}
+    if new_data then
+        for k, v in pairs(new_data) do
+            data[k] = v
+        end
+    end
+
+    love.filesystem.createDirectory(save_dir)
+    love.filesystem.write(n_save, JSON.encode(data))
+end
+
+function Game:loadNoel()
+    if love.filesystem.getInfo(n_save) then
+        return JSON.decode(love.filesystem.read(n_save))
+    end
+    return nil
+end
+
 return Game
