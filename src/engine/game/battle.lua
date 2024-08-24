@@ -2536,8 +2536,13 @@ function Battle:updateIntro()
         for _,v in ipairs(self.party) do
             v:setAnimation("battle/idle")
         end
-        self:setState("ACTIONSELECT", "INTRO")
-        --self:nextTurn()
+        self.seen_encounter_text = false
+        if Kristal.modGet("back_attack") then
+            self:setState("ENEMYDIALOGUE", "INTRO")
+        else
+            self:setState("ACTIONSELECT", "INTRO")
+            --self:nextTurn()
+        end
     end
 end
 
