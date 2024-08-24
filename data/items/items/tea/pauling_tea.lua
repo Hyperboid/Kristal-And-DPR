@@ -24,27 +24,15 @@ function item:init()
     -- Amount this item heals for specific characters
     -- Party member this tea is from
     local tea_self = "pauling"
-
+    local placeholder = 50
     self.heal_amounts = {
-        ["YOU"] = Game:getPartyMember("YOU"):getOpinion(Game:getPartyMember(tea_self)),
-        ["kris"] = Game:getPartyMember("kris"):getOpinion(Game:getPartyMember(tea_self)),
-        ["susie"] = Game:getPartyMember("susie"):getOpinion(Game:getPartyMember(tea_self)),
-        ["noelle"] = Game:getPartyMember("noelle"):getOpinion(Game:getPartyMember(tea_self)),
-        ["dess"] = Game:getPartyMember("dess"):getOpinion(Game:getPartyMember(tea_self)),
-        ["brenda"] = Game:getPartyMember("brenda"):getOpinion(Game:getPartyMember(tea_self)),
-        ["dumbie"] = Game:getPartyMember("dumbie"):getOpinion(Game:getPartyMember(tea_self)),
-        ["ostarwalker"] = Game:getPartyMember("ostarwalker"):getOpinion(Game:getPartyMember(tea_self)),
-        ["berdly"] = Game:getPartyMember("berdly"):getOpinion(Game:getPartyMember(tea_self)),
-        ["bor"] = Game:getPartyMember("bor"):getOpinion(Game:getPartyMember(tea_self)),
-        ["robo_susie"] = Game:getPartyMember("robo_susie"):getOpinion(Game:getPartyMember(tea_self)),
-        ["noyno"] = Game:getPartyMember("noyno"):getOpinion(Game:getPartyMember(tea_self)),
-        ["iphone"] = Game:getPartyMember("iphone"):getOpinion(Game:getPartyMember(tea_self)),
-        ["frisk2"] = Game:getPartyMember("frisk2"):getOpinion(Game:getPartyMember(tea_self)),
-        ["alseri"] = Game:getPartyMember("alseri"):getOpinion(Game:getPartyMember(tea_self)),
-        ["jamm"] = Game:getPartyMember("jamm"):getOpinion(Game:getPartyMember(tea_self)),
-        ["mario"] = Game:getPartyMember("mario"):getOpinion(Game:getPartyMember(tea_self)),
+        ["kris"] = placeholder,
+        ["susie"] = placeholder,
+        ["noelle"] = placeholder,
+        ["dess"] = placeholder,
+        ["jamm"] = placeholder,
+        ["mario"] = placeholder,
         ["pauling"] = 10,
-        ["whale"] = Game:getPartyMember("whale"):getOpinion(Game:getPartyMember(tea_self)),
     }
 
     -- Default shop price (sell price is halved)

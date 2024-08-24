@@ -45,7 +45,7 @@ function item:init()
         berdly = {
             berdly = "Who are those kids...?",
             susie = "They look like Kris...",
-            noelle = "And Asriel..."
+            noelle = "And Asriel...",
             noel = "Life is short...",
         },
         mario = "Bleh!",

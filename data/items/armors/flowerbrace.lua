@@ -65,10 +65,10 @@ function item:init()
 		jamm = "Thank you, Ania. I won't forget this.",
 		mario = {
 			mario = "Blech! That tastes like shit!",
-			jamm = "Did you try to eat it!?"
+			jamm = "Did you try to eat it!?",
                         noel = "Sharing is caring.",
 		},
-        dess = "ew im alergic to flowers AND love"
+        dess = "ew im alergic to flowers AND love",
     }
 end
 
