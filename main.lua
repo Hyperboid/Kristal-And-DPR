@@ -149,6 +149,7 @@ Player = require("src.engine.game.world.player")
 OverworldSoul = require("src.engine.game.world.overworldsoul")
 WorldBullet = require("src.engine.game.world.worldbullet")
 ChaserEnemy = require("src.engine.game.world.chaserenemy")
+Nametag = require("src.engine.game.world.nametag")
 
 MinigameHandler = require("src.engine.game.minigames.minigamehandler")
 BallJump = require("src.engine.game.minigames.balljump.balljump")
