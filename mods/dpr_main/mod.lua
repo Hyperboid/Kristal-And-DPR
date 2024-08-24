@@ -3,12 +3,6 @@ function Mod:init()
 end
 
 function Mod:postInit(new_file)
-    -- TODO: move this into Mod:preInit() and have it work
-    local mod_id = Game:globalLoad(Game.save_id).mod_id or "dpr_main"
-    if mod_id ~= "dpr_main" then
-        Game:hotSwapIntoMod(mod_id, Game.save_id, Game.save_name)
-    end
-
     local items_list = {
         {
             result = "soulmantle",
