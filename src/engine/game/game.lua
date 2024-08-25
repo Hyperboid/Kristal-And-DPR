@@ -70,6 +70,7 @@ function Game:clear()
     self.key_repeat = false
     self.started = false
     self.border = "simple"
+    self.swap_into_mod = nil
 end
 
 ---@overload fun(self: Game, previous_state: string, save_data: SaveData, save_id: number)
@@ -1050,6 +1051,11 @@ function Game:getMaxTension()
     return Game.max_tension or 100
 end
 
+-- [Kristal.swapIntoMod](lua://Kristal.swapIntoMod) but it happens after update
+function Game:swapIntoMod(...)
+    self.swap_into_mod = {...}
+end
+
 function Game:update()
     if self.state == "EXIT" then
         self.fader:update()
@@ -1096,6 +1102,11 @@ function Game:update()
     end
 
     Kristal.callEvent(KRISTAL_EVENT.postUpdate, DT)
+
+    if self.swap_into_mod then
+        Kristal.swapIntoMod(unpack(self.swap_into_mod))
+        self.swap_into_mod = nil
+    end
 end
 
 ---@param key       string
