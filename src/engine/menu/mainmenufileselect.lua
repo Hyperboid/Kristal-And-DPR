@@ -128,7 +128,6 @@ function MainMenuFileSelect:onKeyPressed(key, is_repeat)
                 else
                     self.selected_global = 4 + self.selected_x
                 end
-                
                 self.copied_button:setColor(1, 1, 1)
                 self.copied_button = nil
                 self:updateSelected()
@@ -229,32 +228,6 @@ function MainMenuFileSelect:onKeyPressed(key, is_repeat)
             end
         end
     elseif self.state == "SELECT" then
-        if Input.is("up", key) then
-            if self.selected_global == 1 or self.selected_global == 2 then
-            else
-                self.selected_global = self.selected_global - 2
-            end
-        end
-        if Input.is("down", key) then
-            if self.selected_global == 5 or self.selected_global == 6 then
-            else
-                self.selected_global = self.selected_global + 2
-            end
-        end
-        if Input.is("left", key) then
-            if self.selected_global == 1 or self.selected_global == 3 or self.selected_global == 5 then
-            else
-                self.selected_global = self.selected_global - 1
-            end
-        end
-        if Input.is("right", key) then
-            if self.selected_global == 2 or self.selected_global == 4 or self.selected_global == 6 then
-            else
-                self.selected_global = self.selected_global + 1
-            end
-        end
-        self.selected_global = Utils.clamp(self.selected_global, 1, 6)
-
         if Input.is("cancel", key) then
             if not TARGET_MOD then
                 self.menu:setState("MODSELECT")
@@ -303,6 +276,13 @@ function MainMenuFileSelect:onKeyPressed(key, is_repeat)
             Assets.stopAndPlaySound("ui_move")
             self:updateSelected()
         end
+
+        if Input.is("up", key) and self.selected_global > 2 then self.selected_global = self.selected_global - 2 end
+        if Input.is("down", key) and self.selected_global < 5 then self.selected_global = self.selected_global + 2 end
+        if Input.is("left", key) and self.selected_global%2 == 0 then self.selected_global = self.selected_global - 1 end
+        if Input.is("right", key) and self.selected_global%2 ~= 0 then self.selected_global = self.selected_global + 1 end
+        self.selected_global = Utils.clamp(self.selected_global, 1, 6)
+
     elseif self.state == "COPY" then
         if Input.is("cancel", key) then
             Assets.stopAndPlaySound("ui_cancel")
@@ -387,32 +367,12 @@ function MainMenuFileSelect:onKeyPressed(key, is_repeat)
             self:updateSelected()
         end
 
-        if Input.is("up", key) then
-            if self.selected_global == 1 or self.selected_global == 2 then
-            else
-                self.selected_global = self.selected_global - 2
-            end
-        end
-        if Input.is("down", key) then
-            if self.selected_global == 5 or self.selected_global == 6 then
-            else
-                self.selected_global = self.selected_global + 2
-            end
-        end
-        if Input.is("left", key) then
-            if self.selected_global == 1 or self.selected_global == 3 or self.selected_global == 5 then
-            else
-                self.selected_global = self.selected_global - 1
-            end
-        end
-        if Input.is("right", key) then
-            if self.selected_global == 2 or self.selected_global == 4 or self.selected_global == 6 then
-            else
-                self.selected_global = self.selected_global + 1
-            end
-        end
-
+        if Input.is("up", key) and self.selected_global > 2 then self.selected_global = self.selected_global - 2 end
+        if Input.is("down", key) and self.selected_global < 5 then self.selected_global = self.selected_global + 2 end
+        if Input.is("left", key) and self.selected_global%2 == 0 then self.selected_global = self.selected_global - 1 end
+        if Input.is("right", key) and self.selected_global%2 ~= 0 then self.selected_global = self.selected_global + 1 end
         self.selected_global = Utils.clamp(self.selected_global, 1, 6)
+        
     elseif self.state == "ERASE" then
         if Input.is("cancel", key) then
             Assets.stopAndPlaySound("ui_cancel")
@@ -456,31 +416,10 @@ function MainMenuFileSelect:onKeyPressed(key, is_repeat)
             self:updateSelected()
         end
 
-        if Input.is("up", key) then 
-            if self.selected_global == 1 or self.selected_global == 2 then
-            else
-                self.selected_global = self.selected_global - 2
-            end
-        end
-        if Input.is("down", key) then 
-            if self.selected_global == 5 or self.selected_global == 6 then
-            else
-                self.selected_global = self.selected_global + 2
-            end
-        end
-        if Input.is("left", key) then 
-            if self.selected_global == 1 or self.selected_global == 3 or self.selected_global == 5 then
-            else
-                self.selected_global = self.selected_global - 1
-            end
-        end
-        if Input.is("right", key) then 
-            if self.selected_global == 2 or self.selected_global == 4 or self.selected_global == 6 then
-            else
-                self.selected_global = self.selected_global + 1
-            end
-        end
-
+        if Input.is("up", key) and self.selected_global > 2 then self.selected_global = self.selected_global - 2 end
+        if Input.is("down", key) and self.selected_global < 5 then self.selected_global = self.selected_global + 2 end
+        if Input.is("left", key) and self.selected_global%2 == 0 then self.selected_global = self.selected_global - 1 end
+        if Input.is("right", key) and self.selected_global%2 ~= 0 then self.selected_global = self.selected_global + 1 end
         self.selected_global = Utils.clamp(self.selected_global, 1, 6)
     end
 
