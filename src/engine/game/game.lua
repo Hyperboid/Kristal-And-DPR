@@ -117,7 +117,7 @@ function Game:enter(previous_state, save_id, save_name, fade)
             details = Kristal.callEvent(KRISTAL_EVENT.getPresenceDetails),
             largeImageKey = Kristal.callEvent(KRISTAL_EVENT.getPresenceImage) or "logo",
             largeImageText = "Kristal v" .. tostring(Kristal.Version),
-            startTimestamp = math.floor(os.time() - self.playtime),
+            startTimestamp = self.playtime and math.floor(os.time() - self.playtime) or 0,
             instance = 0
         })
     end
@@ -307,12 +307,8 @@ function Game:load(data, index, fade)
 
     self:clear()
 
-    if data.mod ~= Mod.info.id then
-        print("WARNING: Loading save file from a different DLC")
-        self.save_name = data.name or self.save_name or "PLAYER"
-        self.save_id = index or self.save_id or 1
-        Kristal.swapIntoMod(data.mod)
-        return
+    if data.mod and data.mod ~= Mod.info.id then
+        print("WARNING: Loading save file from a different DLC. Hopefully you're just switching inbetween.")
     end
 
     BORDER_ALPHA = 0

@@ -1257,12 +1257,36 @@ end
 -- Loads into the provided mod with the current save slot.
 -- TODO: Allow setting spawn position.
 ---@param use_lame_fadeout boolean|string? # DO NOT USE, work in progress.
-function Kristal.swapIntoMod(id, use_lame_fadeout)
+function Kristal.swapIntoMod(id, use_lame_fadeout, ...)
+    assert(id)
     if not Kristal.Mods.getMod(id) then
         -- TODO: Floweycheck DLC
         print("WARNING: DLC " .. id .. " is not installed.")
     end
-    local save_id, save_name = Game and Game.save_id or 1, Game and Game.save_name
+
+    local save_id = Game and Game.save_id or 1
+    local save = Kristal.getSaveFile(save_id)
+    local map_args = {...}
+    local map = table.remove(map_args, 1)
+    local marker, x, y, facing
+    if type(map_args[1]) == "string" then
+        marker = table.remove(map_args, 1)
+    elseif type(map_args[1]) == "number" then
+        x = table.remove(map_args, 1)
+        y = table.remove(map_args, 1)
+    else
+        marker = "spawn"
+    end
+    if map_args[1] then
+        facing = table.remove(map_args, 1)
+    end
+    save.room_id = map
+    save.spawn_facing = facing
+    if marker then
+        save.spawn_marker = marker
+    else
+        save.spawn_position = {x, y}
+    end
 
     Gamestate.switch(use_lame_fadeout and Kristal.States["LameFadeout"] or {}, use_lame_fadeout)
     Kristal.clearModState()
@@ -1271,7 +1295,7 @@ function Kristal.swapIntoMod(id, use_lame_fadeout)
         Kristal.loadMod(id, nil, nil, function()
             if Kristal.preInitMod(id) then
                 Kristal.setDesiredWindowTitleAndIcon()
-                local game_params = {save_id, save_name}
+                local game_params = {save, save_id}
                 if use_lame_fadeout then
                     Kristal.States["LameFadeout"]:onLoadFinish(game_params)
                 else

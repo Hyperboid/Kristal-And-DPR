@@ -56,6 +56,7 @@ end
 
 function LameFadeout:leave()
     self.screenshot = nil
+    self.game_params = nil
 end
 
 return LameFadeout
