@@ -1249,6 +1249,11 @@ function Kristal.loadModAssets(id, asset_type, asset_paths, after)
     Kristal.loadAssets(mod.path, asset_type or "all", asset_paths or "", finishLoadStep)
 end
 
+function Kristal.startGameDPR(save_id, save_name, after)
+    local save = Kristal.getSaveFile(save_id)
+    Kristal.loadMod(save and save.mod or TARGET_MOD, save_id, save_name, after)
+end
+
 -- Loads into the provided mod with the current save slot.
 -- TODO: Allow setting spawn position.
 ---@param use_lame_fadeout boolean|string? # DO NOT USE, work in progress.
@@ -1570,8 +1575,7 @@ function Kristal.saveGame(id, data)
     data = data or Game:save()
     Game.save_id = id
     Game.quick_save = nil
-    love.filesystem.createDirectory("saves/" .. Mod.info.id)
-    love.filesystem.write("saves/" .. Mod.info.id .. "/file_" .. id .. ".json", JSON.encode(data))
+    love.filesystem.write("saves" .. "/file_" .. id .. ".json", JSON.encode(data))
 end
 
 --- Loads the game from a save file.
@@ -1579,7 +1583,7 @@ end
 ---@param fade? boolean Whether the game should fade in after loading. (Defaults to `false`)
 function Kristal.loadGame(id, fade)
     id = id or Game.save_id
-    local path = "saves/" .. Mod.info.id .. "/file_" .. id .. ".json"
+    local path = "saves" .. "/file_" .. id .. ".json"
     if love.filesystem.getInfo(path) then
         local data = JSON.decode(love.filesystem.read(path))
         Game:load(data, id, fade)
@@ -1590,11 +1594,10 @@ end
 
 --- Returns the data from the specified save file.
 ---@param id?   number    The save file index to load. (Defaults to the currently loaded save index)
----@param path? string    The save folder to load from. (Defaults to the current mod's save folder)
 ---@return table|nil data The data loaded from the save file, or `nil` if the file doesn't exist.
-function Kristal.getSaveFile(id, path)
+function Kristal.getSaveFile(id)
     id = id or Game.save_id
-    local full_path = "saves/" .. (path or Mod.info.id) .. "/file_" .. id .. ".json"
+    local full_path = "saves" .. "/file_" .. id .. ".json"
     if love.filesystem.getInfo(full_path) then
         return JSON.decode(love.filesystem.read(full_path))
     end
@@ -1603,37 +1606,32 @@ end
 
 --- Returns whether the specified save file exists.
 ---@param id?   number    The save file index to check. (Defaults to the currently loaded save index)
----@param path? string    The save folder to check. (Defaults to the current mod's save folder)
 ---@return boolean exists Whether the save file exists.
-function Kristal.hasSaveFile(id, path)
+function Kristal.hasSaveFile(id)
     id = id or Game.save_id
-    local full_path = "saves/" .. (path or Mod.info.id) .. "/file_" .. id .. ".json"
+    local full_path = "saves" .. "/file_" .. id .. ".json"
     return love.filesystem.getInfo(full_path) ~= nil
 end
 
 --- Returns whether the specified save folder has any save files.
----@param path? string    The save folder to check. (Defaults to the current mod's save folder)
 ---@return boolean exists Whether the save folder has any save files.
-function Kristal.hasAnySaves(path)
-    local full_path = "saves/" .. (path or Mod.info.id)
+function Kristal.hasAnySaves()
+    local full_path = "saves"
     return love.filesystem.getInfo(full_path) and (#love.filesystem.getDirectoryItems(full_path) > 0)
 end
 
 --- Saves the given data to a file in the save folder.
 ---@param file  string The file name to save to.
 ---@param data  table  The data to save.
----@param path? string The save folder to save to. (Defaults to the current mod's save folder)
-function Kristal.saveData(file, data, path)
-    love.filesystem.createDirectory("saves/" .. (path or Mod.info.id))
-    love.filesystem.write("saves/" .. (path or Mod.info.id) .. "/" .. file .. ".json", JSON.encode(data or {}))
+function Kristal.saveData(file, data)
+    love.filesystem.write("saves/" .. file .. ".json", JSON.encode(data or {}))
 end
 
 --- Loads and returns the data from a file in the save folder.
 ---@param file  string    The file name to load.
----@param path? string    The save folder to load from. (Defaults to the current mod's save folder)
 ---@return table|nil data The data loaded from the file, or `nil` if the file doesn't exist.
-function Kristal.loadData(file, path)
-    local full_path = "saves/" .. (path or Mod.info.id) .. "/" .. file .. ".json"
+function Kristal.loadData(file)
+    local full_path = "saves/" .. file .. ".json"
     if love.filesystem.getInfo(full_path) then
         return JSON.decode(love.filesystem.read(full_path))
     end
@@ -1641,9 +1639,8 @@ end
 
 --- Erases a file from the save folder.
 ---@param file  string The file name to erase.
----@param path? string The save folder to erase from. (Defaults to the current mod's save folder)
-function Kristal.eraseData(file, path)
-    love.filesystem.remove("saves/" .. (path or Mod.info.id) .. "/" .. file .. ".json")
+function Kristal.eraseData(file)
+    love.filesystem.remove("saves/" .. file .. ".json")
 end
 
 --- Calls a function from the current `Mod`, if it exists.

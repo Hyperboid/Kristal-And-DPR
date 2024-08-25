@@ -231,6 +231,8 @@ end
 ---@return SaveData
 function Game:save(x, y)
     local data = {
+        mod = Mod.info.id,
+
         chapter = self.chapter,
 
         name = self.save_name,
@@ -304,6 +306,14 @@ function Game:load(data, index, fade)
     data = data or {}
 
     self:clear()
+
+    if data.mod ~= Mod.info.id then
+        print("WARNING: Loading save file from a different DLC")
+        self.save_name = data.name or self.save_name or "PLAYER"
+        self.save_id = index or self.save_id or 1
+        Kristal.swapIntoMod(data.mod)
+        return
+    end
 
     BORDER_ALPHA = 0
     Kristal.showBorder(1)

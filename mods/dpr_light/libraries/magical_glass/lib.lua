@@ -208,8 +208,8 @@ function lib:save(data)
 end
 
 function lib:load(data, is_new_file)
-    if not love.filesystem.getInfo("saves/" .. Mod.info.id .. "/global.json") then
-        love.filesystem.write("saves/" .. Mod.info.id .. "/global.json", self:initGlobalSave())
+    if not love.filesystem.getInfo("saves" .. "/global.json") then
+        love.filesystem.write("saves" .. "/global.json", self:initGlobalSave())
     end
 
     if not data.magical_glass_2 then
@@ -370,16 +370,16 @@ end
 
 function lib:writeToGlobalSaveFile(key, data, file)
     file = file or Game.save_id
-    if love.filesystem.getInfo("saves/" .. Mod.info.id .. "/global.json") then
-        local global_data = JSON.decode(read("saves/" .. Mod.info.id .. "/global.json"))
+    if love.filesystem.getInfo("saves" .. "/global.json") then
+        local global_data = JSON.decode(read("saves" .. "/global.json"))
         global_data.files[file][key] = data
         write("saves/" .. Mod.info.id .. "/global.json", JSON.encode(global_data))
     end
 end
 
 function lib:writeToGlobalSave(key, data)
-    if love.filesystem.getInfo("saves/" .. Mod.info.id .. "/global.json") then
-        local global_data = JSON.decode(read("saves/" .. Mod.info.id .. "/global.json"))
+    if love.filesystem.getInfo("saves" .. "/global.json") then
+        local global_data = JSON.decode(read("saves" .. "/global.json"))
         global_data.global[key] = data
         write("saves/" .. Mod.info.id .. "/global.json", JSON.encode(global_data))
     end
@@ -387,15 +387,15 @@ end
 
 function lib:readFromGlobalSaveFile(key, file)
     file = file or Game.save_id
-    if love.filesystem.getInfo("saves/" .. Mod.info.id .. "/global.json") then
-        local global_data = JSON.decode(read("saves/" .. Mod.info.id .. "/global.json"))
+    if love.filesystem.getInfo("saves" .. "/global.json") then
+        local global_data = JSON.decode(read("saves" .. "/global.json"))
         return global_data.files[file][key]
     end
 end
 
 function lib:readFromGlobalSave(key)
-    if love.filesystem.getInfo("saves/" .. Mod.info.id .. "/global.json") then
-        local global_data = JSON.decode(read("saves/" .. Mod.info.id .. "/global.json"))
+    if love.filesystem.getInfo("saves" .. "/global.json") then
+        local global_data = JSON.decode(read("saves" .. "/global.json"))
         return global_data.global[key]
     end
 end
