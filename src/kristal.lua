@@ -1265,7 +1265,7 @@ function Kristal.swapIntoMod(id, use_lame_fadeout, ...)
     end
 
     local save_id = Game and Game.save_id or 1
-    local save = Kristal.getSaveFile(save_id)
+    local save = Game and Game:save() or Kristal.getSaveFile(save_id)
     local map_args = {...}
     local map = table.remove(map_args, 1)
     local marker, x, y, facing
