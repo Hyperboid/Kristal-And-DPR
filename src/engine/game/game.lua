@@ -631,6 +631,9 @@ function Game:loadQuick(fade)
     else
         Kristal.loadGame(self.save_id)
     end
+    if save.mod ~= Mod.info.id then
+        print("(Report this)")
+    end
     self.quick_save = save
 end
 
