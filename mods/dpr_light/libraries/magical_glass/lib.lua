@@ -65,6 +65,8 @@ MagicalGlass.__encounter_zones = {}
 MagicalGlass.__dust_objects = 0
 MagicalGlass.__DUST_OBJECT_LIMIT = 8000
 
+MagicalGlass.GLOBAL_SAVE_PATH = "saves" .. "/mg_global.json"
+
 -- REGISTRY
 
 function lib:initRegistry()
@@ -208,8 +210,8 @@ function lib:save(data)
 end
 
 function lib:load(data, is_new_file)
-    if not love.filesystem.getInfo("saves" .. "/global.json") then
-        love.filesystem.write("saves" .. "/global.json", self:initGlobalSave())
+    if not love.filesystem.getInfo(MagicalGlass.GLOBAL_SAVE_PATH) then
+        love.filesystem.write(MagicalGlass.GLOBAL_SAVE_PATH, self:initGlobalSave())
     end
 
     if not data.magical_glass_2 then
@@ -361,7 +363,7 @@ function lib:initGlobalSave()
     data["global"] = {}
 
     data["files"] = {}
-    for i = 1, 3 do
+    for i = 1, 4 do
         data["files"][i] = {}
     end
 
@@ -370,32 +372,32 @@ end
 
 function lib:writeToGlobalSaveFile(key, data, file)
     file = file or Game.save_id
-    if love.filesystem.getInfo("saves" .. "/global.json") then
-        local global_data = JSON.decode(read("saves" .. "/global.json"))
+    if love.filesystem.getInfo(MagicalGlass.GLOBAL_SAVE_PATH) then
+        local global_data = JSON.decode(read(MagicalGlass.GLOBAL_SAVE_PATH))
         global_data.files[file][key] = data
-        write("saves/" .. Mod.info.id .. "/global.json", JSON.encode(global_data))
+        write(MagicalGlass.GLOBAL_SAVE_PATH, JSON.encode(global_data))
     end
 end
 
 function lib:writeToGlobalSave(key, data)
-    if love.filesystem.getInfo("saves" .. "/global.json") then
-        local global_data = JSON.decode(read("saves" .. "/global.json"))
+    if love.filesystem.getInfo(MagicalGlass.GLOBAL_SAVE_PATH) then
+        local global_data = JSON.decode(read(MagicalGlass.GLOBAL_SAVE_PATH))
         global_data.global[key] = data
-        write("saves/" .. Mod.info.id .. "/global.json", JSON.encode(global_data))
+        write(MagicalGlass.GLOBAL_SAVE_PATH, JSON.encode(global_data))
     end
 end
 
 function lib:readFromGlobalSaveFile(key, file)
     file = file or Game.save_id
-    if love.filesystem.getInfo("saves" .. "/global.json") then
-        local global_data = JSON.decode(read("saves" .. "/global.json"))
+    if love.filesystem.getInfo(MagicalGlass.GLOBAL_SAVE_PATH) then
+        local global_data = JSON.decode(read(MagicalGlass.GLOBAL_SAVE_PATH))
         return global_data.files[file][key]
     end
 end
 
 function lib:readFromGlobalSave(key)
-    if love.filesystem.getInfo("saves" .. "/global.json") then
-        local global_data = JSON.decode(read("saves" .. "/global.json"))
+    if love.filesystem.getInfo(MagicalGlass.GLOBAL_SAVE_PATH) then
+        local global_data = JSON.decode(read(MagicalGlass.GLOBAL_SAVE_PATH))
         return global_data.global[key]
     end
 end
@@ -478,8 +480,8 @@ function lib:getCurrentBattleSystem()
 end
 
 function lib:clearGlobalSave()
-    if love.filesystem.getInfo("saves/" .. Mod.info.id .. "/global.json") then
-        love.filesystem.write("saves/" .. Mod.info.id .. "/global.json", self:initGlobalSave())
+    if love.filesystem.getInfo(MagicalGlass.GLOBAL_SAVE_PATH) then
+        love.filesystem.write(MagicalGlass.GLOBAL_SAVE_PATH, self:initGlobalSave())
     end
 end
 
