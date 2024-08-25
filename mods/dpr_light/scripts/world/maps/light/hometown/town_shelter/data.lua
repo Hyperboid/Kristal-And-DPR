@@ -1,7 +1,7 @@
 return {
-  version = "1.9",
+  version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.9.0",
+  tiledversion = "1.11.0",
   class = "",
   orientation = "orthogonal",
   renderorder = "right-down",
@@ -10,7 +10,7 @@ return {
   tilewidth = 40,
   tileheight = 40,
   nextlayerid = 13,
-  nextobjectid = 43,
+  nextobjectid = 44,
   properties = {
     ["border"] = "leaves",
     ["light"] = true,
@@ -319,7 +319,7 @@ return {
         {
           id = 1,
           name = "",
-          class = "",
+          type = "",
           shape = "rectangle",
           x = 400,
           y = 0,
@@ -332,7 +332,7 @@ return {
         {
           id = 2,
           name = "",
-          class = "",
+          type = "",
           shape = "rectangle",
           x = 440,
           y = 2000,
@@ -345,7 +345,7 @@ return {
         {
           id = 3,
           name = "",
-          class = "",
+          type = "",
           shape = "rectangle",
           x = 520,
           y = 2040,
@@ -358,7 +358,7 @@ return {
         {
           id = 4,
           name = "",
-          class = "",
+          type = "",
           shape = "polygon",
           x = 400,
           y = 2000,
@@ -376,7 +376,7 @@ return {
         {
           id = 5,
           name = "",
-          class = "",
+          type = "",
           shape = "polygon",
           x = 480,
           y = 2040,
@@ -394,7 +394,7 @@ return {
         {
           id = 6,
           name = "",
-          class = "",
+          type = "",
           shape = "polygon",
           x = 560,
           y = 2080,
@@ -412,7 +412,7 @@ return {
         {
           id = 7,
           name = "",
-          class = "",
+          type = "",
           shape = "rectangle",
           x = 600,
           y = 2120,
@@ -425,7 +425,7 @@ return {
         {
           id = 8,
           name = "",
-          class = "",
+          type = "",
           shape = "rectangle",
           x = 40,
           y = 2440,
@@ -438,7 +438,7 @@ return {
         {
           id = 9,
           name = "",
-          class = "",
+          type = "",
           shape = "rectangle",
           x = 0,
           y = 2120,
@@ -451,7 +451,7 @@ return {
         {
           id = 10,
           name = "",
-          class = "",
+          type = "",
           shape = "polygon",
           x = 40,
           y = 2120,
@@ -469,7 +469,7 @@ return {
         {
           id = 11,
           name = "",
-          class = "",
+          type = "",
           shape = "polygon",
           x = 120,
           y = 2080,
@@ -487,7 +487,7 @@ return {
         {
           id = 12,
           name = "",
-          class = "",
+          type = "",
           shape = "polygon",
           x = 200,
           y = 2040,
@@ -505,7 +505,7 @@ return {
         {
           id = 13,
           name = "",
-          class = "",
+          type = "",
           shape = "rectangle",
           x = 160,
           y = 2000,
@@ -518,7 +518,7 @@ return {
         {
           id = 14,
           name = "",
-          class = "",
+          type = "",
           shape = "rectangle",
           x = 80,
           y = 2040,
@@ -531,7 +531,7 @@ return {
         {
           id = 15,
           name = "",
-          class = "",
+          type = "",
           shape = "rectangle",
           x = 200,
           y = 0,
@@ -544,7 +544,7 @@ return {
         {
           id = 18,
           name = "",
-          class = "",
+          type = "",
           shape = "rectangle",
           x = 240,
           y = 2200,
@@ -557,7 +557,7 @@ return {
         {
           id = 31,
           name = "",
-          class = "",
+          type = "",
           shape = "rectangle",
           x = 160,
           y = 2280,
@@ -570,7 +570,7 @@ return {
         {
           id = 35,
           name = "",
-          class = "",
+          type = "",
           shape = "polygon",
           x = 120,
           y = 2320,
@@ -588,7 +588,7 @@ return {
         {
           id = 36,
           name = "",
-          class = "",
+          type = "",
           shape = "polygon",
           x = 160,
           y = 2280,
@@ -606,7 +606,7 @@ return {
         {
           id = 37,
           name = "",
-          class = "",
+          type = "",
           shape = "polygon",
           x = 200,
           y = 2240,
@@ -624,7 +624,7 @@ return {
         {
           id = 38,
           name = "",
-          class = "",
+          type = "",
           shape = "polygon",
           x = 400,
           y = 2200,
@@ -642,7 +642,7 @@ return {
         {
           id = 39,
           name = "",
-          class = "",
+          type = "",
           shape = "polygon",
           x = 440,
           y = 2240,
@@ -660,7 +660,7 @@ return {
         {
           id = 40,
           name = "",
-          class = "",
+          type = "",
           shape = "polygon",
           x = 480,
           y = 2320,
@@ -694,7 +694,7 @@ return {
         {
           id = 21,
           name = "transition",
-          class = "",
+          type = "",
           shape = "rectangle",
           x = 240,
           y = -40,
@@ -711,7 +711,7 @@ return {
         {
           id = 27,
           name = "npc",
-          class = "",
+          type = "",
           shape = "rectangle",
           x = 296,
           y = 2312,
@@ -726,7 +726,7 @@ return {
         {
           id = 41,
           name = "sheltersound",
-          class = "",
+          type = "",
           shape = "point",
           x = 320,
           y = 2320,
@@ -739,7 +739,7 @@ return {
         {
           id = 42,
           name = "interactable",
-          class = "",
+          type = "",
           shape = "rectangle",
           x = 240,
           y = 2280,
@@ -769,11 +769,24 @@ return {
       objects = {
         {
           id = 20,
-          name = "spawn",
-          class = "",
+          name = "entrynorth",
+          type = "",
           shape = "point",
           x = 320,
           y = 40,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 43,
+          name = "spawn",
+          type = "",
+          shape = "point",
+          x = 320,
+          y = 2350,
           width = 0,
           height = 0,
           rotation = 0,

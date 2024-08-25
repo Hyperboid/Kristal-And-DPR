@@ -41,6 +41,13 @@
             "width": 800,
             "x": 1000,
             "y": -600
+        },
+        {
+            "fileName": "maps/hub_fountain/map.tmx",
+            "height": 480,
+            "width": 640,
+            "x": 1140,
+            "y": -1120
         }
     ],
     "onlyShowAdjacentMaps": false,

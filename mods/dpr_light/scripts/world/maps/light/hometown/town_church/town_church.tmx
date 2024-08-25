@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="38" height="32" tilewidth="40" tileheight="40" infinite="0" nextlayerid="23" nextobjectid="51">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="38" height="32" tilewidth="40" tileheight="40" infinite="0" nextlayerid="23" nextobjectid="51">
  <editorsettings>
   <export target="data.lua" format="lua"/>
  </editorsettings>
@@ -250,7 +250,7 @@
    <properties>
     <property name="facing" value="down"/>
     <property name="map" value="light/hometown/town_shelter"/>
-    <property name="marker" value="spawn"/>
+    <property name="marker" value="entrynorth"/>
    </properties>
   </object>
   <object id="39" name="transition" x="1136" y="202" width="62" height="40">

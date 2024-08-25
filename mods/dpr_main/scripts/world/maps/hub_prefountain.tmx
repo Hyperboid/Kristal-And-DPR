@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="20" height="24" tilewidth="40" tileheight="40" infinite="0" nextlayerid="5" nextobjectid="14">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="20" height="24" tilewidth="40" tileheight="40" infinite="0" nextlayerid="5" nextobjectid="14">
  <editorsettings>
   <export target="hub_prefountain.lua" format="lua"/>
  </editorsettings>
@@ -48,7 +48,12 @@
     <property name="marker" value="east3"/>
    </properties>
   </object>
-  <object id="10" name="transition" x="400" y="70" width="120" height="40"/>
+  <object id="10" name="transition" x="400" y="70" width="120" height="40">
+   <properties>
+    <property name="map" value="hub_fountain"/>
+    <property name="marker" value="entry"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup color="#7f00ff" id="4" name="markers">
   <object id="11" name="west" x="40" y="840">
