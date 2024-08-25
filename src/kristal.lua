@@ -10,6 +10,7 @@ if not HOTSWAPPING then
         ["Loading"] = require("src.engine.loadstate"),
         ["MainMenu"] = require("src.engine.menu.mainmenu"),
         ["Game"] = require("src.engine.game.game"),
+        ["LameFadeout"] = require("src.engine.game.lamefadeout"),
         ["Testing"] = require("src.teststate"),
     }
 
@@ -1246,6 +1247,34 @@ function Kristal.loadModAssets(id, asset_type, asset_paths, after)
         Kristal.loadAssets(mod.libs[lib_id].path, asset_type or "all", asset_paths or "", finishLoadStep)
     end
     Kristal.loadAssets(mod.path, asset_type or "all", asset_paths or "", finishLoadStep)
+end
+
+-- Loads into the provided mod with the current save slot.
+-- TODO: Allow setting spawn position.
+---@param use_lame_fadeout boolean|string? # DO NOT USE, work in progress.
+function Kristal.swapIntoMod(id, use_lame_fadeout)
+    if not Kristal.Mods.getMod(id) then
+        -- TODO: Floweycheck DLC
+        print("WARNING: DLC " .. id .. " is not installed.")
+    end
+    local save_id, save_name = Game and Game.save_id or 1, Game and Game.save_name
+
+    Gamestate.switch(use_lame_fadeout and Kristal.States["LameFadeout"] or {}, use_lame_fadeout)
+    Kristal.clearModState()
+
+    Kristal.loadAssets("", "mods", "", function()
+        Kristal.loadMod(id, nil, nil, function()
+            if Kristal.preInitMod(id) then
+                Kristal.setDesiredWindowTitleAndIcon()
+                local game_params = {save_id, save_name}
+                if use_lame_fadeout then
+                    Kristal.States["LameFadeout"]:onLoadFinish(game_params)
+                else
+                    Gamestate.switch(Kristal.States["Game"], unpack(game_params))
+                end
+            end
+        end)
+    end)
 end
 
 local function shouldWindowUseModBranding()
