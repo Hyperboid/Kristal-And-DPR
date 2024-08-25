@@ -68,7 +68,7 @@ Utils.hook(LightStatMenu, "draw", function(orig, self)
 
     local at = chara:getBaseStats()["attack"]
     local df = chara:getBaseStats()["defense"]
-    local mg = chara:getBaseStats()["magic"]
+    local mg = chara:getBaseStats()["magic"] or 0
 
     if self.undertale_stat_display then
         at = at - 10
@@ -134,12 +134,12 @@ Utils.hook(LightStatMenu, "shouldDrawMagic", function(orig, self)
     elseif self.magic_display == "has_magic" then
         if self.party_magic_display then
             for _,party in pairs(Game.party) do
-                if party:getBaseStats()["magic"] > 0 then
+                if (party:getBaseStats()["magic"] or 0) > 0 then
                     return true
                 end
             end
         else
-            if chara:getBaseStats()["magic"] > 0 then return true end
+            if (chara:getBaseStats()["magic"] or 0) > 0 then return true end
         end
     end
     return false

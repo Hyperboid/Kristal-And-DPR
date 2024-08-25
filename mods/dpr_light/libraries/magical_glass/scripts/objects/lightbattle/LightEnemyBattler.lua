@@ -804,19 +804,23 @@ function LightEnemyBattler:hurt(amount, battler, on_defeat, options)
     if amount <= 0 then
         if attacked then self.hurt_timer = 1 end
         if not options["show_status"] then
-            self:lightStatusMessage("msg", "miss", {color = options["color"] or COLORS.red, dont_animate = not options["attacked"]})
+			if battler.chara.id == "pauling" then
+				self:lightStatusMessage("msg", "miss_pauling", {color = options["color"] or battler.chara.color, dont_animate = not options["attacked"]})
+			else
+				self:lightStatusMessage("msg", "miss", {color = options["color"] or battler.chara.color, dont_animate = not options["attacked"]})
+			end
         end
         self:onDodge(battler, options["attacked"])
         return
     end
 
     if not options["show_status"] then
-        self:lightStatusMessage("damage", amount)
+        self:lightStatusMessage("damage", amount, {color = options["color"] or battler.chara.color})
     end
 
     self.health = self.health - amount
 
-    if amount > 0 then
+    if amount > 0 then	-- Why is this check here? The previous return removes the other case
         self.hurt_timer = 1
         self:onHurt(amount, battler)
     end
