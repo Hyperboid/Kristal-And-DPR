@@ -1204,4 +1204,8 @@ function Game:loadNoel()
     return nil
 end
 
+function Game:getUISkin()
+    return Game:isLight() and "light" or "dark"
+end
+
 return Game
