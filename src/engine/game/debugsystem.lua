@@ -13,6 +13,29 @@
 ---@overload fun(...) : DebugSystem
 local DebugSystem, super = Class(Object)
 
+local function replenish()
+    if Game.battle then
+        for _,party in ipairs(Game.battle.party) do
+            party:heal(math.huge)
+        end
+    else
+        for i, chara in ipairs(Game.party) do
+            local prev_health = chara:getHealth()
+            chara:heal(math.huge, false)
+            local amount = chara:getHealth() - prev_health
+
+            if not Game:isLight() and Game.world.healthbar then
+                local actionbox = Game.world.healthbar.action_boxes[i]
+                local text = HPText("+" .. amount, Game.world.healthbar.x + actionbox.x + 69, Game.world.healthbar.y + actionbox.y + 15)
+                text.layer = WORLD_LAYERS["ui"] + 1
+                Game.world:addChild(text)
+            end
+        end
+
+        Assets.stopAndPlaySound("power")
+    end
+end
+
 function DebugSystem:init()
     super.init(self, 0, 0)
     self.layer = 10000000 - 2
@@ -335,8 +358,7 @@ end
 function DebugSystem:refresh()
     self.menus = {}
     self.exclusive_menus = {}
-    self.exclusive_menus["OVERWORLD"] = {"encounter_select", "select_shop", "select_map", "cutscene_select", "legend_select"}
-    self.exclusive_menus["LEGEND"] = {"legend_select"}
+    self.exclusive_menus["OVERWORLD"] = {"encounter_select", "select_shop", "select_map", "cutscene_select"}
     self.exclusive_menus["BATTLE"] = {"wave_select"}
     self:registerMenu("main", "~ KRISTAL DEBUG ~")
     self.current_menu = "main"
@@ -621,26 +643,6 @@ function DebugSystem:registerSubMenus()
         end
     end
 
-    self:registerMenu("legend_select", "Legend Select", "search")
-
-    -- add a legend stopper
-    self:registerOption("legend_select", "[Stop Current Legend]", "Stop the current playing Legend.", function ()
-        if Game.state == "LEGEND" then
-            Game.legend.cutscene:onEnd()
-        end
-        self:closeMenu()
-    end)
-
-    -- loop through registry and add menu options for all legends
-    for cutscene, _ in pairs(Registry.legend_cutscenes) do
-        self:registerOption("legend_select", cutscene, "Start this legend.", function ()
-            if Game.state ~= "LEGEND" then
-                Game:fadeIntoLegend(cutscene)
-            end
-            self:closeMenu()
-        end)
-    end
-
     self:registerMenu("wave_select", "Wave Select", "search")
     
     -- add a wave stopper
@@ -738,7 +740,6 @@ function DebugSystem:registerDefaults()
     local in_game = function () return Kristal.getState() == Game end
     local in_battle = function () return in_game() and Game.state == "BATTLE" end
     local in_overworld = function () return in_game() and Game.state == "OVERWORLD" end
-    local in_legend = function() return in_game() and Game.state == "LEGEND" end
 
     -- Global
     self:registerConfigOption("main", "Object Selection Pausing",
@@ -802,6 +803,11 @@ function DebugSystem:registerDefaults()
                             self:enterMenu("border_menu", 0)
                         end, function() return in_game() and Kristal.Config["borders"] == "dynamic" end)
 
+    self:registerOption("main", "Replenish Party", "Replenishes health.", 
+                        replenish, 
+                        in_game
+    )
+
     -- World specific
     self:registerOption("main", "Select Map", "Switch to a new map.", function ()
                             self:enterMenu("select_map", 0)
@@ -818,10 +824,6 @@ function DebugSystem:registerDefaults()
     self:registerOption("main", "Play Cutscene", "Play a cutscene.", function ()
                             self:enterMenu("cutscene_select", 0)
                         end, in_overworld)
-
-    self:registerOption("main", "Play Legend", "Play a legend cutscene.", function ()
-                            self:enterMenu("legend_select", 0)
-                        end, function() return in_overworld() or in_legend() end)
 
     -- Battle specific
     self:registerOption("main", "Start Wave", "Start a wave.", function ()
