@@ -290,6 +290,8 @@ function PartyMember:onPowerDeselect(menu) end
 ---@param menu DarkPowerMenu The current menu instance
 function PartyMember:drawPowerStat(index, x, y, menu) end
 
+--- *(Override)* Called whenever the party member's data is saved
+---@param data PartyMemberSaveData
 function PartyMember:onSave(data)
     data.opinions = self.opinions
 
@@ -298,6 +300,9 @@ function PartyMember:onSave(data)
 	
     data.combos = self:saveCombos()
 end
+
+--- *(Override)* Called whenever the party member's data is loaded
+---@param data PartyMemberSaveData
 function PartyMember:onLoad(data)
     self.opinions = data.opinions or self.opinions
 
