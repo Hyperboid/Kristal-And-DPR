@@ -10,7 +10,7 @@ return {
   tilewidth = 40,
   tileheight = 40,
   nextlayerid = 6,
-  nextobjectid = 26,
+  nextobjectid = 28,
   properties = {},
   tilesets = {
     {
@@ -288,6 +288,22 @@ return {
             ["map"] = "main_hub",
             ["marker"] = "west2"
           }
+        },
+        {
+          id = 26,
+          name = "transition",
+          type = "",
+          shape = "rectangle",
+          x = -20,
+          y = 320,
+          width = 40,
+          height = 120,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["marker"] = "exit_shop",
+            ["shop"] = "mousehole"
+          }
         }
       }
     },
@@ -324,6 +340,19 @@ return {
           type = "",
           shape = "point",
           x = 420,
+          y = 400,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 27,
+          name = "exit_shop",
+          type = "",
+          shape = "point",
+          x = 60,
           y = 400,
           width = 0,
           height = 0,

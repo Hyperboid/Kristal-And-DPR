@@ -154,6 +154,21 @@ function ActionButton:select()
         Game.battle:setState("ENEMYSELECT", "SPARE")
     elseif self.type == "defend" then
         Game.battle:pushAction("DEFEND", nil, {tp = -16})
+    elseif self.type == "skill" then
+        Game.battle:clearMenuItems()
+
+        for id, action in ipairs(self.battler.chara:getSkills()) do
+            Game.battle:addMenuItem({
+                ["name"] = action[1],
+                ["description"] = action[2],
+                ["color"] = action[3],
+                ["callback"] = action[4]
+            })
+        end
+
+        Game.battle:setState("MENUSELECT", "SKILL")
+    elseif self.type == "tension" then
+        Game.battle:pushAction("TENSION", nil, {tp = -32})
     end
 end
 
