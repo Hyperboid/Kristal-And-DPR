@@ -76,10 +76,6 @@ function Kristal.reloadnoel()
     end
 end
 
-Kristal.reloadnoel()
-
-end
-
 function love.load(args)
     Kristal.reloadnoel()
     --[[
@@ -549,7 +545,7 @@ function Kristal.onKeyPressed(key, is_repeat)
                     Kristal.returnToMenu()
                 end
             end
-        elseif key == "m" and Input.ctrl() and not console_open then
+        elseif key == "n" and Input.ctrl() and not console_open then
             Kristal.reloadnoel()
             print("reloaded noel_spawn.lua")
         end
