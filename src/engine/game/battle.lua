@@ -2456,7 +2456,8 @@ end
 
 --- Ends the battle and removes itself from `Game.battle`
 function Battle:returnToWorld()
-    if not Game:getConfig("keepTensionAfterBattle") then
+    if Game:getFlag("tension_storage") == true then
+    elseif not Game:getConfig("keepTensionAfterBattle") then
         Game:setTension(0)
     end
     self.encounter:setFlag("done", true)
