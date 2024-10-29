@@ -66,6 +66,7 @@ Registry.paths = {
     ["borders"]          = "borders",
     ["minigames"]        = "minigames",
     ["combos"]           = "battle/combos",
+    ["quests"]           = "data/quests",
 }
 
 ---@param preload boolean?
@@ -105,6 +106,7 @@ function Registry.initialize(preload)
         Registry.initBorders()
         Registry.initMinigames()
         Registry.initCombos()
+        Registry.initQuests()
 
         Kristal.callEvent(KRISTAL_EVENT.onRegistered)
     end
@@ -967,6 +969,16 @@ function Registry.initCombos()
         assert(combo ~= nil, '"battle/combos/' .. path .. '.lua" does not return value')
         combo.id = combo.id or path
         self.combos[combo.id] = combo
+    end
+end
+
+function Registry.initQuests()
+    self.quests = {}
+
+    for _,path,quest in self.iterScripts(Registry.paths["quests"]) do
+        assert(quest ~= nil, '"data/quests/' .. path .. '.lua" does not return value')
+        quest.id = quest.id or path
+        self.quests[quest.id] = quest
     end
 end
 
