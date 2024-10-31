@@ -36,6 +36,7 @@ return function(cutscene)
 
     cutscene:detachCamera()
     cutscene:detachFollowers()
+    Kristal.hideBorder(1)
 
     -- Get every party member and move them up offscreen
     local party = {}
@@ -62,6 +63,7 @@ return function(cutscene)
         chara.sprite:set("landed")
     end
     cutscene:wait(1)
+    Kristal.showBorder(0.75)
     Assets.playSound("him_quick")
     blackbg:fadeOutAndRemove(0.75)
     cutscene:wait(0.75)
