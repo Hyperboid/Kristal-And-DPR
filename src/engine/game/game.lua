@@ -752,6 +752,25 @@ function Game:startMinigame(game)
     Game.stage:addChild(Game.minigame)
 end
 
+function Game:dogCheck(variant)
+    Kristal.hideBorder(0)
+
+    self.state = "DOGCHECK"
+    if self.battle   then self.battle  :remove() end
+    if self.world    then self.world   :remove() end
+    if self.shop     then self.shop    :remove() end
+    if self.gameover then self.gameover:remove() end
+    if self.legend   then self.legend  :remove() end
+    if self.dogcheck then self.dogcheck:remove() end
+
+    if variant then
+        self.dogcheck = DogCheck(variant)
+    else
+        self.dogcheck = DogCheck()
+    end
+    self.stage:addChild(self.dogcheck)
+end
+
 function Game:setPresenceState(details)
     self.rpc_state = details
 
