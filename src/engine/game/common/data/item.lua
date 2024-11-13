@@ -352,7 +352,7 @@ function Item:getReaction(user_id, reactor_id)
         else
             local reaction = reactions[user_id]
             if miniparty then
-                local minireaction = minireaction[miniparty_reactor]
+                local minireaction = reaction[miniparty_reactor]
                 if minireaction then return minireaction end
             end
             return reaction[reactor_id]
