@@ -53,7 +53,8 @@ function item:init()
 		noelle = "That's not mine!",
         brenda = "SMASH!",
 		jamm = "I... don't think this works.",
-                noel = "?.. This isn't meant to be here."
+        ["jamm+marcy"] = "We'll get you a better one, Marcy.",
+        noel = "?.. This isn't meant to be here."
     }
 end
 
