@@ -1386,6 +1386,8 @@ function Kristal.preInitMod(id)
 
     -- Initialize registry
     Registry.initialize()
+    -- Shove the warp bin cutscene into the registry
+    Registry.registerWorldCutscene("warp_bin", WarpBinCS)
 
     -- Return true if no "preInit" explicitly returns true
     return use_callback
