@@ -2518,9 +2518,11 @@ function Battle:returnToWorld()
             end
         else
             Game.bossrush_encounters = nil
+            -- TODO: Better default
+            local returning = Game:getFlag("bossrush_return", {mod = "dpr_main", map = "main_hub"})
             -- Can't use Game:swapIntoMod because it kicks you
             -- back to the title screen before that happens
-            Kristal.swapIntoMod("dpr_main", false, "main_hub")
+            Kristal.swapIntoMod(returning.mod, false, returning.map)
         end
     end
 end
