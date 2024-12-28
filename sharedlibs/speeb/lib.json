@@ -1,0 +1,16 @@
+{
+    "id": "speeb",
+    "authors": [
+        "Sylvi"
+    ],
+    "version": "v1.1.0",
+    "engineVer": "v0.4.0",
+    "dependencies": ["mg2party"],
+    "keybinds": [
+        {
+            "name": "Go superrr fast",
+            "id": "superfast",
+            "keys": ["a"]
+        }
+    ]
+}

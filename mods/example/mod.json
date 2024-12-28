@@ -1,6 +1,6 @@
 {
     "id": "example",
-    "name": "Example Mod",
+    "name": "Example Mawd",
     "subtitle": "",
 
     "version": "v1.0.0",
@@ -9,6 +9,12 @@
     "chapter": 2,
 
     "map": "room1",
+    // "sharedlibs": ["magical-glass"],
+    "config": {
+        // "magical-glass": {},
+        // "mg2party": {},
+        "speeb": {}
+    },
     "party": ["kris", "susie", "ralsei"],
     "inventory": {
         "items": ["darkburger", "darkburger", "ultimate_candy"],
