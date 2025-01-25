@@ -1017,11 +1017,7 @@ function Kristal.clearModState()
     -- End the current mod
     Kristal.callEvent(KRISTAL_EVENT.unload)
     Mod = nil
-    PAUSED = false
-    if Kristal.pause_overlay then
-        Kristal.pause_overlay:remove()
-        Kristal.pause_overlay = nil
-    end
+    Kristal.unpause()
 
     Kristal.Mods.clear()
     Kristal.clearModHooks()
