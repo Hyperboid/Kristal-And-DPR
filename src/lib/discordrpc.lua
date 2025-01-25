@@ -4,6 +4,8 @@ local name = "discord-rpc"
 
 if ffi.os == "Windows" then
     name = name .. "-" .. ffi.arch
+elseif ffi.os == "Linux" then
+    name = "lib" .. name .. ".so"
 end
 
 local search_paths = {"", "lib/"}
@@ -24,6 +26,7 @@ end
 DISCORD_RPC_AVAILABLE = ok
 
 if not ok then
+    DISCORD_RPC_ERROR = discordRPClib
     return
 end
 

@@ -1064,6 +1064,7 @@ end
 ---@param key       string
 ---@param is_repeat boolean
 function Game:onKeyPressed(key, is_repeat)
+    -- error('tbme2')
     if Kristal.callEvent(KRISTAL_EVENT.onKeyPressed, key, is_repeat) then
         -- Mod:onKeyPressed returned true, cancel default behaviour
         return

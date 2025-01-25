@@ -279,6 +279,7 @@ function Input.resetBinds(gamepad, mod_id)
             ["object_selector"] = {{"ctrl", "o"}},
             ["fast_forward"] = {{"ctrl", "g"}},
             ["mod_rebind"] = {"/"},
+            ["pause"] = {"pause"},
         }
         for _,mod in ipairs(Kristal.Mods.getMods()) do
             if mod.keybinds then

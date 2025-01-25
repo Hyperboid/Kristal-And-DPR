@@ -39,3 +39,7 @@ OVERLAY_OPEN = false
 NOCLIP = false
 
 REGISTRY_LOADED = false
+
+PAUSED = false
+---@type Music[]
+PAUSED_MUSIC = {}

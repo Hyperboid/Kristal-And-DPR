@@ -162,7 +162,11 @@ function love.load(args)
             PERFORMANCE_TEST = {}
             Utils.pushPerformance("Total")
         end
-        orig(...)
+        if not PAUSED then
+            orig(...)
+        else
+            TextInput.update()
+        end
         Kristal.Stage:update()
         Kristal.Overlay:update()
         if PERFORMANCE_TEST then
@@ -446,6 +450,37 @@ function love.keyreleased(key)
 end
 
 function Kristal.onKeyPressed(key, is_repeat)
+    if Kristal.getState() ~= Kristal.States["Loading"] and not is_repeat and Input.is("pause", key) then
+        if not PAUSED and Input.is("pause", key) then
+            PAUSED = true
+            local overlay = Object()
+            overlay.text = overlay:addChild(Text("Game Paused. Press "..Input.getText("pause").." to resume.", 0,0,nil,nil, {auto_size = true}))
+            overlay.text:setPosition(SCREEN_WIDTH/2,SCREEN_HEIGHT)
+            overlay.text:setOrigin(.5,1)
+            overlay.text:addFX(AlphaFX(0.5))
+            PAUSED_MUSIC = Music.getPlaying()
+            local event_result = Kristal.callEvent(KRISTAL_EVENT.onPause, overlay)
+            if isClass(event_result) then
+                overlay = event_result
+            end
+            if PAUSED then -- Mod/lib didn't supress it
+                Kristal.Stage.pause_overlay = overlay
+                Kristal.Stage:addChild(overlay)
+                -- Pause all the music
+                for k,v in ipairs(PAUSED_MUSIC) do
+                    v:pause()
+                end
+            end
+        elseif PAUSED then
+            for k,v in pairs(PAUSED_MUSIC) do
+                v:play()
+            end
+            PAUSED = false
+            Kristal.Stage.pause_overlay:remove()
+            Kristal.Stage.pause_overlay = nil
+            Kristal.callEvent(KRISTAL_EVENT.onUnpause)
+        end
+    end
     if Input.ctrl() and Input.shift() and Input.alt() and key == "t" and not is_repeat then -- Panic button for binds
         Input.resetBinds()
         Input.saveBinds()
@@ -459,7 +494,7 @@ function Kristal.onKeyPressed(key, is_repeat)
         end
 
         local state = Kristal.getState()
-        if state.onKeyPressed and not OVERLAY_OPEN then
+        if state.onKeyPressed and not OVERLAY_OPEN and not PAUSED then
             state:onKeyPressed(key, is_repeat)
         end
     end
@@ -514,7 +549,7 @@ function Kristal.onKeyPressed(key, is_repeat)
             Assets.playSound("camera_flash")
             SCREENSHOT_DISPLAY = 0
             TAKING_SCREENSHOT = true
-        elseif key == "r" and Input.ctrl() and not console_open then
+        elseif key == "r" and Input.ctrl() and not console_open and not PAUSED then
             if Kristal.getModOption("hardReset") or Input.alt() and Input.shift() then
                 love.event.quit("restart")
             else
@@ -978,6 +1013,11 @@ function Kristal.clearModState()
     -- End the current mod
     Kristal.callEvent(KRISTAL_EVENT.unload)
     Mod = nil
+    PAUSED = false
+    if Kristal.Stage.pause_overlay then
+        Kristal.Stage.pause_overlay:remove()
+        Kristal.Stage.pause_overlay = nil
+    end
 
     Kristal.Mods.clear()
     Kristal.clearModHooks()

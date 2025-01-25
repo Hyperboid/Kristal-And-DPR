@@ -300,3 +300,47 @@ function Mod:onKeyPressed(key)
         end
     end
 end
+
+---@param overlay Object
+function Mod:onPause(overlay)
+    if Game.battle and (Game.battle.encounter.id == "starwalker") then
+        PAUSED = false
+        Assets.playSound("ui_cant_select",1.5)
+    else
+        local msuics
+        do
+            local msuics_opts = {}
+            for k in pairs(Assets.data.music) do
+                if k ~= Game:getActiveMusic().current then
+                    table.insert(msuics_opts, k)
+                end
+            end
+            msuics = Utils.pick(msuics_opts)
+        end
+        self.pause_music = self.pause_music or Music(msuics)
+        local nowplaying = Text("Currently Playing:\n\""..msuics.."\"")
+        overlay.text:setText("Press "..Input.getText("pause").." to resume.")
+        nowplaying:setPosition(0,249)
+        overlay:addChild(nowplaying)
+        local rect = Rectangle(0,0,SCREEN_WIDTH,SCREEN_HEIGHT)
+        rect:setColor(COLORS.black(0))
+        rect:fadeTo(0.4,.3)
+        rect:setLayer(-99999)
+        overlay:addChild(rect)
+        local header = Text("PAUSE",0,0,nil,nil,{auto_size = true})
+        header:setOrigin(.5,0)
+        header:setScale(2)
+        header:setPosition(310, 14)
+        overlay:addChild(header)
+        local cooladvice = Text(Utils.pick{
+            "DID YOU KNOW?\nThis menu is part of the mod. It's normally just that part at the bottom. Not even the fadeout.",
+        },314,149,SCREEN_WIDTH/2,nil)
+        overlay:addChild(cooladvice)
+    end
+end
+
+function Mod:onUnpause()
+    self.pause_music:remove()
+    self.pause_music = nil
+end
+
