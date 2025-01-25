@@ -81,6 +81,8 @@ ModCreateButton = require("src.engine.menu.objects.modcreatebutton")
 FileButton = require("src.engine.menu.objects.filebutton")
 FileNamer = require("src.engine.menu.objects.filenamer")
 
+PauseOverlay = require("src.engine.pauseoverlay")
+
 DarkTransitionLine = require("src.engine.game.darktransition.darktransitionline")
 DarkTransitionParticle = require("src.engine.game.darktransition.darktransitionparticle")
 DarkTransitionSparkle = require("src.engine.game.darktransition.darktransitionsparkle")

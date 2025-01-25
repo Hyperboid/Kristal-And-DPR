@@ -449,37 +449,41 @@ function love.keyreleased(key)
     Input.onKeyReleased(key)
 end
 
-function Kristal.onKeyPressed(key, is_repeat)
-    if Kristal.getState() ~= Kristal.States["Loading"] and not is_repeat and Input.is("pause", key) then
-        if not PAUSED and Input.is("pause", key) then
-            PAUSED = true
-            local overlay = Object()
-            overlay.text = overlay:addChild(Text("Game Paused. Press "..Input.getText("pause").." to resume.", 0,0,nil,nil, {auto_size = true}))
-            overlay.text:setPosition(SCREEN_WIDTH/2,SCREEN_HEIGHT)
-            overlay.text:setOrigin(.5,1)
-            overlay.text:addFX(AlphaFX(0.5))
-            PAUSED_MUSIC = Music.getPlaying()
-            local event_result = Kristal.callEvent(KRISTAL_EVENT.onPause, overlay)
-            if isClass(event_result) then
-                overlay = event_result
-            end
-            if PAUSED then -- Mod/lib didn't supress it
-                Kristal.Stage.pause_overlay = overlay
-                Kristal.Stage:addChild(overlay)
-                -- Pause all the music
-                for k,v in ipairs(PAUSED_MUSIC) do
-                    v:pause()
-                end
-            end
-        elseif PAUSED then
-            for k,v in pairs(PAUSED_MUSIC) do
-                v:play()
-            end
-            PAUSED = false
-            Kristal.Stage.pause_overlay:remove()
-            Kristal.Stage.pause_overlay = nil
-            Kristal.callEvent(KRISTAL_EVENT.onUnpause)
+function Kristal.pause()
+    if PAUSED then return end
+    PAUSED = true
+    local overlay = PauseOverlay()
+    PAUSED_MUSIC = Music.getPlaying()
+    local event_result = Kristal.callEvent(KRISTAL_EVENT.onPause, overlay)
+    if isClass(event_result) then
+        overlay = event_result
+    end
+    if PAUSED then -- Mod/lib didn't supress it
+        Kristal.pause_overlay = overlay
+        Kristal.Stage:addChild(overlay)
+        -- Pause all the music
+        for k,v in ipairs(PAUSED_MUSIC) do
+            v:pause()
         end
+    end
+end
+
+function Kristal.unpause()
+    if not PAUSED then return end
+    for k,v in pairs(PAUSED_MUSIC) do
+        v:play()
+    end
+    PAUSED = false
+    Kristal.pause_overlay:remove()
+    Kristal.pause_overlay = nil
+    Kristal.callEvent(KRISTAL_EVENT.onUnpause)
+end
+
+function Kristal.onKeyPressed(key, is_repeat)
+    if Kristal.getState() ~= Kristal.States["Loading"] and not is_repeat and Input.is("pause", key) and not PAUSED then
+        Kristal.pause()
+    elseif PAUSED and not is_repeat then
+        Kristal.pause_overlay:onKeyPressed(key)
     end
     if Input.ctrl() and Input.shift() and Input.alt() and key == "t" and not is_repeat then -- Panic button for binds
         Input.resetBinds()
@@ -1014,9 +1018,9 @@ function Kristal.clearModState()
     Kristal.callEvent(KRISTAL_EVENT.unload)
     Mod = nil
     PAUSED = false
-    if Kristal.Stage.pause_overlay then
-        Kristal.Stage.pause_overlay:remove()
-        Kristal.Stage.pause_overlay = nil
+    if Kristal.pause_overlay then
+        Kristal.pause_overlay:remove()
+        Kristal.pause_overlay = nil
     end
 
     Kristal.Mods.clear()
