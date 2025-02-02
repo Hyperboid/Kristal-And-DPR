@@ -254,6 +254,8 @@ function Music:setNext(music)
         self.source = love.audio.newSource(Assets.getMusicPath(music), "stream")
     else
         self.intro_played = false
+        if self.source_intro then self.source_intro:stop() end
+        self.intro_last_pos = self.source:tell()
         self.source_intro = self.source
         self.source_intro:setLooping(false)
         self.source = love.audio.newSource(Assets.getMusicPath(music), "stream")
