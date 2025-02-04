@@ -12,7 +12,8 @@ function character:init()
     self:setActor("ralsei")
 
     -- Display level (saved to the save file)
-    self.level = Game.chapter
+    self.love = 1
+    self.level = self.love
     -- Default title / class (saved to the save file)
     if Game.chapter == 1 then
         self.title = "Lonely Prince\nDark-World being.\nHas no subjects."
@@ -198,6 +199,13 @@ function character:drawPowerStat(index, x, y, menu)
         love.graphics.print("Guts:", x, y)
         return true
     end
+end
+
+function character:onLevelUpLVLib()
+    self:increaseStat("health", 10)
+    self:increaseStat("attack", 1)
+    self:increaseStat("magic", 2)
+    self:increaseStat("defense", 1)
 end
 
 return character

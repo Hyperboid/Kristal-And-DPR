@@ -11,7 +11,8 @@ function character:init()
     self:setLightActor("noelle_lw")
 
     -- Display level (saved to the save file)
-    self.level = Game.chapter
+    self.love = 1
+    self.level = self.love
     -- Default title / class (saved to the save file)
     self.title = "Snowcaster\nMight be able to\nuse some cool moves."
 
@@ -52,6 +53,8 @@ function character:init()
     
     -- Party members which will also get stronger when this character gets stronger, even if they're not in the party
     self.stronger_absent = {}
+    
+    self.frost_resist = true
 
     -- Weapon icon in equip menu
     self.weapon_icon = "ui/menu/equip/ring"
@@ -157,6 +160,13 @@ function character:drawPowerStat(index, x, y, menu)
         love.graphics.print("Guts:", x, y)
         return true
     end
+end
+
+function character:onLevelUpLVLib()
+    self:increaseStat("health", 10)
+    self:increaseStat("attack", 1)
+    self:increaseStat("magic", 3)
+    self:increaseStat("defense", 1)
 end
 
 return character

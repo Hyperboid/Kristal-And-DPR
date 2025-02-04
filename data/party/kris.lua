@@ -12,7 +12,8 @@ function character:init()
     self:setDarkTransitionActor("kris_dark_transition")
 
     -- Display level (saved to the save file)
-    self.level = Game.chapter
+    self.love = 1
+    self.level = self.love
     -- Default title / class (saved to the save file)
     if Game.chapter == 1 then
         self.title = "Leader\nCommands the party\nwith various ACTs."

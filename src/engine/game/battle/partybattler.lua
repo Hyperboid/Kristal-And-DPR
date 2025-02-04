@@ -144,6 +144,11 @@ end
 function PartyBattler:hurt(amount, exact, color, options)
     options = options or {}
 
+    if love.math.random(1,100) < self.guard_chance then
+		self:statusMessage("msg", "guard")
+		amount = math.ceil(amount * self.guard_mult)
+	end
+
     if not options["all"] then
         Assets.playSound("hurt")
         if not exact then
@@ -183,24 +188,28 @@ function PartyBattler:hurt(amount, exact, color, options)
     Game.battle:shakeCamera(4)
 
     if (not self.defending) and (not self.is_down) then
-        self.sleeping = false
-        self.hurting = true
-        self:toggleOverlay(true)
-        self.overlay_sprite:setAnimation("battle/hurt", function()
-            if self.hurting then
-                self.hurting = false
-                self:toggleOverlay(false)
-            end
-        end)
-        if not self.overlay_sprite.anim_frames then -- backup if the ID doesn't animate, so it doesn't get stuck with the hurt animation
-            Game.battle.timer:after(0.5, function()
-                if self.hurting then
-                    self.hurting = false
-                    self:toggleOverlay(false)
-                end
-            end)
-        end
-    end
+		self.sleeping = false
+		self.hurting = true
+		self:toggleOverlay(true)
+		self.overlay_sprite:setAnimation("battle/hurt", function()
+			if self.hurting then
+				self.hurting = false
+				self:toggleOverlay(false)
+			end
+			
+			if (self.chara:getHealth() <= (self.chara:getStat("health") / 4)) and self.chara.actor:getAnimation("battle/low_health") then
+				self:setAnimation("battle/low_health")
+			end
+		end)
+		if not self.overlay_sprite.anim_frames then -- backup if the ID doesn't animate, so it doesn't get stuck with the hurt animation
+			Game.battle.timer:after(0.5, function()
+				if self.hurting then
+					self.hurting = false
+					self:toggleOverlay(false)
+				end
+			end)
+		end
+	end
 end
 
 --- Removes health from the character and sets their downed HP value if necessary
@@ -370,7 +379,9 @@ end
 --- Gets the icon that should display in the Battler's head slot on their action box
 ---@return string texture
 function PartyBattler:getHeadIcon()
-    if self.sleeping then
+    if self.is_down then
+        return "head_down"
+    elseif self.sleeping then
         return "sleep"
     elseif self.defending then
         return "defend"
@@ -378,6 +389,8 @@ function PartyBattler:getHeadIcon()
         return self.action.icon
     elseif self.hurting then
         return "head_hurt"
+	elseif (self.chara:getHealth() <= (self.chara:getStat("health") / 4)) then
+		return "head_low"
     else
         return "head"
     end

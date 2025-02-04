@@ -212,6 +212,49 @@ function PartyMember:init()
         [19] = 50000,
         [20] = 99999
     }
+
+    self.flee_text = {}
+    
+    self.has_command = false
+
+    -- Combos
+    self.combos = {}
+    
+    self.love = 1
+    self.exp = 0
+    self.max_exp = 99999
+
+    -- Party member specific EXP requirements
+    -- The size of this table is the max LV
+    self.exp_needed = {
+        [ 1] = 0,
+        [ 2] = 10,
+        [ 3] = 30,
+        [ 4] = 70,
+        [ 5] = 120,
+        [ 6] = 200,
+        [ 7] = 300,
+        [ 8] = 500,
+        [ 9] = 800,
+        [10] = 1200,
+        [11] = 1700,
+        [12] = 2500,
+        [13] = 3500,
+        [14] = 5000,
+        [15] = 7000,
+        [16] = 10000,
+        [17] = 15000,
+        [18] = 25000,
+        [19] = 50000,
+        [20] = 99999
+    }
+
+    self.future_heals = {}
+
+    self.ribbit = false
+
+    self.opinions = {}
+    self.default_opinion = 50
 end
 
 -- Callbacks
@@ -247,12 +290,22 @@ function PartyMember:onPowerDeselect(menu) end
 ---@param menu DarkPowerMenu The current menu instance
 function PartyMember:drawPowerStat(index, x, y, menu) end
 
---- *(Override)* Called whenever the party member's data is saved
----@param data PartyMemberSaveData
-function PartyMember:onSave(data) end
---- *(Override)* Called whenever the party member's data is loaded
----@param data PartyMemberSaveData
-function PartyMember:onLoad(data) end
+function PartyMember:onSave(data)
+    data.opinions = self.opinions
+
+    data.exp = self.exp
+    data.love = self.love
+	
+    data.combos = self:saveCombos()
+end
+function PartyMember:onLoad(data)
+    self.opinions = data.opinions or self.opinions
+
+    self.exp = data.exp or self.exp
+    self.love = data.love or self.love
+	
+    self:loadCombos(data.combos or {})
+end
 
 --- *(Override)* Called when the party member equips an item
 ---@param item Item The item being equipped
