@@ -259,24 +259,13 @@ end
 ---@return love.Image
 function Assets.getTexture(path)
     if self.data.texture[path] then goto done end
-    if love.filesystem.getInfo("/assets/sprites/"..path..".png") then
-        self.data.texture[path] = love.graphics.newImage("/assets/sprites/"..path..".png")
-        self.texture_ids[self.data.texture[path]] = path
-    end
-    if Mod then
-        if love.filesystem.getInfo(Mod.info.path .. "/assets/sprites/"..path..".png") then
-            self.data.texture[path] = love.graphics.newImage(Mod.info.path .. "/assets/sprites/"..path..".png")
-            self.texture_ids[self.data.texture[path]] = path
-            goto found
-        end
-        for id,lib in Kristal.iterLibraries() do
-            if love.filesystem.getInfo(lib.info.path .. "/assets/sprites/"..path..".png") then
-                self.data.texture[path] = love.graphics.newImage(lib.info.path .. "/assets/sprites/"..path..".png")
-                self.texture_ids[self.data.texture[path]] = path
-            end
+    do
+        local dat = Assets.getTextureData(path)
+        if dat then
+            self.data.texture[path] = love.graphics.newImage(dat)
+            self.texture_ids[self.data.texture_data[path]] = path
         end
     end
-    ::found::
     ::done::
     return self.data.texture[path]
 end
@@ -284,6 +273,23 @@ end
 ---@param path string
 ---@return love.ImageData
 function Assets.getTextureData(path)
+    if self.data.texture_data[path] then goto done end
+    if love.filesystem.getInfo("/assets/sprites/"..path..".png") then
+        self.data.texture_data[path] = love.image.newImageData("/assets/sprites/"..path..".png")
+    end
+    if Mod then
+        if love.filesystem.getInfo(Mod.info.path .. "/assets/sprites/"..path..".png") then
+            self.data.texture_data[path] = love.image.newImageData(Mod.info.path .. "/assets/sprites/"..path..".png")
+            goto found
+        end
+        for id,lib in Kristal.iterLibraries() do
+            if love.filesystem.getInfo(lib.info.path .. "/assets/sprites/"..path..".png") then
+                self.data.texture_data[path] = love.image.newImageData(lib.info.path .. "/assets/sprites/"..path..".png")
+            end
+        end
+    end
+    ::found::
+    ::done::
     return self.data.texture_data[path]
 end
 
