@@ -258,6 +258,26 @@ end
 ---@param path string
 ---@return love.Image
 function Assets.getTexture(path)
+    if self.data.texture[path] then goto done end
+    if love.filesystem.getInfo("/assets/sprites/"..path..".png") then
+        self.data.texture[path] = love.graphics.newImage("/assets/sprites/"..path..".png")
+        self.texture_ids[self.data.texture[path]] = path
+    end
+    if Mod then
+        if love.filesystem.getInfo(Mod.info.path .. "/assets/sprites/"..path..".png") then
+            self.data.texture[path] = love.graphics.newImage(Mod.info.path .. "/assets/sprites/"..path..".png")
+            self.texture_ids[self.data.texture[path]] = path
+            goto found
+        end
+        for id,lib in Kristal.iterLibraries() do
+            if love.filesystem.getInfo(lib.info.path .. "/assets/sprites/"..path..".png") then
+                self.data.texture[path] = love.graphics.newImage(lib.info.path .. "/assets/sprites/"..path..".png")
+                self.texture_ids[self.data.texture[path]] = path
+            end
+        end
+    end
+    ::found::
+    ::done::
     return self.data.texture[path]
 end
 
@@ -280,6 +300,27 @@ end
 ---@param path string
 ---@return love.Image[]
 function Assets.getFrames(path)
+    if self.data.frames[path] then goto done end
+    do
+        local frames = {}
+        if Assets.getTexture(path.."_1") then
+            local i = 1
+            while Assets.getTexture(path .. "_"..i) do
+                table.insert(frames, Assets.getTexture(path .. "_"..i))
+                i = i + 1
+            end
+        elseif Assets.getTexture(path.."_01") then
+            local i = 1
+            while Assets.getTexture(path .. string.format("_%.2f", i)) do
+                table.insert(frames, Assets.getTexture(path .. string.format("_%.2f", i)))
+                i = i + 1
+            end
+        end
+        if #frames > 0 then
+            self.data.frames[path] = frames
+        end
+    end
+    ::done::
     return self.data.frames[path]
 end
 
