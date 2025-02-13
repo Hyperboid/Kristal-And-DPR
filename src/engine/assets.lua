@@ -311,8 +311,8 @@ function Assets.getFrames(path)
             end
         elseif Assets.getTexture(path.."_01") then
             local i = 1
-            while Assets.getTexture(path .. string.format("_%.2f", i)) do
-                table.insert(frames, Assets.getTexture(path .. string.format("_%.2f", i)))
+            while Assets.getTexture(path .. string.format("_%02d", i)) do
+                table.insert(frames, Assets.getTexture(path .. string.format("_%02d", i)))
                 i = i + 1
             end
         end
