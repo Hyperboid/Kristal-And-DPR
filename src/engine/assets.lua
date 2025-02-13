@@ -263,7 +263,7 @@ function Assets.getTexture(path)
         local dat = Assets.getTextureData(path)
         if dat then
             self.data.texture[path] = love.graphics.newImage(dat)
-            self.texture_ids[self.data.texture_data[path]] = path
+            self.texture_ids[self.data.texture[path]] = path
         end
     end
     ::done::
