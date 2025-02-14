@@ -123,6 +123,9 @@ local loaders = {
                 return
             end
 
+            if zip_id then
+                mod.zip_id = zip_id
+            end
             mod.id = mod.id or path
             mod.folder = path
             mod.path = full_path

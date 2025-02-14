@@ -7,6 +7,7 @@
 ---
 ---@field new_globals table
 ---@field last_globals table
+---@field globals_docs table?
 ---
 ---@field objects table<string, Object>
 ---@field draw_fx table<string, DrawFX>
@@ -81,6 +82,10 @@ function Registry.initialize(preload)
         Registry.initActors()
     end
     if not preload then
+        self.globals_docs = nil
+        if Mod and not Mod.info.zip_id then
+            self.globals_docs = {}
+        end
         Registry.initGlobals()
         Registry.initObjects()
         Registry.initDrawFX()
@@ -100,6 +105,14 @@ function Registry.initialize(preload)
         Registry.initControllers()
         Registry.initShops()
         Registry.initBorders()
+        if self.globals_docs then
+            local code = ""
+            for id,path in pairs(self.globals_docs) do
+                code = code .. string.format([[%s = require("%s")]], id, select(2, Utils.startsWith(path, Mod.info.path.."/")):gsub("/",".")) .. "\n"
+            end
+            love.filesystem.createDirectory(Mod.info.path .. "/.vscode/luadoc_meta")
+            love.filesystem.write(Mod.info.path .. "/.vscode/luadoc_meta/globals.lua", code)
+        end
 
         Kristal.callEvent(KRISTAL_EVENT.onRegistered)
     end
@@ -634,10 +647,11 @@ end
 -- Internal Functions --
 
 function Registry.initGlobals()
-    for _,path,global in self.iterScripts(Registry.paths["globals"], true) do
+    for full_path,path,global in self.iterScripts(Registry.paths["globals"], true) do
         local id = type(global) == "table" and global.id or path
 
         self.registerGlobal(id, global)
+        self.globals_docs[id] = full_path
     end
 
     Kristal.callEvent(KRISTAL_EVENT.onRegisterGlobals)
@@ -646,20 +660,22 @@ end
 function Registry.initObjects()
     self.objects = {}
 
-    for _,path,object in self.iterScripts(Registry.paths["hooks"], true) do
+    for full_path,path,object in self.iterScripts(Registry.paths["hooks"], true) do
         assert(object ~= nil, '"hooks/'..path..'.lua" does not return value')
         local id = object.id or path
 
         self.objects[id] = object
         self.registerGlobal(id, object, true)
+        self.globals_docs[id] = full_path
     end
 
-    for _,path,object in self.iterScripts(Registry.paths["objects"], true) do
+    for full_path,path,object in self.iterScripts(Registry.paths["objects"], true) do
         assert(object ~= nil, '"objects/'..path..'.lua" does not return value')
         local id = object.id or path
 
         self.objects[id] = object
         self.registerGlobal(id, object)
+        self.globals_docs[id] = full_path
     end
 
     Kristal.callEvent(KRISTAL_EVENT.onRegisterObjects)
@@ -668,12 +684,13 @@ end
 function Registry.initDrawFX()
     self.draw_fx = {}
 
-    for _,path,draw_fx in self.iterScripts(Registry.paths["drawfx"], true) do
+    for full_path,path,draw_fx in self.iterScripts(Registry.paths["drawfx"], true) do
         assert(draw_fx ~= nil, '"drawfx/'..path..'.lua" does not return value')
         local id = draw_fx.id or path
 
         self.draw_fx[id] = draw_fx
         self.registerGlobal(id, draw_fx)
+        self.globals_docs[id] = full_path
     end
 
     Kristal.callEvent(KRISTAL_EVENT.onRegisterDrawFX)
