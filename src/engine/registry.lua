@@ -107,7 +107,7 @@ function Registry.initialize(preload)
         Registry.initBorders()
         if self.globals_docs then
             local code = ""
-            for id,path in pairs(self.globals_docs) do
+            for id,path in Utils.orderedPairs(self.globals_docs) do
                 code = code .. string.format([[%s = require("%s")]], id, select(2, Utils.startsWith(path, Mod.info.path.."/")):gsub("/",".")) .. "\n"
             end
             love.filesystem.createDirectory(Mod.info.path .. "/.vscode/luadoc_meta")
