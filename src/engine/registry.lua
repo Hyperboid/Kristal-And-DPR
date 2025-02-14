@@ -503,7 +503,7 @@ end
 ---@param id string
 ---@param value any
 ---@param no_warning boolean?
-function Registry.registerGlobal(id, value, no_warning)
+function Registry.registerGlobal(id, value, no_warning, full_path)
     if _G[id] then
         if not no_warning then
             Kristal.Console:warn("Global '"..tostring(id).."' already exists, replacing")
@@ -511,6 +511,8 @@ function Registry.registerGlobal(id, value, no_warning)
         if not self.last_globals[id] and not self.new_globals[id] then
             self.last_globals[id] = _G[id]
         end
+    elseif self.globals_docs then
+        self.globals_docs[id] = full_path
     end
 
     self.new_globals[id] = value
@@ -650,8 +652,7 @@ function Registry.initGlobals()
     for full_path,path,global in self.iterScripts(Registry.paths["globals"], true) do
         local id = type(global) == "table" and global.id or path
 
-        self.registerGlobal(id, global)
-        self.globals_docs[id] = full_path
+        self.registerGlobal(id, global, nil, full_path)
     end
 
     Kristal.callEvent(KRISTAL_EVENT.onRegisterGlobals)
@@ -666,7 +667,6 @@ function Registry.initObjects()
 
         self.objects[id] = object
         self.registerGlobal(id, object, true)
-        -- self.globals_docs[id] = full_path
     end
 
     for full_path,path,object in self.iterScripts(Registry.paths["objects"], true) do
@@ -674,8 +674,7 @@ function Registry.initObjects()
         local id = object.id or path
 
         self.objects[id] = object
-        self.registerGlobal(id, object)
-        self.globals_docs[id] = full_path
+        self.registerGlobal(id, object, nil, full_path)
     end
 
     Kristal.callEvent(KRISTAL_EVENT.onRegisterObjects)
@@ -689,7 +688,7 @@ function Registry.initDrawFX()
         local id = draw_fx.id or path
 
         self.draw_fx[id] = draw_fx
-        self.registerGlobal(id, draw_fx)
+        self.registerGlobal(id, draw_fx, nil, full_path)
         self.globals_docs[id] = full_path
     end
 
