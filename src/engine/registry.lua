@@ -666,7 +666,7 @@ function Registry.initObjects()
 
         self.objects[id] = object
         self.registerGlobal(id, object, true)
-        self.globals_docs[id] = full_path
+        -- self.globals_docs[id] = full_path
     end
 
     for full_path,path,object in self.iterScripts(Registry.paths["objects"], true) do
