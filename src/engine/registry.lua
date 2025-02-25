@@ -106,7 +106,7 @@ function Registry.initialize(preload)
         Registry.initShops()
         Registry.initBorders()
         if self.globals_docs then
-            local code = ""
+            local code = "---@meta\n"
             for id,path in Utils.orderedPairs(self.globals_docs) do
                 code = code .. string.format([[%s = require("%s")]], id, select(2, Utils.startsWith(path, Mod.info.path.."/")):gsub("/",".")) .. "\n"
             end
