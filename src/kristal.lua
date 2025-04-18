@@ -1207,7 +1207,16 @@ function Kristal.loadMod(id, save_id, save_name, after)
         -- Add the current library to the libs table (again, with the real final value)
         Mod.libs[lib_id] = lib
     end
-
+    after = after or function ()
+        if Kristal.preInitMod(mod.id) then
+            Kristal.setDesiredWindowTitleAndIcon()
+            Gamestate.switch(Kristal.States["Game"], save_id, save_name)
+        end
+    end
+    if RELEASE_MODE and (TARGET_MOD == id) then
+        after()
+        return
+    end
     Kristal.loadModAssets(mod.id, "all", "", after or function ()
         if Kristal.preInitMod(mod.id) then
             Kristal.setDesiredWindowTitleAndIcon()

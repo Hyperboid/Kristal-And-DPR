@@ -14,3 +14,5 @@ TARGET_MOD = nil
 -- immediately loads the target mod.
 ---@type boolean
 AUTO_MOD_START = false
+
+RELEASE_MODE = true

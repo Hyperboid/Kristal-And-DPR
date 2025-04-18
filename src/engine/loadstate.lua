@@ -48,14 +48,37 @@ function Loading:beginLoad()
     self.loading = true
     self.load_complete = false
 
+    local function finish()
+        Assets.saveData()
+
+        Kristal.setDesiredWindowTitleAndIcon()
+    end
     Kristal.loadAssets("", "all", "")
     Kristal.loadAssets("", "mods", "", function ()
         self.loading = false
         self.load_complete = true
+        finish()
+        if TARGET_MOD and RELEASE_MODE and Kristal.Mods.getMod(TARGET_MOD) then
+            local mod = Kristal.Mods.getMod(TARGET_MOD)
 
-        Assets.saveData()
+            local load_count = 1 + #mod.lib_order
+            local function finishLoadStep()
+                -- Finish one load process
+                load_count = load_count - 1
+                -- Check if all load processes are done (mod and libraries)
+                if load_count == 0 then
+                    -- Finish mod loading
+                    MOD_LOADING = false
 
-        Kristal.setDesiredWindowTitleAndIcon()
+                    -- Call the after function
+                    finish()
+                end
+            end
+            for _, lib_id in ipairs(mod.lib_order) do
+                Kristal.loadAssets(mod.libs[lib_id].path, "all", "", finishLoadStep)
+            end
+            Kristal.loadAssets(mod.path, "all", "", finishLoadStep)
+        end
     end)
 end
 
