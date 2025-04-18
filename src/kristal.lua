@@ -566,6 +566,26 @@ local function error_printer(msg, layer)
     print((debug.traceback("Error: " .. tostring(msg), 1 + (layer or 1)):gsub("\n[^\n]+$", "")))
 end
 
+function Kristal.getDebugSelf()
+    local final_self
+    local tb_len = #(Utils.split(debug.traceback(),"\n")) - 1
+    for stack_level = 1, tb_len do
+        local last_val
+        local val_index = 0
+        while true do
+            val_index = val_index + 1
+            local val_name, val = debug.getlocal(stack_level, val_index)
+            if not val then break end
+            if val_name == "self" then return val end
+        end
+    end
+end
+
+Kristal.getDebugSelf = Utils.override(Kristal.getDebugSelf, function (orig, ...)
+    local ok, val = pcall(orig, ...)
+    if ok then return val end
+end)
+
 --- Kristal alternative to the default love.errorhandler. \
 --- Called when an error occurs.
 ---@param  msg string|table     The error message.
@@ -579,6 +599,13 @@ function Kristal.errorHandler(msg)
 
     local starwalker, starwalkertext, banana_anim
 
+    CRASH_SELF = Kristal.getDebugSelf()
+    local self_string
+    if not pcall(function ()
+        self_string = CRASH_SELF and Utils.dump(CRASH_SELF)
+    end) then
+        self_string = "<error>"
+    end
     if starwalker_error then
         starwalker = love.graphics.newImage("assets/sprites/kristal/starwalker.png")
         starwalkertext = love.graphics.newImage("assets/sprites/kristal/starwalkertext.png")
@@ -728,6 +755,10 @@ function Kristal.errorHandler(msg)
         love.graphics.setFont(smaller_font)
         love.graphics.printf(version_string, -20, 10, window_width, "right")
         love.graphics.printf(mod_string, 20, 10, window_width)
+        if self_string then
+            
+            love.graphics.printf("In "..self_string, 20, 23, window_width)
+        end
 
         love.graphics.setFont(font)
 
