@@ -1249,7 +1249,7 @@ function Kristal.loadMod(id, save_id, save_name, after)
     end
     if RELEASE_MODE and (TARGET_MOD == id) then
         after()
-        return
+        return true
     end
     Kristal.loadModAssets(mod.id, "all", "", after or function ()
         if Kristal.preInitMod(mod.id) then
