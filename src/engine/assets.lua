@@ -51,6 +51,8 @@ function Assets.clear()
         bubbles = {},
         bubble_settings = {},
     }
+    self.getBucketByName("project"):clear()
+    self.getBucketByName("project").paths = {}
     self.frames_for = {}
     self.texture_ids = {}
     self.sounds = {}
@@ -69,6 +71,26 @@ function Assets.checkSpritesOverride(path)
         end
     end
     return path
+end
+
+function Assets.getAsset(assettype, id)
+    for i = 1, #self.buckets do
+        local asset = self.buckets[i]:getAsset(assettype, id)
+        if asset then
+            return asset
+        end
+    end
+    -- error("Missing "..assettype.." - "..id)
+end
+
+function Assets.getBucketByName(name)
+    for i = 1, #self.buckets do
+        local bucket = self.buckets[i]
+        if bucket.name == name then
+            return bucket
+        end
+    end
+    error("Couldn't find bucket with name \""..name.."\".")
 end
 
 ---@param data Assets.data
@@ -271,14 +293,10 @@ end
 ---@param path string
 ---@return love.Image
 function Assets.getTexture(path)
-    if not Kristal.Config["lazySprites"] or self.data.texture[path] then goto done end
-    do
-        local data = Assets.getTextureData(path)
-        self.data.texture[path] = data and love.graphics.newImage(data)
+    if path == "ui/missing_texture" then
+        return love.graphics.newImage("assets/sprites/ui/missing_texture.png")
     end
-    ::found::
-    ::done::
-    return self.data.texture[path]
+    return self.getAsset("texture", path)
 end
 
 Utils.hook(Assets, "getTexture", function (orig, path)
@@ -324,28 +342,13 @@ end
 ---@param path string
 ---@return love.Image[]
 function Assets.getFrames(path)
-    if not Kristal.Config["lazySprites"] or self.data.frames[path] then goto done end
-    do
-        local frames = {}
-        if Assets.getTexture(path.."_1") then
-            local i = 1
-            while Assets.getTexture(path .. "_"..i) do
-                table.insert(frames, Assets.getTexture(path .. "_"..i))
-                i = i + 1
-            end
-        elseif Assets.getTexture(path.."_01") then
-            local i = 1
-            while Assets.getTexture(path .. string.format("_%.2d", i)) do
-                table.insert(frames, Assets.getTexture(path .. string.format("_%.2d", i)))
-                i = i + 1
-            end
-        end
-        if #frames > 0 then
-            self.data.frames[path] = frames
+    for i = 1, #self.buckets do
+        local asset = self.buckets[i]:getFrames(path)
+        if asset then
+            return asset
         end
     end
-    ::done::
-    return self.data.frames[path]
+    return nil
 end
 
 Utils.hook(Assets, "getFrames", function (orig, path)
@@ -512,6 +515,13 @@ end
 function Assets.newShader(id)
     return love.graphics.newShader(self.data.shader_paths[id])
 end
+
+
+Assets.buckets = {
+    AssetBucket("project"),
+    AssetBucket("engine", {""}),
+    AssetBucket("static", {""}),
+}
 
 Assets.clear()
 

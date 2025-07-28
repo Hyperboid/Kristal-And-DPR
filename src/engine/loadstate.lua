@@ -81,10 +81,11 @@ function Loading:beginLoad()
         if love.filesystem.getInfo(lib_full_path .. "/lib.json") then
             local data = JSON.decode(love.filesystem.read(lib_full_path.."/lib.json"))
             if data.preload_assets then
-                Kristal.loadAssets(lib_full_path, "all", "")
+                table.insert(paths, lib_full_path)
             end
         end
     end
+    table.insert(paths, "")
     Kristal.loadAssets("", "plugins", "")
     Kristal.loadAssets("", "mods", "", function ()
         self.loading = false
@@ -94,6 +95,8 @@ function Loading:beginLoad()
 
         Kristal.setDesiredWindowTitleAndIcon()
     end)
+    Assets.getBucketByName("engine").paths = paths
+    Assets.getBucketByName("engine"):startLoading()
 end
 
 function Loading:update()

@@ -105,13 +105,83 @@ function resetData()
     loaders_module.data = data
 end
 
+function loadSingleAsset(baseDir, loader, id)
+    
+end
+
+local loader_extensions = {
+    sprites = {"png", "jpg"},
+    sounds = {"wav", "ogg"}
+}
+
+function handleSingleAsset(msg, should_pop)
+    if msg == "verbose" then
+        verbose = true
+        if should_pop then
+            in_channel:pop()
+        end
+        return
+    end
+    if not (msg and msg.type == "singleasset") then
+        return
+    end
+    LOADING_SINGLE_ASSET = true
+    loaders_module.data = {
+        mods = {},
+        failed_mods = {},
+        assets = {
+            texture = {},
+            texture_data = {},
+            frame_ids = {},
+            frames = {},
+            fonts = {},
+            font_data = {},
+            font_bmfont_data = {},
+            font_image_data = {},
+            font_settings = {},
+            sounds = {},
+            sound_data = {},
+            music = {},
+            videos = {},
+            shaders = {},
+            shader_paths = {},
+            bubble_settings = {},
+        }
+    }
+    if should_pop then
+        in_channel:pop()
+    end
+    for _, searchpath in ipairs(msg.paths) do
+        --[[]]
+        for _, ext in ipairs(assert(loader_extensions[msg.loader], "Unknown loader: \"" .. msg.loader .. "\"")) do
+            local filename = msg.id .. "." .. ext
+            print("Checking "..searchpath .. "/" .. loaders[msg.loader][1] .. "/" .. filename)
+            if love.filesystem.getInfo(searchpath .. "/" .. loaders[msg.loader][1] .. "/" .. filename) then
+                print("Found "..searchpath .. "/" .. loaders[msg.loader][1] .. "/" .. filename)
+                path_loaded[msg.loader][filename] = nil
+                loadPath(searchpath, msg.loader, filename)
+                break
+            end
+        end
+        --]]
+    end
+    out_channel:push({ key = key, status = "finished", data = loaders_module.data })
+    loaders_module.data = data
+    LOADING_SINGLE_ASSET = false
+end
+
 function loadPath(baseDir, loader, path, pre)
+    if in_channel:peek() ~= nil and in_channel:peek().type == "singleasset" and not LOADING_SINGLE_ASSET then
+        handleSingleAsset(in_channel:peek(), true)
+    end
+
     if path_loaded[loader][path] then return end
     if kristal_config["borders"] == "off" and loader == "sprites" and path:sub(1,#("borders")) == "borders" then end
 
     if verbose then
         out_channel:push({ status = "loading", loader = loader, path = path })
     end
+
 
     path_loaded[loader][path] = true
 
@@ -149,7 +219,6 @@ out_channel = love.thread.getChannel("load_out")
 -- Reset data once first
 resetData()
 
--- Thread loop
 while true do
     local msg = in_channel:demand()
     if msg == "verbose" then
@@ -158,6 +227,8 @@ while true do
         break
     elseif msg.config then
         kristal_config = msg.config
+    elseif msg.type == "singleasset" then
+        handleSingleAsset(msg)
     else
         local key = msg.key or 0
         local baseDir = msg.dir or ""
@@ -171,10 +242,8 @@ while true do
             for k, _ in pairs(loaders) do
                 -- dont load mods and plugins when we load with "all"
                 if (k ~= "mods" and k ~= "plugins") then
-                    if (k ~= "sprites" or not kristal_config.lazySprites ) then
-                        for _, path in ipairs(paths) do
-                            loadPath(baseDir, k, path)
-                        end
+                    for _, path in ipairs(paths) do
+                        loadPath(baseDir, k, path)
                     end
                 end
             end
@@ -183,6 +252,14 @@ while true do
                 loadPath(baseDir, loader, path)
             end
         end
+
+        -- print("loader "..loader .. " has:")
+        -- for assetkey, value in pairs(data.assets) do
+        --     print("\t"..assetkey..":")
+        --     for key, value in pairs(value) do
+        --         print("\t\t"..key..": "..tostring(value))
+        --     end
+        -- end
 
         out_channel:push({ key = key, status = "finished", data = data })
         resetData()

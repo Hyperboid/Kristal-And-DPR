@@ -26,6 +26,7 @@ else
         next_key = 0,
         waiting = 0,
         end_funcs = {},
+        bucket_names = {},
 
         message = ""
     }
@@ -407,7 +408,18 @@ function love.update(dt)
                         Kristal.Overlay.setLoading(false)
                     end
 
-                    Assets.loadData(msg.data.assets)
+
+                    if Kristal.Loader.bucket_names[msg.key] then
+                        Assets.getBucketByName(Kristal.Loader.bucket_names[msg.key]):loadData(msg.data.assets)
+                        Kristal.Loader.bucket_names[msg.key] = nil
+                        if Kristal.Loader.end_funcs[msg.key] then
+                            Kristal.Loader.end_funcs[msg.key]()
+                            Kristal.Loader.end_funcs[msg.key] = nil
+                        end
+                        return
+                    else
+                        Assets.loadData(msg.data.assets)
+                    end
                     Kristal.Mods.loadData(msg.data.mods, msg.data.failed_mods)
 
                     if Kristal.Loader.end_funcs[msg.key] then
@@ -1085,10 +1097,11 @@ function Kristal.returnToMenu()
         Kristal.setDesiredWindowTitleAndIcon()
         Gamestate.switch(MainMenu)
     end)
-
-    Kristal.DebugSystem:refresh()
+    if Kristal.DebugSystem then
+        Kristal.DebugSystem:refresh()
+    end
     -- End input if it's open
-    if not Kristal.Console.is_open then
+    if not (Kristal.Console and Kristal.Console.is_open) then
         TextInput.endInput()
     end
 end
@@ -1167,13 +1180,16 @@ end
 ---@param loader string       The type of assets to load.
 ---@param paths? string|table The specific asset paths to load.
 ---@param after? function     The function to call when done.
-function Kristal.loadAssets(dir, loader, paths, after)
+function Kristal.loadAssets(dir, loader, paths, after, bucketname)
     Kristal.Loader.message = ""
     Kristal.Overlay.setLoading(true)
     Kristal.Loader.waiting = Kristal.Loader.waiting + 1
 
     if after then
         Kristal.Loader.end_funcs[Kristal.Loader.next_key] = after
+    end
+    if bucketname then
+        Kristal.Loader.bucket_names[Kristal.Loader.next_key] = bucketname
     end
 
     if Kristal.Config["verboseLoader"] then
@@ -1296,17 +1312,25 @@ function Kristal.loadModAssets(id, asset_type, asset_paths, after)
     end
 
     -- Finally load all assets (libraries first)
+    local paths = {}
     for _, lib_id in ipairs(mod.lib_order) do
         if not mod.libs[lib_id].preload_assets then
-            Kristal.loadAssets(mod.libs[lib_id].path, asset_type or "all", asset_paths or "", finishLoadStep)
+            -- Kristal.loadAssets(mod.libs[lib_id].path, asset_type or "all", asset_paths or "", finishLoadStep, "project")
+            table.insert(paths, mod.libs[lib_id].path)
         else
             finishLoadStep()
         end
     end
-    Kristal.loadAssets(mod.path, asset_type or "all", asset_paths or "", finishLoadStep)
+    table.insert(paths, mod.path)
     for plugin in Kristal.PluginLoader.iterPlugins(true) do
-        Kristal.loadAssets(plugin.path, asset_type or "all", asset_paths or "", finishLoadStep)
+        -- Kristal.loadAssets(plugin.path, asset_type or "all", asset_paths or "", finishLoadStep)
+        table.insert(paths, plugin.path)
     end
+    local proj_bucket = Assets.getBucketByName("project")
+    proj_bucket:clear()
+    proj_bucket.paths = paths
+    proj_bucket:startLoading(after)
+    -- Kristal.loadAssets(mod.path, asset_type or "all", asset_paths or "", finishLoadStep, "project")
 end
 
 function Kristal.startGameDPR(save_id, save_name, after)
