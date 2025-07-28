@@ -3,13 +3,14 @@ local Testing = {}
 function Testing:enter()
     self.stage = Stage()
     self.font = Assets.getFont("main")
+    self.ja_font = Assets.getFont("ja_main")
 
     self.state = "MAIN"
 
-    self.text = Text("The quick brown fox jumps over the lazy dog.", 0, 240 + 32, {
-        ["align"] = "center"
-    })
-    self.stage:addChild(self.text)
+    -- self.text = Text("The quick brown fox jumps over the lazy dog.", 0, 240 + 32, {
+    --     ["align"] = "center"
+    -- })
+    -- self.stage:addChild(self.text)
 end
 
 function Testing:update()
@@ -24,7 +25,9 @@ function Testing:draw()
 
         love.graphics.printf("The quick brown fox jumps over the lazy dog.", 0, 240, 640, "center")
     elseif self.state == "GAMEPAD" then
-        love.graphics.setFont(self.font)
+        if self.ja_font then
+            love.graphics.setFont(self.ja_font)
+        end
         love.graphics.printf("~ コントローラーテスト ~", 0, 16, 640, "center")
         self:drawGamepad()
     end

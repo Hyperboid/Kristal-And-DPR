@@ -74,7 +74,6 @@ function Loading:beginLoad()
     self.loading = true
     self.load_complete = false
 
-    Kristal.loadAssets("", "all", "")
     local paths = {}
     for _, name in ipairs(love.filesystem.getDirectoryItems("sharedlibs")) do
         local lib_full_path = "sharedlibs/"..name
@@ -87,6 +86,8 @@ function Loading:beginLoad()
     end
     table.insert(paths, "")
     Kristal.loadAssets("", "plugins", "")
+    Assets.getBucketByName("engine").paths = paths
+    Assets.getBucketByName("engine"):startLoading()
     Kristal.loadAssets("", "mods", "", function ()
         self.loading = false
         self.load_complete = true
@@ -95,8 +96,6 @@ function Loading:beginLoad()
 
         Kristal.setDesiredWindowTitleAndIcon()
     end)
-    Assets.getBucketByName("engine").paths = paths
-    Assets.getBucketByName("engine"):startLoading()
 end
 
 function Loading:update()

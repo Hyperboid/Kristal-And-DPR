@@ -111,7 +111,18 @@ end
 
 local loader_extensions = {
     sprites = {"png", "jpg"},
-    sounds = {"wav", "ogg"}
+    sounds = {"wav", "ogg"},
+    fonts = {"ttf", "fnt", "png", "json"},
+    music = {"mp3", "wav", "ogg",
+            -- TRACKER FORMATS
+            "mod", "s3m", "xm", "it", "669", "amf", "ams", "dbm", "dmf", "dsm", "far",
+            "mdl", "med", "mtm", "okt", "ptm", "stm", "ult", "umx", "mt2", "psm",
+            -- COMPRESSED TRACKER FORMATS
+            "mdz", "s3z", "xmz", "itz", "zip",
+            "mdr", "s3r", "xmr", "itr", "rar",
+            "mdgz", "s3gz", "xmgz", "itgz", "gz"},
+    videos = {"ogg", "ogv"},
+    bubbles = {"json"},
 }
 
 function handleSingleAsset(msg, should_pop)
@@ -160,7 +171,7 @@ function handleSingleAsset(msg, should_pop)
                 print("Found "..searchpath .. "/" .. loaders[msg.loader][1] .. "/" .. filename)
                 path_loaded[msg.loader][filename] = nil
                 loadPath(searchpath, msg.loader, filename)
-                break
+                -- Notably, we do NOT break here. This is required for fonts.
             end
         end
         --]]

@@ -52,6 +52,7 @@ function AssetBucket:clear()
     self.quads = {}
 end
 
+---@param data Assets.data
 function AssetBucket:loadData(data)
     Utils.merge(self.data, data, true)
     self:parseData(data)
@@ -164,6 +165,7 @@ function AssetBucket:startLoading(after)
 end
 
 function AssetBucket:getAsset(assettype, id)
+    assert(self.data[assettype], "Unknown asset type "..assettype)
     if self.data[assettype][id] or self.loaded then
         return self.data[assettype][id]
     end
@@ -176,7 +178,7 @@ local LOADERS_BY_ASSET_TYPE = {
 }
 
 function AssetBucket:loadAsset(assettype, id)
-    local loader = LOADERS_BY_ASSET_TYPE[assettype] or (assettype.."s")
+    local loader = LOADERS_BY_ASSET_TYPE[assettype] or (assettype)
     Kristal.Loader.in_channel:push({
         type = "singleasset",
         loader = loader,

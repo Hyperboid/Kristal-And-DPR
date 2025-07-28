@@ -61,7 +61,7 @@ function Assets.clear()
 end
 
 ---@param path string
----@return new_path string
+---@return string new_path
 function Assets.checkSpritesOverride(path)
     local split_path = Utils.splitFast(path, "/")
     if #split_path > 1 then
@@ -80,6 +80,7 @@ function Assets.getAsset(assettype, id)
             return asset
         end
     end
+    -- Maybe?
     -- error("Missing "..assettype.." - "..id)
 end
 
@@ -112,17 +113,10 @@ function Assets.saveData()
 end
 
 ---@return boolean
+---@deprecated
 function Assets.restoreData()
-    if self.saved_data then
-        Assets.clear()
-        for k,v in pairs(self.saved_data) do
-            self[k] = Utils.copy(v, true)
-        end
-        self.loaded = true
-        return true
-    else
-        return false
-    end
+    Assets.clear()
+    return true
 end
 
 ---@param data Assets.data
@@ -210,32 +204,35 @@ function Assets.parseData(data)
 end
 
 function Assets.update()
-    local sounds_to_remove = {}
-    for key,sounds in pairs(self.sound_instances) do
-        for _,sound in ipairs(sounds) do
-            if not sound:isPlaying() then
-                table.insert(sounds_to_remove, {key = key, value = sound})
+    for i=1, #self.buckets do
+        local bucket = self.buckets[i]
+        local sounds_to_remove = {}
+        for key,sounds in pairs(bucket.sound_instances) do
+            for _,sound in ipairs(sounds) do
+                if not sound:isPlaying() then
+                    table.insert(sounds_to_remove, {key = key, value = sound})
+                end
             end
         end
-    end
-    for _,sound in ipairs(sounds_to_remove) do
-        Utils.removeFromTable(self.sound_instances[sound.key], sound.value)
+        for _,sound in ipairs(sounds_to_remove) do
+            Utils.removeFromTable(bucket.sound_instances[sound.key], sound.value)
+        end
     end
 end
 
 ---@param path string
 ---@return table
 function Assets.getBubbleData(path)
-    return self.data.bubble_settings[path] or {}
+    return self.getAsset("bubble_settings", path)
 end
 
 ---@param path string
 ---@param size? number
 ---@return love.Font
 function Assets.getFont(path, size)
-    local font = self.data.fonts[path]
+    local font = self.getAsset("fonts", path)
     if font then
-        local settings = self.data.font_settings[path] or {}
+        local settings = self.getAsset("font_settings", path) or {}
         if type(font) == "table" then
             if settings["autoScale"] then
                 size = font.default
@@ -244,13 +241,13 @@ function Assets.getFont(path, size)
             end
             if not font[size] then
                 ---@diagnostic disable-next-line: param-type-mismatch
-                font[size] = love.graphics.newFont(self.data.font_data[path], size, settings["hinting"] or "mono")
+                font[size] = love.graphics.newFont(self.getAsset("font_data", path), size, settings["hinting"] or "mono")
 
                 if settings["fallbacks"] then
                     local fallbacks = {}
 
                     for _,fallback in ipairs(settings["fallbacks"]) do
-                        local fb_font = self.data.fonts[fallback["font"]]
+                        local fb_font = self.getAsset("fonts", fallback["font"])
 
                         if type(fb_font) ~= "table" then
                             error("Attempt to use image or BMFont fallback on TTF font: " .. path)
@@ -275,7 +272,7 @@ end
 ---@param path string
 ---@return table
 function Assets.getFontData(path)
-    return self.data.font_settings[path] or {}
+    return self.getAsset("font_settings", path) or {}
 end
 
 ---@param path string
@@ -402,13 +399,17 @@ end
 ---@param sound string
 ---@return love.Source
 function Assets.getSound(sound)
-    return self.sounds[sound]
+    for i = 1, #self.buckets do
+        if self.buckets[i].sounds[sound] then
+            return self.buckets[i].sounds[sound]
+        end
+    end
 end
 
 ---@param sound string
 ---@return love.Source
 function Assets.newSound(sound)
-    return self.sounds[sound]:clone()
+    return self.getSound(sound):clone()
 end
 
 ---@param sound string
@@ -426,19 +427,23 @@ end
 ---@param sound string
 ---@param actually_stop? boolean
 function Assets.stopSound(sound, actually_stop)
-    for _,src in ipairs(self.sound_instances[sound] or {}) do
-        if actually_stop then
-            src:stop()
-        else
-            src:setVolume(0)
-            if src:isLooping() then
-                src:setLooping(false)
+    for i = 1, #self.buckets do
+        local bucket = self.buckets[i]
+        for _,src in ipairs(bucket.sound_instances[sound] or {}) do
+            if actually_stop then
+                src:stop()
+            else
+                src:setVolume(0)
+                if src:isLooping() then
+                    src:setLooping(false)
+                end
             end
         end
+        if actually_stop then
+            bucket.sound_instances[sound] = {}
+        end
     end
-    if actually_stop then
-        self.sound_instances[sound] = {}
-    end
+
 end
 
 ---@param sound string
@@ -446,11 +451,11 @@ end
 ---@param pitch? number
 ---@return love.Source
 function Assets.playSound(sound, volume, pitch)
-    if self.sounds[sound] then
+    if self.getSound(sound) then
         self.sound_instances[sound] = self.sound_instances[sound] or {}
         local src
         local function play(v)
-            src = self.sounds[sound]:clone()
+            src = self.newSound(sound)
             if v then
                 src:setVolume(v)
             end
@@ -489,27 +494,28 @@ end
 ---@param music string
 ---@return string
 function Assets.getMusicPath(music)
-    return self.data.music[music]
+    return self.getAsset("music", music)
 end
 
 ---@param video string
 ---@return string
 function Assets.getVideoPath(video)
-    return self.data.videos[video]
+    return self.getAsset("videos", music)
 end
 
 ---@param video string
 ---@param load_audio? boolean
 ---@return love.Video
 function Assets.newVideo(video, load_audio)
-    if not self.data.videos[video] then
+    local videopath = self.getVideoPath(video)
+    if not videopath then
         error("No video found: "..video)
     end
-    return love.graphics.newVideo(self.data.videos[video], {audio = load_audio})
+    return love.graphics.newVideo(videopath, {audio = load_audio})
 end
 
 function Assets.getShader(id)
-    return self.data.shaders[id]
+    return self.getAsset("shaders", id)
 end
 
 function Assets.newShader(id)
