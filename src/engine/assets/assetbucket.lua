@@ -145,8 +145,10 @@ end
 
 
 function AssetBucket:startLoading(after)
+    self.loaded = false
     local load_count = #self.paths
 
+    -- BUG: This never executes for the project bucket? For some reason?
     local function finishLoadStep()
         -- Finish one load process
         load_count = load_count - 1
@@ -175,6 +177,8 @@ end
 
 local LOADERS_BY_ASSET_TYPE = {
     texture = "sprites",
+    font_settings = "fonts",
+    font_data = "fonts",
 }
 
 function AssetBucket:loadAsset(assettype, id)
@@ -195,7 +199,8 @@ function AssetBucket:loadAsset(assettype, id)
             error(Kristal.Loader.thread:getError())
         end
     end
-    self:loadData(data.data.assets)
+    Utils.merge(self.data, data.data.assets, true)
+    self:parseData(data.data.assets)
 end
 
 function AssetBucket:getFrames(id)

@@ -123,6 +123,7 @@ local loader_extensions = {
             "mdgz", "s3gz", "xmgz", "itgz", "gz"},
     videos = {"ogg", "ogv"},
     bubbles = {"json"},
+    shaders = {"glsl"},
 }
 
 function handleSingleAsset(msg, should_pop)
@@ -166,9 +167,9 @@ function handleSingleAsset(msg, should_pop)
         --[[]]
         for _, ext in ipairs(assert(loader_extensions[msg.loader], "Unknown loader: \"" .. msg.loader .. "\"")) do
             local filename = msg.id .. "." .. ext
-            print("Checking "..searchpath .. "/" .. loaders[msg.loader][1] .. "/" .. filename)
+            -- print("Checking "..searchpath .. "/" .. loaders[msg.loader][1] .. "/" .. filename)
             if love.filesystem.getInfo(searchpath .. "/" .. loaders[msg.loader][1] .. "/" .. filename) then
-                print("Found "..searchpath .. "/" .. loaders[msg.loader][1] .. "/" .. filename)
+                -- print("Found "..searchpath .. "/" .. loaders[msg.loader][1] .. "/" .. filename)
                 path_loaded[msg.loader][filename] = nil
                 loadPath(searchpath, msg.loader, filename)
                 -- Notably, we do NOT break here. This is required for fonts.

@@ -1329,7 +1329,8 @@ function Kristal.loadModAssets(id, asset_type, asset_paths, after)
     local proj_bucket = Assets.getBucketByName("project")
     proj_bucket:clear()
     proj_bucket.paths = paths
-    proj_bucket:startLoading(after)
+    proj_bucket:startLoading()
+    after()
     -- Kristal.loadAssets(mod.path, asset_type or "all", asset_paths or "", finishLoadStep, "project")
 end
 
