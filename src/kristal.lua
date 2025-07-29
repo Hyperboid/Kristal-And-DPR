@@ -329,6 +329,36 @@ function love.load(args)
         TARGET_MOD = Kristal.Args["mod"][1]
     end
 
+    Assets.getBucketByName("static"):loadData({
+        texture = {},
+        texture_data = {
+            
+        },
+        frame_ids = {},
+        frames = {},
+        fonts = {
+        },
+        font_data = {
+            main = love.filesystem.newFileData("assets/fonts/main.ttf"),
+            ja_main = love.filesystem.newFileData("assets/fonts/ja_main.ttf"),
+            main_mono = love.filesystem.newFileData("assets/fonts/main_mono.ttf"),
+        },
+        font_bmfont_data = {},
+        font_image_data = {},
+        font_settings = {
+            main = JSON.decode(love.filesystem.read("assets/fonts/main.json")),
+            ja_main = JSON.decode(love.filesystem.read("assets/fonts/ja_main.json")),
+            main_mono = JSON.decode(love.filesystem.read("assets/fonts/main_mono.json")),
+        },
+        sound_data = {},
+        music = {},
+        videos = {},
+        bubbles = {},
+        bubble_settings = {},
+        shaders = {},
+        shader_paths = {},
+    })
+
     -- load menu
     Gamestate.switch(Kristal.States["Loading"])
 
@@ -352,6 +382,57 @@ function love.quit()
     if Kristal.HTTPS.thread and Kristal.HTTPS.thread:isRunning() then
         Kristal.HTTPS.in_channel:push("stop")
     end
+end
+
+function Kristal.demandAssets(timeout)
+    local msg = Kristal.Loader.out_channel:demand(timeout)
+    if Kristal.Loader.thread:getError() then
+        error(Kristal.Loader.thread:getError())
+    end
+    if not msg then return false end
+    while not msg.data do
+        Kristal.parseAssets(msg)
+        msg = Kristal.Loader.out_channel:demand(timeout)
+        if not msg then return false end
+        if Kristal.Loader.thread:getError() then
+            error(Kristal.Loader.thread:getError())
+        end
+    end
+    return msg
+end
+
+function Kristal.parseAssets(msg)
+    if msg.status == "finished" then
+        Kristal.Loader.waiting = Kristal.Loader.waiting - 1
+
+        Kristal.Loader.message = ""
+
+        if Kristal.Loader.waiting == 0 then
+            Kristal.Overlay.setLoading(false)
+        end
+
+        local bucket_name = msg.bucket or Kristal.Loader.bucket_names[msg.key]
+        if bucket_name then
+            Assets.getBucketByName(bucket_name):loadData(msg.data.assets)
+            bucket_name = nil
+            if Kristal.Loader.end_funcs[msg.key] then
+                Kristal.Loader.end_funcs[msg.key]()
+                Kristal.Loader.end_funcs[msg.key] = nil
+            end
+            return
+        else
+            Assets.loadData(msg.data.assets)
+        end
+        Kristal.Mods.loadData(msg.data.mods, msg.data.failed_mods)
+
+        if Kristal.Loader.end_funcs[msg.key] then
+            Kristal.Loader.end_funcs[msg.key]()
+            Kristal.Loader.end_funcs[msg.key] = nil
+        end
+    elseif msg.status == "loading" then
+        Kristal.Loader.message = msg.path
+    end
+    return true
 end
 
 function love.update(dt)
@@ -399,36 +480,7 @@ function love.update(dt)
         while Kristal.Loader.out_channel:getCount() > 0 do
             local msg = Kristal.Loader.out_channel:pop()
             if msg then
-                if msg.status == "finished" then
-                    Kristal.Loader.waiting = Kristal.Loader.waiting - 1
-
-                    Kristal.Loader.message = ""
-
-                    if Kristal.Loader.waiting == 0 then
-                        Kristal.Overlay.setLoading(false)
-                    end
-
-
-                    if Kristal.Loader.bucket_names[msg.key] then
-                        Assets.getBucketByName(Kristal.Loader.bucket_names[msg.key]):loadData(msg.data.assets)
-                        Kristal.Loader.bucket_names[msg.key] = nil
-                        if Kristal.Loader.end_funcs[msg.key] then
-                            Kristal.Loader.end_funcs[msg.key]()
-                            Kristal.Loader.end_funcs[msg.key] = nil
-                        end
-                        return
-                    else
-                        Assets.loadData(msg.data.assets)
-                    end
-                    Kristal.Mods.loadData(msg.data.mods, msg.data.failed_mods)
-
-                    if Kristal.Loader.end_funcs[msg.key] then
-                        Kristal.Loader.end_funcs[msg.key]()
-                        Kristal.Loader.end_funcs[msg.key] = nil
-                    end
-                elseif msg.status == "loading" then
-                    Kristal.Loader.message = msg.path
-                end
+                Kristal.parseAssets(msg)
             end
         end
     end
@@ -1198,6 +1250,7 @@ function Kristal.loadAssets(dir, loader, paths, after, bucketname)
 
     Kristal.Loader.in_channel:push({
         key = Kristal.Loader.next_key,
+        bucket = bucketname,
         dir = dir,
         loader = loader,
         paths = paths
@@ -1329,8 +1382,8 @@ function Kristal.loadModAssets(id, asset_type, asset_paths, after)
     local proj_bucket = Assets.getBucketByName("project")
     proj_bucket:clear()
     proj_bucket.paths = paths
-    proj_bucket:startLoading()
-    after()
+    proj_bucket:startLoading(after)
+    -- after()
     -- Kristal.loadAssets(mod.path, asset_type or "all", asset_paths or "", finishLoadStep, "project")
 end
 

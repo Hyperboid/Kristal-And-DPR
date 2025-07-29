@@ -138,6 +138,7 @@ function handleSingleAsset(msg, should_pop)
         return
     end
     LOADING_SINGLE_ASSET = true
+    local bucket = msg.bucket
     loaders_module.data = {
         mods = {},
         failed_mods = {},
@@ -172,12 +173,13 @@ function handleSingleAsset(msg, should_pop)
                 -- print("Found "..searchpath .. "/" .. loaders[msg.loader][1] .. "/" .. filename)
                 path_loaded[msg.loader][filename] = nil
                 loadPath(searchpath, msg.loader, filename)
+                path_loaded[msg.loader][filename] = nil
                 -- Notably, we do NOT break here. This is required for fonts.
             end
         end
         --]]
     end
-    out_channel:push({ key = key, status = "finished", data = loaders_module.data })
+    out_channel:push({ key = key, status = "finished", data = loaders_module.data, bucket = bucket })
     loaders_module.data = data
     LOADING_SINGLE_ASSET = false
 end
@@ -246,6 +248,7 @@ while true do
         local baseDir = msg.dir or ""
         local loader = msg.loader
         local paths = msg.paths or { "" }
+        local bucket = msg.bucket
         if type(msg.paths) == "string" then
             paths = { msg.paths }
         end
@@ -273,7 +276,7 @@ while true do
         --     end
         -- end
 
-        out_channel:push({ key = key, status = "finished", data = data })
+        out_channel:push({ key = key, status = "finished", data = data, bucket = bucket })
         resetData()
     end
 end

@@ -92,10 +92,10 @@ function Loading:beginLoad()
         self.loading = false
         self.load_complete = true
 
-        Assets.saveData()
-
         Kristal.setDesiredWindowTitleAndIcon()
     end)
+    -- Ideally we start loading engine assets after the blocking mod load. 
+    -- Assets.getBucketByName("engine"):startLoading()
 end
 
 function Loading:update()

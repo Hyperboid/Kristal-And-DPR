@@ -73,6 +73,17 @@ function Assets.checkSpritesOverride(path)
     return path
 end
 
+function Assets.getAssetData(assettype, id)
+    for i = 1, #self.buckets do
+        local asset = self.buckets[i]:getAssetData(assettype, id)
+        if asset then
+            return asset
+        end
+    end
+    -- Maybe?
+    -- error("Missing "..assettype.." - "..id)
+end
+
 function Assets.getAsset(assettype, id)
     for i = 1, #self.buckets do
         local asset = self.buckets[i]:getAsset(assettype, id)
@@ -223,16 +234,16 @@ end
 ---@param path string
 ---@return table
 function Assets.getBubbleData(path)
-    return self.getAsset("bubble_settings", path)
+    return self.getAssetData("bubble_settings", path)
 end
 
 ---@param path string
 ---@param size? number
 ---@return love.Font
 function Assets.getFont(path, size)
-    local font = self.getAsset("fonts", path)
+    local font = self.getAssetData("fonts", path)
     if font then
-        local settings = self.getAsset("font_settings", path) or {}
+        local settings = self.getAssetData("font_settings", path) or {}
         if type(font) == "table" then
             if settings["autoScale"] then
                 size = font.default
@@ -241,13 +252,13 @@ function Assets.getFont(path, size)
             end
             if not font[size] then
                 ---@diagnostic disable-next-line: param-type-mismatch
-                font[size] = love.graphics.newFont(self.getAsset("font_data", path), size, settings["hinting"] or "mono")
+                font[size] = love.graphics.newFont(self.getAssetData("font_data", path), size, settings["hinting"] or "mono")
 
                 if settings["fallbacks"] then
                     local fallbacks = {}
 
                     for _,fallback in ipairs(settings["fallbacks"]) do
-                        local fb_font = self.getAsset("fonts", fallback["font"])
+                        local fb_font = self.getAssetData("fonts", fallback["font"])
 
                         if type(fb_font) ~= "table" then
                             error("Attempt to use image or BMFont fallback on TTF font: " .. path)
@@ -272,7 +283,7 @@ end
 ---@param path string
 ---@return table
 function Assets.getFontData(path)
-    return self.getAsset("font_settings", path) or {}
+    return self.getAssetData("font_settings", path) or {}
 end
 
 ---@param path string
@@ -293,7 +304,7 @@ function Assets.getTexture(path)
     if path == "ui/missing_texture" then
         return love.graphics.newImage("assets/sprites/ui/missing_texture.png")
     end
-    return self.getAsset("texture", path)
+    return self.getAssetData("texture", path)
 end
 
 Utils.hook(Assets, "getTexture", function (orig, path)
@@ -332,7 +343,8 @@ function Assets.getTextureID(texture)
     if type(texture) == "string" then
         return texture
     else
-        return self.texture_ids[texture]
+        -- Won't work for a texture that hasn't been loaded yet. This is probably fine.
+        return self.getAsset("texture_ids", texture)
     end
 end
 
@@ -361,13 +373,7 @@ end
 ---@param texture string
 ---@return string texture, number frame
 function Assets.getFramesFor(texture)
-    if self.frames_for[texture] then
-        -- annoying type annotations
-        ---@diagnostic disable-next-line: return-type-mismatch
-        return unpack(self.frames_for[texture])
-    end
-    ---@diagnostic disable-next-line: return-type-mismatch
-    return nil, nil
+    return unpack(self.getAsset("frames_for", texture) or {})
 end
 
 ---@param path string
@@ -494,13 +500,13 @@ end
 ---@param music string
 ---@return string
 function Assets.getMusicPath(music)
-    return self.getAsset("music", music)
+    return self.getAssetData("music", music)
 end
 
 ---@param video string
 ---@return string
 function Assets.getVideoPath(video)
-    return self.getAsset("videos", music)
+    return self.getAssetData("videos", music)
 end
 
 ---@param video string
@@ -515,7 +521,7 @@ function Assets.newVideo(video, load_audio)
 end
 
 function Assets.getShader(id)
-    return self.getAsset("shaders", id)
+    return self.getAssetData("shaders", id)
 end
 
 function Assets.newShader(id)

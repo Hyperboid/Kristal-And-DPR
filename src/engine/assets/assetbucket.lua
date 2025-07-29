@@ -166,7 +166,7 @@ function AssetBucket:startLoading(after)
     end
 end
 
-function AssetBucket:getAsset(assettype, id)
+function AssetBucket:getAssetData(assettype, id)
     assert(self.data[assettype], "Unknown asset type "..assettype)
     if self.data[assettype][id] or self.loaded then
         return self.data[assettype][id]
@@ -175,10 +175,20 @@ function AssetBucket:getAsset(assettype, id)
     return self.data[assettype][id]
 end
 
+function AssetBucket:getAsset(assettype, id)
+    assert(self[assettype], "Unknown asset type "..assettype)
+    if self[assettype][id] or self.loaded then
+        return self[assettype][id]
+    end
+    self:loadAsset(assettype, id)
+    return self[assettype][id]
+end
+
 local LOADERS_BY_ASSET_TYPE = {
     texture = "sprites",
     font_settings = "fonts",
     font_data = "fonts",
+    bubble_settings = "bubbles",
 }
 
 function AssetBucket:loadAsset(assettype, id)
@@ -189,16 +199,7 @@ function AssetBucket:loadAsset(assettype, id)
         id = id,
         paths = self.paths
     })
-    local data = Kristal.Loader.out_channel:demand(3)
-    if Kristal.Loader.thread:getError() then
-        error(Kristal.Loader.thread:getError())
-    end
-    while not data.data do
-        data = Kristal.Loader.out_channel:demand(3)
-        if Kristal.Loader.thread:getError() then
-            error(Kristal.Loader.thread:getError())
-        end
-    end
+    local data = Kristal.demandAssets()
     Utils.merge(self.data, data.data.assets, true)
     self:parseData(data.data.assets)
 end
@@ -208,7 +209,16 @@ function AssetBucket:getFrames(id)
         return self.data.frames[id]
     end
     if not self.data.frame_ids[id] then
-        return
+        if self.loaded then
+            return
+        end
+        -- Temp while I figure out how this works
+        local data = Kristal.demandAssets(0.1)
+        if data then
+            self:loadData(data.data.assets)
+        end
+        ::wearesoback::
+        if not self.data.frame_ids[id] then return end
     end
     self.data.frames[id] = {}
     for i = 1, #self.data.frame_ids[id] do
