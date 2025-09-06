@@ -831,8 +831,7 @@ function DebugSystem:registerSubMenus()
                             -- Skip over everything that didn't get a match
                             if i == 0 then
                                 table.insert(assign_randomly, wave)
-                                goto continue
-                            end
+                            else
                             local success
                             -- Find the first enemy that can use this wave and set it on them
                             for _, enemy in ipairs(enemies) do
@@ -848,7 +847,7 @@ function DebugSystem:registerSubMenus()
                                 table.insert(assign_randomly, wave)
                             end
                         end
-                        ::continue::
+                        end
                     end
                 end
                 -- Step 3: All the waves we couldn't assign before get chucked on enemies randomly

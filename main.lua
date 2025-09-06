@@ -1,3 +1,5 @@
+bit = bit or require("src.lib.bit_polyfill")
+
 require("src.engine.vars")
 require("src.engine.statevars")
 require("src.engine.vendcust")
