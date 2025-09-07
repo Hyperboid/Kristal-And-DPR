@@ -343,6 +343,8 @@ end
 --- @class LoadingCoroutine
 --- @field co thread
 --- @field after function|nil
+--- @field hash string
+--- @field ignore_result boolean
 
 --- @type LoadingCoroutine[]
 local loading_coroutines = {}
@@ -424,8 +426,8 @@ function love.update(dt)
 
                 Assets.loadData(msg.data.assets)
                 Kristal.Mods.loadData(msg.data.mods, msg.data.failed_mods)
-                print("Finished and assets have been loaded so I'll run - but before let me check my assets",
-                        run_afterwards)
+                -- print("Finished and assets have been loaded so I'll run - but before let me check my assets",
+                --         run_afterwards)
                 -- print("With this many textures", #Assets.data.texture)
                 -- print(key_getter(Assets.data.texture))
 
@@ -456,6 +458,7 @@ function love.update(dt)
             table.remove(loading_coroutines, i)
         else
             local ok, msg = coroutine.resume(co)
+
             local run_afterwards_procedure = nil
             if loading_co.after ~= nil then
                 run_afterwards_procedure = loading_co.after
@@ -464,11 +467,12 @@ function love.update(dt)
                 print("Coroutine error:", msg)
                 table.remove(loading_coroutines, i)
             else
-                handle_message(msg, run_afterwards_procedure)
+                if not loading_co.ignore_result then
+                    handle_message(msg, run_afterwards_procedure)
+                end
             end
         end
         if #loading_coroutines == 0 then
-            print("I don't wanna load anymore")
             Kristal.Overlay.setLoading(false)
         end
     end
@@ -1444,13 +1448,14 @@ end
 --- Clears all currently loaded assets. Called internally in the Loading state.
 ---@param include_mods boolean Whether to clear loaded projects.
 function Kristal.clearAssets(include_mods)
-    print("Assets are cleared, cleared")
     Assets.clear()
     if include_mods then
         Kristal.Mods.clear()
     end
 end
 
+
+local coroutines_spawned = 0
 --- Loads assets of the specified type from the given directory, and calls the given callback when done.
 ---@param dir    string       The directory to load assets from.
 ---@param loader string       The type of assets to load.
@@ -1481,8 +1486,35 @@ function Kristal.loadAssets(dir, loader, paths, after)
         paths = paths
     }
     -- print(debug.traceback())
-    print("Loading assets from", dir, loader, paths)
-    
+
+    -- print("Loading assets from", dir, loader, paths)
+
+    -- Prevent multiple assets from the same place from
+    -- being loaded at the same time. This doesn't do anything
+    -- so I'll leave it out
+    local function force_tostring(val)
+        if val == nil then
+            return ""
+        else
+            return tostring(val)
+        end
+    end
+    local asset_hash = (force_tostring(dir) + force_tostring(loader) + force_tostring(paths))
+    -- clear out and kill all running coroutines with the same
+    -- asset hash
+    local routine_length = #loading_coroutines
+    for j = routine_length, 1, -1 do
+        local target_routine = loading_coroutines[j]
+        if target_routine.hash == asset_hash then
+            -- print("Ignoring result of existing", asset_hash)
+            target_routine.ignore_result = true
+            -- target_routine.co
+            -- table.remove(loading_coroutines, j)
+        end
+    end
+
+
+    -- print("Loading with asset hash", asset_hash)
     local tco = coroutine.create(function() 
         local yielder_fn = function(data) 
             coroutine.yield(data)
@@ -1493,10 +1525,15 @@ function Kristal.loadAssets(dir, loader, paths, after)
             yielder_fn
         )
     end)
-    -- loading_coroutines.push whatever
 
     --- @type LoadingCoroutine
-    local table_entry = { co = tco, after = after_procedure}
+    local table_entry = { co = tco,
+        after = after_procedure,
+        hash = asset_hash,
+        id = coroutines_spawned,
+        ignore_result = false
+    }
+    coroutines_spawned = coroutines_spawned + 1
     -- tco.procedure_afterwards = after_procedure
     table.insert(loading_coroutines, table_entry)
     -- Kristal.Loader.in_channel:push({
@@ -1616,7 +1653,7 @@ function Kristal.loadModAssets(id, asset_type, asset_paths, after)
         if load_count == 0 then
             -- Finish project loading
             MOD_LOADING = false
-            print("The after function is to be called")
+            -- print("The after function is to be called")
             -- Call the after function
             after()
         end
