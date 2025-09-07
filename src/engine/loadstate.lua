@@ -50,26 +50,48 @@ function Loading:enter(from, dir)
     self.done_loading = false
 end
 
+
+
 function Loading:beginLoad()
     Kristal.clearAssets(true)
 
     self.loading_state = Loading.States.LOADING
 
-    Kristal.loadAssets("", "all", "")
-    Kristal.loadAssets("", "mods", "", function()
-        self.loading_state = Loading.States.DONE
+    local function asset_loader()
 
-        Assets.saveData()
+        local all_complete = false
+        local mods_complete = false
 
-        Kristal.setDesiredWindowTitleAndIcon()
+        local function break_me_out() 
+            if all_complete and mods_complete then
+                self.loading = false
+                self.load_complete = true
+                Assets.saveData()
+                Kristal.setDesiredWindowTitleAndIcon()
+                self.loading_state = Loading.States.DONE
+                -- Create the debug console
+                Kristal.Console = Kristal.Stage:addChild(Console())
+                -- Create the debug system
+                Kristal.DebugSystem = Kristal.Stage:addChild(DebugSystem())
+            end
+        end
 
-        -- Create the debug console
-        Kristal.Console = Kristal.Stage:addChild(Console())
-        -- Create the debug system
-        Kristal.DebugSystem = Kristal.Stage:addChild(DebugSystem())
+        Kristal.loadAssets("", "all", "", function () 
+            all_complete = true
+            break_me_out()
+        end)
+        Kristal.loadAssets("", "mods", "", function ()
+            mods_complete = true
+            break_me_out()
+            -- self.loading = false
+            -- print("The loading of the mods are complete")
+            -- self.load_complete = true
+            -- Assets.saveData()
+            -- Kristal.setDesiredWindowTitleAndIcon()
+        end)
+    end
 
-        REGISTRY_LOADED = true
-    end)
+    asset_loader()
 end
 
 function Loading:update()

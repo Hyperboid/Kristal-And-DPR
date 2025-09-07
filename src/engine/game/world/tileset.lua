@@ -64,6 +64,17 @@ function Tileset:init(data, path, base_dir)
         self.id_count = math.max(self.id_count, tile.id + 1)
     end
 
+
+    -- local function key_getter(tbl)
+    --     local result = {}
+    --     for k in pairs(tbl) do
+    --         table.insert(result, k)
+    --     end
+    --     return result
+    -- end
+
+
+
     if data.image then
         local success, image_path_result = self:loadTextureFromImagePath(data.image)
         if not success then
