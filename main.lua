@@ -489,3 +489,180 @@ function love.run()
         end
     end
 end
+
+-- it seems like it's some sort of... band-aid solution
+
+local MobileControls = {
+    active = true,
+    showOnDesktop = false, 
+    
+    -- Fade Logic
+    alpha = 1.0,
+    fadeTimer = 0,
+    fadeDelay = 3, 
+    fadeSpeed = 10,
+    
+    joystick = { 
+        active = false, id = nil, 
+        bx = 0, by = 0, cx = 0, cy = 0, 
+        deadzone = 15, radius = 60 
+    },
+    
+    actions = {"up", "down", "left", "right", "confirm", "cancel", "menu"},
+    state = {},      
+    last_state = {}, 
+    
+    buttons = {
+        confirm = { name = "Z", rx = 0.88, ry = 0.80, r = 60, key = "confirm" },
+        cancel  = { name = "X", rx = 0.704, ry = 0.88, r = 55, key = "cancel"  },
+        menu    = { name = "C", rx = 0.92, ry = 0.57, r = 50, key = "menu"    }
+    }
+}
+
+for _, a in ipairs(MobileControls.actions) do
+    MobileControls.state[a] = false
+    MobileControls.last_state[a] = false
+end
+
+local function getPhysicalKey(action)
+    if Input and Input.getBoundKeys then
+        local binds = Input.getBoundKeys(action, false)
+        if binds and binds[1] then
+            return type(binds[1]) == "table" and binds[1][1] or binds[1]
+        end
+    end
+    return ({confirm="z", cancel="x", menu="c", up="up", down="down", left="left", right="right"})[action] or action
+end
+
+local function getTouchCoords(x, y)
+    if not x or not y then return 0, 0 end
+    local off_x, off_y = (Kristal and Kristal.getSideOffsets) and Kristal.getSideOffsets() or 0, 0
+    local scale = (Kristal and Kristal.getGameScale) and Kristal.getGameScale() or 1
+    return (x - off_x) / scale, (y - off_y) / scale
+end
+
+function MobileControls:update(dt)
+    local gw, gh = SCREEN_WIDTH or 640, SCREEN_HEIGHT or 480
+    local touches = love.touch.getTouches()
+    
+    for _, a in ipairs(self.actions) do self.last_state[a] = self.state[a] end
+    for _, a in ipairs(self.actions) do self.state[a] = false end
+
+    local points = {}
+    if #touches == 0 and self.showOnDesktop and love.mouse.isDown(1) then
+        table.insert(points, {id = "mouse", x = love.mouse.getX(), y = love.mouse.getY()})
+    else
+        for _, id in ipairs(touches) do
+            local tx, ty = love.touch.getPosition(id)
+            if tx then table.insert(points, {id = id, x = tx, y = ty}) end
+        end
+    end
+    local actual_dt = DT * 5
+    if #points > 0 then
+        self.alpha = 1.0
+        self.fadeTimer = 0
+    else
+        self.fadeTimer = math.min(3000, self.fadeTimer + actual_dt)
+        if self.fadeTimer > self.fadeDelay then
+            self.alpha = math.max(0, self.alpha - dt * self.fadeSpeed)
+        end
+    end
+
+    local joystickFound = false
+    for _, pt in ipairs(points) do
+        local tx, ty = getTouchCoords(pt.x, pt.y)
+        local hitButton = false
+
+        for _, btn in pairs(self.buttons) do
+            local bx, by = btn.rx * gw, btn.ry * gh
+            if math.sqrt((tx - bx)^2 + (ty - by)^2) < btn.r then
+                self.state[btn.key] = true
+                hitButton = true
+                break
+            end
+        end
+
+        if not hitButton then
+            if not self.joystick.active then
+                self.joystick.active, self.joystick.id, self.joystick.bx, self.joystick.by = true, pt.id, tx, ty
+            end
+            if pt.id == self.joystick.id then
+                joystickFound = true
+                local dx, dy = tx - self.joystick.bx, ty - self.joystick.by
+                local dist = math.sqrt(dx*dx + dy*dy)
+                
+                if dist <= self.joystick.radius then
+                    self.joystick.cx, self.joystick.cy = tx, ty
+                else
+                    local angle = math.atan2(dy, dx)
+                    self.joystick.cx = self.joystick.bx + math.cos(angle) * self.joystick.radius
+                    self.joystick.cy = self.joystick.by + math.sin(angle) * self.joystick.radius
+                end
+                
+                if math.abs(dx) > self.joystick.deadzone then
+                    if dx > 0 then self.state.right = true else self.state.left = true end
+                end
+                if math.abs(dy) > self.joystick.deadzone then
+                    if dy > 0 then self.state.down = true else self.state.up = true end
+                end
+            end
+        end
+    end
+    if not joystickFound then self.joystick.active = false end
+
+    for _, a in ipairs(self.actions) do
+        local key = getPhysicalKey(a)
+        if self.state[a] and not self.last_state[a] then Input.onKeyPressed(key, false)
+        elseif not self.state[a] and self.last_state[a] then Input.onKeyReleased(key) end
+    end
+end
+
+function MobileControls:draw()
+    if not self.active or self.alpha <= 0 then return end
+    
+    love.graphics.push("all")
+    love.graphics.origin() 
+    if Kristal and Kristal.getSideOffsets then
+        local ox, oy = Kristal.getSideOffsets()
+        local s = Kristal.getGameScale()
+        love.graphics.translate(ox, oy)
+        love.graphics.scale(s, s)
+    end
+    
+    local gw, gh = SCREEN_WIDTH or 640, SCREEN_HEIGHT or 480
+    love.graphics.setLineWidth(3) -- Thicker lines for larger buttons
+
+    if self.joystick.active then
+        love.graphics.setColor(1, 1, 1, 0.2 * self.alpha)
+        love.graphics.circle("line", self.joystick.bx, self.joystick.by, self.joystick.radius)
+        love.graphics.setColor(1, 1, 1, 0.5 * self.alpha)
+        love.graphics.circle("fill", self.joystick.cx, self.joystick.cy, 25)
+    end
+
+    for _, btn in pairs(self.buttons) do
+        local bx, by = btn.rx * gw, btn.ry * gh
+        local pressAlpha = self.state[btn.key] and 0.8 or 0.3
+        love.graphics.setColor(1, 1, 1, pressAlpha * self.alpha)
+        love.graphics.circle("line", bx, by, btn.r)
+        
+        local font = love.graphics.getFont()
+        if font then
+            love.graphics.printf(btn.name, bx - btn.r, by - font:getHeight()/2, btn.r * 2, "center")
+        end
+    end
+    love.graphics.pop()
+end
+
+if Input and Input.update then
+    local old_input_update = Input.update
+    function Input.update()
+        old_input_update() 
+        MobileControls:update(love.timer.getDelta())
+    end
+end
+
+local old_love_draw = love.draw
+function love.draw()
+    if old_love_draw then old_love_draw() end
+    MobileControls:draw()
+end
