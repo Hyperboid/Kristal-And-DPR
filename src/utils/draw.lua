@@ -51,7 +51,7 @@ function Draw.pushCanvas(...)
             end
         end
         if not canvas then
-            canvas = love.graphics.newCanvas(w, h)
+            canvas = love.graphics.newCanvas(w, h, {format = SCREEN_CANVAS_FORMAT})
             table.insert(self._canvases[cid], canvas)
         end
         clear_canvas = true

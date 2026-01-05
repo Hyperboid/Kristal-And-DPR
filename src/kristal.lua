@@ -173,7 +173,11 @@ function love.load(args)
     Kristal.Stage = Stage()
 
     -- screen canvas
-    SCREEN_CANVAS = love.graphics.newCanvas(SCREEN_WIDTH, SCREEN_HEIGHT)
+    SCREEN_CANVAS_FORMAT = "rgba8"
+    if not love.graphics.getCanvasFormats()["rgba8"] then
+        SCREEN_CANVAS_FORMAT = "hdr"
+    end
+    SCREEN_CANVAS = love.graphics.newCanvas(SCREEN_WIDTH, SCREEN_HEIGHT, {format = SCREEN_CANVAS_FORMAT})
     SCREEN_CANVAS:setFilter("nearest", "nearest")
 
     SCREENSHOT_DISPLAY = 1
