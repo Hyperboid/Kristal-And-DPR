@@ -1503,7 +1503,7 @@ function Kristal.loadAssets(dir, loader, paths, after)
             return tostring(val)
         end
     end
-    local asset_hash = (force_tostring(dir) + force_tostring(loader) + force_tostring(paths))
+    local asset_hash = (force_tostring(dir) .. force_tostring(loader) .. force_tostring(paths))
     -- clear out and kill all running coroutines with the same
     -- asset hash
     local routine_length = #loading_coroutines
