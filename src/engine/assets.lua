@@ -109,7 +109,11 @@ end
 function Assets.parseData(data)
     -- thread can't create images, we do it here
     for key, image_data in pairs(data.texture_data) do
-        self.data.texture[key] = love.graphics.newImage(image_data)
+        local ok, texture = pcall(love.graphics.newImage, image_data)
+        if not ok then
+            error(texture .. " while creating texture "..key..".")
+        end
+        self.data.texture[key] = texture
         self.texture_ids[self.data.texture[key]] = key
     end
 
