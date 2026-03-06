@@ -48,6 +48,9 @@ function Loading:enter(from, dir)
     self.fader_alpha = 0
 
     self.done_loading = false
+    self.stage = Stage()
+    self.dog = LoadingDog()
+    self.stage:addChild(self.dog)
 end
 
 function Loading:beginLoad()
@@ -55,7 +58,6 @@ function Loading:beginLoad()
 
     self.loading_state = Loading.States.LOADING
 
-    Kristal.loadAssets("", "all", "")
     Kristal.loadAssets("", "mods", "", function()
         self.loading_state = Loading.States.DONE
 
@@ -77,7 +79,11 @@ function Loading:update()
         return
     end
 
-    if (self.loading_state == Loading.States.DONE) and self.key_check and (self.animation_done or Kristal.Config["skipIntro"]) then
+    local loaded, total = Assets.getAssetCount()
+    self.dog:setProgress(loaded / total)
+    self.stage:update()
+
+    if (self.loading_state == Loading.States.DONE) and loaded >= total and self.key_check and (self.animation_done or Kristal.Config["skipIntro"]) then
         -- We're done loading! This should only happen once.
         self.done_loading = true
 
@@ -124,6 +130,7 @@ function Loading:draw()
         love.graphics.scale(2, 2)
         self:drawSprite(self.logo, 0, 0, 1)
         love.graphics.pop()
+        self.stage:draw()
         return
     end
 
@@ -233,6 +240,7 @@ function Loading:draw()
 
     -- Reset the draw color
     Draw.setColor(1, 1, 1, 1)
+    self.stage:draw()
 end
 
 function Loading:onKeyPressed(key)
