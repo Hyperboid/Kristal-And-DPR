@@ -1,3 +1,4 @@
+local LoadingMode = require("src.engine.loading.LoadingMode")
 ---@class Kristal
 ---@field Console Console
 ---@field DebugSystem DebugSystem
@@ -12,6 +13,7 @@ else
     Kristal.Shaders = require("src.engine.shaders")
     Kristal.States = {
         ["Loading"] = require("src.engine.loadstate"),
+        ["ProjectLoading"] = require("src.engine.projectloadstate"),
         ["MainMenu"] = require("src.engine.menu.mainmenu"),
         ["Game"] = require("src.engine.game.game"),
         ["Testing"] = require("src.teststate"),
@@ -1500,34 +1502,22 @@ function Kristal.loadModAssets(id, asset_type, asset_paths, after)
     -- No project found; nothing to load
     if not mod then return end
 
-    -- How many assets we need to load (1 for the project, 1 for each library)
-    local load_count = 1 + #mod.lib_order
-
     -- Begin project loading
     MOD_LOADING = true
-
-    local function finishLoadStep()
-        -- Finish one load process
-        load_count = load_count - 1
-        -- Check if all load processes are done (project and libraries)
-        if load_count == 0 then
-            -- Finish project loading
-            MOD_LOADING = false
-
-            -- Call the after function
-            after()
-        end
-    end
 
     local paths4real = {}
     -- Finally load all assets (libraries first)
     for _, lib_id in ipairs(mod.lib_order) do
         table.insert(paths4real, mod.libs[lib_id].path .. "/assets")
-        Kristal.loadAssets(mod.libs[lib_id].path, asset_type or "all", asset_paths or "", finishLoadStep)
     end
-    Kristal.loadAssets(mod.path, asset_type or "all", asset_paths or "", finishLoadStep)
     table.insert(paths4real, mod.path .. "/assets")
     Assets.getBucket("project"):startLoading(paths4real)
+    if Kristal.Config["projectLoadingMode"] == LoadingMode.FULL then
+        Kristal.setState("ProjectLoading", after)
+    else
+        MOD_LOADING = false
+        after()
+    end
 end
 
 local function shouldWindowUseModBranding()
@@ -1811,6 +1801,7 @@ function Kristal.loadConfig()
         defaultName = "",
         skipNameEntry = false,
         verboseLoader = false,
+        projectLoadingMode = LoadingMode.SEMI_LAZY,
         brokenMenuBoxes = false
     }
     if love.filesystem.getInfo("settings.json") then
