@@ -337,8 +337,6 @@ end
 
 function MainMenuOptions:onKeyPressedFPS(key, is_repeat)
     if Input.isCancel(key) or Input.isConfirm(key) then
-        FRAMERATE = Kristal.Config["fps"]
-
         Assets.stopAndPlaySound("ui_select")
         self:setState("MENU")
     end
@@ -346,6 +344,7 @@ function MainMenuOptions:onKeyPressedFPS(key, is_repeat)
     if Input.is("left", key) then
         Assets.stopAndPlaySound("ui_move")
 
+        local FRAMERATE = Kristal.Config["fps"]
         if FRAMERATE == 0 or FRAMERATE > 240 then
             FRAMERATE = 240
         elseif FRAMERATE > 144 then
@@ -364,6 +363,7 @@ function MainMenuOptions:onKeyPressedFPS(key, is_repeat)
     elseif Input.is("right", key) then
         Assets.stopAndPlaySound("ui_move")
 
+        local FRAMERATE = Kristal.Config["fps"]
         if FRAMERATE < 30 then
             FRAMERATE = 30
         elseif FRAMERATE < 60 then

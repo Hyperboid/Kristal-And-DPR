@@ -133,9 +133,6 @@ function love.load(args)
     -- register gamepad mapping DB
     love.joystick.loadGamepadMappings("gamecontrollerdb.txt")
 
-    -- update framerate
-    FRAMERATE = Kristal.Config["fps"]
-
     -- set master volume
     Kristal.setVolume(Kristal.Config["masterVolume"] or 0.6)
 

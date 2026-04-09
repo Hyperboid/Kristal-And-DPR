@@ -575,7 +575,6 @@ function DebugSystem:registerSubMenus()
         "Set the target FPS to unlimited.",
         function()
             Kristal.Config["fps"] = 0
-            FRAMERATE = 0
         end
     )
 
@@ -586,7 +585,6 @@ function DebugSystem:registerSubMenus()
             "Set the target FPS to " .. fps .. ".",
             function()
                 Kristal.Config["fps"] = fps
-                FRAMERATE = fps
             end
         )
     end
@@ -596,7 +594,6 @@ function DebugSystem:registerSubMenus()
             local fps = tonumber(text)
             if fps then
                 Kristal.Config["fps"] = fps
-                FRAMERATE = fps
             end
         end)
         self.window:setPosition(Input.getCurrentCursorPosition())
