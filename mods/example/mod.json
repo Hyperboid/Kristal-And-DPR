@@ -8,6 +8,7 @@
 
     "chapter": 2,
 
+    "lockFramerate": true,
     "map": "room1",
     "party": ["kris", "susie", "ralsei"],
     "inventory": {

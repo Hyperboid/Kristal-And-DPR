@@ -51,6 +51,10 @@
     // Whether the project is hidden from the project selection.
     "hidden": false,
 
+    // If you set this to false, the project will be allowed to run at framerates other than 30FPS.
+    // It's recommended to keep this as true.
+    "lockFramerate": true,
+
     // Whether the game window's title should be set to the project's name, and the icon to the image
     // in the file `window_icon.png`.
     // When your project is configured as the engine's target project, it's automatically done unless if

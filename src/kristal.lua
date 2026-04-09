@@ -2099,6 +2099,17 @@ function Kristal.clearModSubclasses()
     MOD_SUBCLASSES = {}
 end
 
+---@return integer The target framerate the engine will run at. If 0, uncapped.
+function Kristal.getTargetFramerate()
+    if Kristal.getModOption("lockFramerate") then
+        return 30
+    end
+    if FAST_FORWARD then
+        return 0
+    end
+    return Kristal.Config["fps"]
+end
+
 --- Executes a `.lua` script inside the project folder.
 ---@param path string  The script name to execute.
 ---@param ...  any     The arguments to pass to the script.

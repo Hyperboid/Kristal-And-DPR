@@ -359,11 +359,12 @@ function love.run()
         local frame_skip = Kristal and Kristal.Config and Kristal.Config["frameSkip"]
 
         local timescale = (FAST_FORWARD and FAST_FORWARD_SPEED or 1)
-        if FRAMERATE > 0 then
+        local framerate = Kristal.getTargetFramerate()
+        if framerate > 0 then
             local tick_rate = 1 / framerate
 
             local dt = love.timer.step()
-            accumulator = accumulator + (dt * timescale)
+            accumulator = accumulator + (dt * (FAST_FORWARD and FAST_FORWARD_SPEED or 1))
 
             local update = false
             while accumulator >= tick_rate do
