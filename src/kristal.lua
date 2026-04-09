@@ -353,12 +353,6 @@ function love.update(dt)
     end
 
     BASE_DT = dt
-    if FAST_FORWARD then
-        CURRENT_SPEED_MULT = FAST_FORWARD_SPEED
-        dt = dt * FAST_FORWARD_SPEED
-    else
-        CURRENT_SPEED_MULT = 1
-    end
     DT = dt
     DTMULT = dt * 30
     RUNTIME = RUNTIME + dt

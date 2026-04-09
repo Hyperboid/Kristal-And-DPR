@@ -358,11 +358,12 @@ function love.run()
     local function mainLoop()
         local frame_skip = Kristal and Kristal.Config and Kristal.Config["frameSkip"]
 
-        if FRAMERATE > 0 and not FAST_FORWARD then
-            local tick_rate = 1 / FRAMERATE
+        local timescale = (FAST_FORWARD and FAST_FORWARD_SPEED or 1)
+        if FRAMERATE > 0 then
+            local tick_rate = 1 / framerate
 
             local dt = love.timer.step()
-            accumulator = accumulator + dt
+            accumulator = accumulator + (dt * timescale)
 
             local update = false
             while accumulator >= tick_rate do
@@ -394,7 +395,7 @@ function love.run()
 
             FPS = love.timer.getFPS()
 
-            local ret = doUpdate(dt)
+            local ret = doUpdate(dt * timescale)
             if ret then return ret end
 
             doDraw()
