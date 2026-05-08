@@ -1475,17 +1475,18 @@ end
 --- Loads assets from a project and its libraries. Called internally by `Kristal.loadMod`.
 ---@param id           string       The id of the project to load assets from.
 ---@param asset_type?  string       The type of assets to load. (Defaults to "all")
----@param asset_paths? string|table The specific asset paths to load.
+---@param asset_subpaths? string|table The specific asset paths to load.
 ---@param after        function     The function to call after assets have been loaded.
-function Kristal.loadModAssets(id, asset_type, asset_paths, after)
+function Kristal.loadModAssets(id, asset_type, asset_subpaths, after)
     -- Get the project data (loaded from mod.json)
     local mod = Kristal.Mods.getAndLoadMod(id)
 
     -- No project found; nothing to load
     if not mod then return end
 
+    local asset_paths = Kristal.getProjectAssetPaths(mod)
     -- How many assets we need to load (1 for the project, 1 for each library)
-    local load_count = 1 + #mod.lib_order
+    local load_count = #asset_paths
 
     -- Begin project loading
     MOD_LOADING = true
@@ -1504,10 +1505,9 @@ function Kristal.loadModAssets(id, asset_type, asset_paths, after)
     end
 
     -- Finally load all assets (libraries first)
-    for _, lib_id in ipairs(mod.lib_order) do
-        Kristal.loadAssets(mod.libs[lib_id].path, asset_type or "all", asset_paths or "", finishLoadStep)
+    for _, path in ipairs(asset_paths) do
+        Kristal.loadAssets(path, asset_type or "all", asset_subpaths or "", finishLoadStep)
     end
-    Kristal.loadAssets(mod.path, asset_type or "all", asset_paths or "", finishLoadStep)
 end
 
 local function shouldWindowUseModBranding()
@@ -1957,6 +1957,27 @@ end
 ---@return any value The value at the key, or `nil` if it doesn't exist.
 function Kristal.getModOption(key)
     return Mod and Mod.info and Mod.info[key]
+end
+
+---@private
+---@param project_info ProjectInfo?
+---@return string[]
+function Kristal.getProjectAssetPaths(project_info)
+    if project_info == nil then
+        if Mod == nil then
+            error("No project loaded, and no info specified in argument", 2)
+        end
+        project_info = Mod.info
+    end
+    if type(project_info) ~= "table" then
+        error(string.format("Bad argument #1 to Kristal.getAssetPaths (table expected, got %s)", type(project_info)))
+    end
+    local paths = {}
+    for _, lib_id in ipairs(project_info.lib_order) do
+        table.insert(paths, project_info.libs[lib_id].path)
+    end
+    table.insert(paths, project_info.path)
+    return paths
 end
 
 --- Gets a library config option, defined in either `lib.json` or modified by the `mod.json`. \
