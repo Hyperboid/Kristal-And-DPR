@@ -608,14 +608,23 @@ function Assets.stopAndPlaySound(sound, volume, pitch, actually_stop)
 end
 
 ---@param music string
+---@return MusicAssetLoader.MusicResult
+function Assets.getMusic(music)
+    return self.get("music", music)
+end
+
+function Assets.hasMusic(music)
+    return self.internalHas("music", music)
+end
+
+---@param music string
 ---@return string
 function Assets.getMusicPath(music)
-    -- TODO: Make this error once Music2 is updated.
     if not self.internalHas("music", music) then
         ---@diagnostic disable-next-line
         return nil, string.format("Attempt to fetch missing music '%s'", music)
     end
-    return self.get("music", music)
+    return self.getMusic(music).path
 end
 
 ---@param video string

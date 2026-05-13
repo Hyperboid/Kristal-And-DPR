@@ -1,6 +1,7 @@
 local PathAssetLoader = require("src.engine.loading.loaders.PathAssetLoader")
 local FontAssetLoader = require("src.engine.loading.loaders.FontAssetLoader")
 local BubbleAssetLoader = require("src.engine.loading.loaders.BubbleAssetLoader")
+local MusicAssetLoader = require("src.engine.loading.loaders.MusicAssetLoader")
 ---@class AssetLoaders
 ---@field loaders table<string, AssetLoader>
 local AssetLoaders = {}
@@ -16,7 +17,7 @@ function AssetLoaders.registerDefaults()
     AssetLoaders.register("shader", ShaderAssetLoader({ "shaders" }, { "glsl" }))
     AssetLoaders.register("sprite", SpriteAssetLoader({ "sprites" }, { "png" }))
     AssetLoaders.register("sound", SoundAssetLoader({ "sounds" }, { "wav", "ogg" }, "json"))
-    AssetLoaders.register("music", PathAssetLoader({ "music" }, { 
+    AssetLoaders.register("music", MusicAssetLoader({ "music" }, { 
         -- AUDIO FORMATS
         "mp3", "wav", "ogg",
         -- TRACKER FORMATS
@@ -26,7 +27,7 @@ function AssetLoaders.registerDefaults()
         "mdz", "s3z", "xmz", "itz", "zip",
         "mdr", "s3r", "xmr", "itr", "rar",
         "mdgz", "s3gz", "xmgz", "itgz", "gz"
-    }))
+    }, { "json" }))
     AssetLoaders.register("video", PathAssetLoader({ "videos" }, { "ogg", "ogv" }))
     AssetLoaders.register("font", FontAssetLoader({ "fonts" }, { "png", "ttf", "json", "fnt" }))
     AssetLoaders.register("bubble", BubbleAssetLoader({ "bubbles" }, { "json" }))
