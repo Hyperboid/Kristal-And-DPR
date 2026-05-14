@@ -130,6 +130,7 @@ function Music:playFile(path, volume, pitch, name)
             self.queued_decoder = nil
             self.pitch = pitch or 1
             self.decoder = love.sound.newDecoder(path)
+            self.source = love.audio.newQueueableSource(self.decoder:getSampleRate(), self.decoder:getBitDepth(), self.decoder:getChannelCount(), Music.BUFFER_COUNT)
             if Assets.hasMusic(name) then
                 local info = Assets.getMusic(name)
                 self.loop_start = info.metadata.loop_start
@@ -139,7 +140,6 @@ function Music:playFile(path, volume, pitch, name)
                     self:queue(love.sound.newDecoder(info.loop_path))
                 end
             end
-            self.source = love.audio.newQueueableSource(self.decoder:getSampleRate(), self.decoder:getBitDepth(), self.decoder:getChannelCount(), Music.BUFFER_COUNT)
             self.source:setVolume(self:getVolume())
             self.source:setPitch(self:getPitch())
             self:resume()
