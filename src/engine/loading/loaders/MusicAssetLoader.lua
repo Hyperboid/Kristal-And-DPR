@@ -28,9 +28,14 @@ end
 
 function MusicAssetLoader:beginLoad(file, queue)
     local loop, identifier = StringUtils.endsWith(file.identifier, ".loop")
-    queue[identifier] = queue[file.identifier] or {}
+    if loop and TableUtils.contains(self.metadata_extensions, file.extension) then
+        error(string.format("Music metadata file must not end in `.loop` (%s)", file.full_path))
+    end
+    queue[identifier] = queue[identifier] or {}
     if TableUtils.contains(self.metadata_extensions, file.extension) then
         queue[file.identifier].metadata_path = file.full_path
+    elseif loop then
+        queue[identifier].music_loop_path = file.full_path
     else
         if loop then
             queue[identifier].music_loop_path = file.full_path
