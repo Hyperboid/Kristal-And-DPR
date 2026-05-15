@@ -220,6 +220,7 @@ function Music:stop()
     self.fade_speed = 0
     if self.source then
         self.source:stop()
+        self:seek(0)
     end
     self.started = false
 end
@@ -290,7 +291,7 @@ end
 
 ---@return boolean
 function Music:isPlaying()
-    return self.source and self.source:isPlaying() or false
+    return self.started
 end
 
 ---@return boolean
@@ -356,6 +357,9 @@ local function update()
         end
 
         if handler.source then
+            if handler.started and not handler.source:isPlaying() then
+                handler:resume()
+            end
             handler:updateBuffer()
             local volume = handler:getVolume()
             if handler.source:getVolume() ~= volume then
